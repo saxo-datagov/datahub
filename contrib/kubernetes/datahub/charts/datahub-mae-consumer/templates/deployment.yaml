@@ -64,11 +64,11 @@ spec:
               value: "{{ .Values.global.neo4j.uri }}"
             - name: NEO4J_USERNAME
               value: "{{ .Values.global.neo4j.username }}"
-            - name: NEO4J_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Values.global.neo4j.password.secretRef }}"
-                  key: "{{ .Values.global.neo4j.password.secretKey }}"
+            {{/*- name: NEO4J_PASSWORD*/}}
+              {{/*valueFrom:*/}}
+                {{/*secretKeyRef:*/}}
+                  {{/*name: "{{ .Values.global.neo4j.password.secretRef }}"*/}}
+                  {{/*key: "{{ .Values.global.neo4j.password.secretKey }}"*/}}
             {{- if .Values.global.springKafkaConfigurationOverrides }}
             {{- range $configName, $configValue := .Values.global.springKafkaConfigurationOverrides }}
             - name: SPRING_KAFKA_PROPERTIES_{{ $configName | replace "." "_" | upper }}
