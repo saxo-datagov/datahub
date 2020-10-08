@@ -42,6 +42,8 @@ dependencies {
     annotationProcessor externalDependency.lombok
 
     runtime externalDependency.logbackClassic
+	runtime externalDependency.logstash
+
 }
 
 task avroSchemaSources(type: Copy) {
