@@ -1,0 +1,19 @@
+on:
+  schedule:
+  - cron:  "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  sync-master-and-tags:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - name: repo-and-tags-sync
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: "https://github.com/linkedin/datahub"
+        source_branch: "master"
+        destination_branch: "master"
+	sync_tags: "true"
