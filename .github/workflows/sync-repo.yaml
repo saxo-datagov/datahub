@@ -16,3 +16,4 @@ jobs:
         source_repo: "https://github.com/linkedin/datahub"
         source_branch: "master"
         destination_branch: "master"
+        github_token: ${{ secrets.PAT }}
