@@ -55,13 +55,25 @@ spec:
             - name: KAFKA_SCHEMAREGISTRY_URL
               value: "{{ .Values.global.kafka.schemaregistry.url }}"
             - name: ELASTICSEARCH_HOST
-              value: "{{ .Values.global.elasticsearch.host }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: elasticsearch-host
+                  name: {{ .Values.global.psConfigmap }}
             - name: ELASTICSEARCH_PORT
-              value: "{{ .Values.global.elasticsearch.port }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: elasticsearch-port
+                  name: {{ .Values.global.psConfigmap }}
             - name: NEO4J_HOST
-              value: "{{ .Values.global.neo4j.host }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: neo4j-host
+                  name: {{ .Values.global.psConfigmap }}
             - name: NEO4J_URI
-              value: "{{ .Values.global.neo4j.uri }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: neo4j-uri
+                  name: {{ .Values.global.psConfigmap }}
             - name: NEO4J_USERNAME
               value: "{{ .Values.global.neo4j.username }}"
             {{/*- name: NEO4J_PASSWORD*/}}
