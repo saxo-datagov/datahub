@@ -34,3 +34,4 @@ MANIFEST
 
 # Mac OS
 **/.DS_Store
+.talismanrc
