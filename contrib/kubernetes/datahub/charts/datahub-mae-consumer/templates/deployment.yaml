@@ -75,7 +75,10 @@ spec:
                   key: neo4j-uri
                   name: {{ .Values.global.psConfigmap }}
             - name: NEO4J_USERNAME
-              value: "{{ .Values.global.neo4j.username }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: neo4j-username
+                  name: {{ .Values.global.psConfigmap }}
             {{/*- name: NEO4J_PASSWORD*/}}
               {{/*valueFrom:*/}}
                 {{/*secretKeyRef:*/}}
