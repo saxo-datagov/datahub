@@ -55,7 +55,10 @@ spec:
               protocol: TCP
           env:
             - name: EBEAN_DATASOURCE_USERNAME
-              value: "{{ .Values.global.sql.datasource.username }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: sql-username
+                  name: {{ .Values.global.psConfigmap }}
             - name: EBEAN_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -101,7 +104,11 @@ spec:
                   key: neo4j-uri
                   name: {{ .Values.global.psConfigmap }}
             - name: NEO4J_USERNAME
-              value: "{{ .Values.global.neo4j.username }}"
+              valueFrom:
+                configMapKeyRef:
+                  key: neo4j-username
+                  name: {{ .Values.global.psConfigmap }}
+
             {{/*- name: NEO4J_PASSWORD*/}}
               {{/*valueFrom:*/}}
                 {{/*secretKeyRef:*/}}
