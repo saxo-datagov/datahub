@@ -1,5 +1,6 @@
 package com.linkedin.gms.factory.common;
 
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import java.util.Arrays;
@@ -38,6 +39,13 @@ public class KafkaEventProducerFactory {
 
     Map<String, Object> props = properties.buildProducerProperties();
     props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, kafkaSchemaRegistryUrl);
+
+    /*
+    Setting props so that producer doesn't try to publish new schema for MAE due to issue:
+    Schema Registry considers avro.java.string as part of the schema comparison (https://github.com/confluentinc/schema-registry/issues/868)
+     */
+    props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
+    props.put(AbstractKafkaSchemaSerDeConfig.USE_LATEST_VERSION, true);
 
     return new KafkaProducer(props);
   }
