@@ -41,6 +41,10 @@ ApplicationRouter.map(function(): void {
 
   this.route('login');
 
+  this.route('help', function(): void {
+    this.route('definitions');
+  });
+
   this.route('browse', function(): void {
     this.route('entity', {
       path: '/:entity'
