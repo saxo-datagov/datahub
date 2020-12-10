@@ -1,14 +1,25 @@
 import Controller from '@ember/controller';
-import TablesSimpleRecord from '@datahub/shared/components/tables/simple-record';
-import { INachoTableConfigs } from '@nacho-ui/table/types/nacho-table';
 import definitions from './definitionsData';
+import { augmentWithHtmlComment } from '@datahub/entities/utils/api/columns';
 
+interface IDefinitionColumn {
+  [key: string]: string;
+}
 export default class DefinitionsController extends Controller {
-  entries: TablesSimpleRecord['entries'] = definitions;
+  records: Array<IDefinitionColumn> = [];
 
-  tableConfigs: INachoTableConfigs<string> = {
-    headers: [{ title: 'Term' }, { title: 'Definition' }],
-    useBlocks: { body: true, header: false },
-    labels: ['term', 'definition']
-  };
+  init(): void {
+    super.init();
+    this.task();
+  }
+
+  task(): void {
+    this.records = definitions.map(entry => {
+      entry.definition = augmentWithHtmlComment({
+        comment: entry.definition,
+        commentHtml: entry.definition
+      }).commentHtml;
+      return entry;
+    });
+  }
 }
