@@ -1,0 +1,20 @@
+<NachoTable::NachoTable @tableClass="nacho-table nacho-table--dynamic nacho-table--striped dataset-detail-table" as |Table|>
+    <Table.head @class="results-header" as |Head|>
+        {{#each-in this.records.[0] as |header|}}
+        <Head.title @class="dataset-detail-table__th-field-name">
+            {{capitalize header}}
+        </Head.title>
+        {{/each-in}}
+    </Table.head>
+    <Table.body as |Body|>
+        {{#each this.records as |row|}}
+        <Body.row as |Row|>
+            {{#each-in row as |column|}}
+            <Row.cell>
+                {{get row column}}
+            </Row.cell>
+            {{/each-in}}
+        </Body.row>
+        {{/each}}
+    </Table.body>
+</NachoTable::NachoTable>

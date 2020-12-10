@@ -11,7 +11,7 @@ import { IDatasetSchemaColumn } from '@datahub/metadata-types/types/entity/datas
  * @param {T} objectWithComment
  * @returns {(T | T & {commentHtml: string})}
  */
-const augmentWithHtmlComment = <T extends { comment: string }>(
+export const augmentWithHtmlComment = <T extends { comment: string }>(
   objectWithComment: T
 ): T | (T & { commentHtml: string }) => {
   const { comment } = objectWithComment;
