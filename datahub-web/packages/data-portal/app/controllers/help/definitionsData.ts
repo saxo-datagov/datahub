@@ -28,7 +28,7 @@ export default [
   {
     term: 'Ownership​',
     definition:
-      'This is seen in a datset details page. It provides details about the owners of the dataset.​<br /> DATA OWNER - Business Own. <br />  PRODUCER - Technical Owner​ <br /> STAKEHOLDER - Data Steward​'
+      'This is seen in a datset details page. It provides details about the owners of the dataset.​<br/> DATA OWNER - Business Owner <br/>  PRODUCER - Technical Owner​ <br/> STAKEHOLDER - Data Steward​'
   },
   {
     term: 'Relationship​',
