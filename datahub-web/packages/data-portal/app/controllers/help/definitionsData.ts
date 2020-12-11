@@ -18,29 +18,29 @@ export default [
   },
   {
     term: 'Schema​',
-    definition: 'This is seen in a datset details page. It details about the columns in the dataset​'
+    definition: 'This is seen in a dataset details page. It details about the columns in the dataset​'
   },
   {
     term: 'Status​',
     definition:
-      'This is seen in a datset details page. It is a flag which will show that the dataset is depricated and is not supposed to be referred​'
+      'This is seen in a dataset details page. It is a flag which will show that the dataset is depricated and is not supposed to be referred​'
   },
   {
     term: 'Ownership​',
     definition:
-      'This is seen in a datset details page. It provides details about the owners of the dataset.​<br/> DATA OWNER - Business Owner <br/>  PRODUCER - Technical Owner​ <br/> STAKEHOLDER - Data Steward​'
+      'This is seen in a dataset details page. It provides details about the owners of the dataset.​<br/> DATA OWNER - Business Owner <br/>  PRODUCER - Technical Owner​ <br/> STAKEHOLDER - Data Steward​'
   },
   {
     term: 'Relationship​',
-    definition: 'This is seen in a datset details page. This explains the lineage of the dataset​'
+    definition: 'This is seen in a dataset details page. This explains the lineage of the dataset​'
   },
   {
     term: 'Properties​',
     definition:
-      'This is seen in a datset details page. This shows custom properties like informationClassification for a dataset​'
+      'This is seen in a dataset details page. This shows custom properties like informationClassification for a dataset​'
   },
   {
     term: 'Docs​',
-    definition: 'This is seen in a datset details page. Reference of a link or a document can be provided here​'
+    definition: 'This is seen in a dataset details page. Reference of a link or a document can be provided here​'
   }
 ];
