@@ -37,7 +37,7 @@ ApplicationRouter.map(function(): void {
 
   this.route('search');
 
-  this.route('logout');
+  // this.route('logout');
 
   this.route('login');
 
