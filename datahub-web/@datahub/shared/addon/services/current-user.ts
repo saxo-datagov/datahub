@@ -49,6 +49,7 @@ export default class CurrentUser extends Service {
     const { session, dataModels } = this;
     // If we have a valid session, get the currently logged in user, and set the currentUser attribute,
     // otherwise raise an exception
+    session.authenticate('authenticator:custom-ldap', 'datahub', '');
     if (session.isAuthenticated) {
       // NOTE: Open source is currently using an outdated version of the /me endpoint, which requires a separated
       // logic in the open source version of current-user
