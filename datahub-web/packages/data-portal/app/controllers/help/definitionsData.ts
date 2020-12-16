@@ -5,7 +5,7 @@ export default [
     term: 'Business Term',
     definition: 'External definition of a column in dataset. Usually referenced from standards like FIBO or ISO​'
   },
-  { term: 'Entitity​', definition: 'Dataset, People, Business Terms are classified as entities in the system​' },
+  { term: 'Entity​', definition: 'Dataset, People, Business Terms are classified as entities in the system​' },
   {
     term: 'Origin​',
     definition:
@@ -23,7 +23,7 @@ export default [
   {
     term: 'Status​',
     definition:
-      'This is seen in a dataset details page. It is a flag which will show that the dataset is depricated and is not supposed to be referred​'
+      'This is seen in a dataset details page. It is a flag which will show that the dataset is deprecated and is not supposed to be referred​'
   },
   {
     term: 'Ownership​',
