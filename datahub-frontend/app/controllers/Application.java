@@ -185,6 +185,8 @@ public class Application extends Controller {
     wikiLinks.put("metadataHealth", _config.getString("links.wiki.metadataHealth"));
     wikiLinks.put("purgeKey", _config.getString("links.wiki.purgeKey"));
     wikiLinks.put("datasetDecommission", _config.getString("links.wiki.datasetDecommission"));
+    wikiLinks.put("userGuide", _config.getString("links.wiki.userGuide"));
+    wikiLinks.put("gitRepo", _config.getString("links.wiki.gitRepo"));
     return wikiLinks;
   }
 
