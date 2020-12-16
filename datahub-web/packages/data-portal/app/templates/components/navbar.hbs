@@ -53,7 +53,7 @@
             class="dropdown-menu"
             role="menu"
           >
-            <NavLink @route="user.profile" @model={{this.userUrn}} @tagName="li" data-profile-link={{this.userUrn}}>
+            <NavLink @route="user.profile" @model={{this.userUrn}} @tagName="li" data-profile-link={{this.userUrn}} title="My Profile">
               My Profile
             </NavLink>
 
@@ -62,6 +62,7 @@
                 @route="user.profile.tab"
                 @models={{array this.userUrn (concat "userownership-" entity.displayName)}}
                 @tagName="li"
+                title="{{nacho-core/titleize (humanize entity.displayName)}} I Own"
               >
                 {{nacho-core/titleize (humanize entity.displayName)}} I Own
               </NavLink>
@@ -84,7 +85,7 @@
               Help
                <FaIcon @icon="question-circle"  aria-hidden="true"/>
             </li>
-            <NavLink @route="help.definitions" @tagName="li">
+            <NavLink @route="help.definitions" @tagName="li" title="Definitions">
               Definitions
             </NavLink>
             {{#each @applicationHelpResources as |applicationHelpResource|}}
@@ -100,7 +101,7 @@
               </li>
             {{/each}}
 
-            <li>
+            {{!-- <li>
               {{! TODO: DSS-6716 }}
               {{! DRY out with wrapper component that takes the link as an attribute }}
               <a
@@ -111,13 +112,13 @@
               >
                 See Metadata Origins
               </a>
-            </li>
+            </li> --}}
             {{!-- TODO: [META-9126] Change this to use generic link --}}
-            <li>
+            {{!-- <li>
               <MailTo @mailHeader={{@feedbackMail}}>
                 {{@feedbackMail.title}}
               </MailTo>
-            </li>
+            </li> --}}
 
             {{!-- <li role="separator" class="divider"></li> --}}
 
