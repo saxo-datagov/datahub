@@ -8,4 +8,5 @@ import { tagName, layout } from '@ember-decorators/component';
 @layout(template)
 export default class NavLink extends LinkComponent {
   attributeBindings = ['data-toggle', 'data-target'];
+  href = 'javascript:void(0)';
 }

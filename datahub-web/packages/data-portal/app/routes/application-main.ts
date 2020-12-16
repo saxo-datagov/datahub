@@ -105,7 +105,11 @@ export default class ApplicationMainRoute extends ApplicationBaseRoute {
       showLiveDataWarning,
       showChangeManagement,
       customBanner,
-      helpResources: [{ link: wikiLinks['appHelp'], label: 'DataHub Wiki' }]
+      helpResources: [
+        { link: wikiLinks['userGuide'], label: 'User Guide' },
+        { link: wikiLinks['gitRepo'], label: 'Git Repo' },
+        { link: wikiLinks['appHelp'], label: 'LinkedIn Datahub Wiki' }
+      ]
     };
   }
   /**
