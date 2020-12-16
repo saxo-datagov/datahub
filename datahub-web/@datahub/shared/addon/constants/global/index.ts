@@ -1,2 +1,2 @@
 // Name of the App being displayed to the user.
-export const AppName = 'DataHub';
+export const AppName = 'Data Workbench';
