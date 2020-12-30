@@ -5,7 +5,7 @@ Followed the [doc](../how/entity-onboarding.md) for the new entity onboarding in
 1. Created Business term entity [models](../rfc/active/business_glossary/README.md) in different modules as specified in the above document.
     - If by mistake you want to change your model structure then delete generated folders inside gms/api and
       rebuild the changed modules. Otherwise, API compatibility issues can arise.
-3. Completed all steps in [doc](../how/entity-onboarding.md) except Part 6
+3. Completed all steps in [doc](../how/entity-onboarding.md)
 2. Onboard the entity by running metadata-ingestion-examples(with example-bootstrap.json) gradle task
 3. If conversion into the schema got failed then mae event would not be raised again for same entity. Change the entity urn for debugging again.
 
@@ -25,6 +25,11 @@ curl "http://localhost:8080/businessTerms?q=search&input=name&start=0&count=10" 
 ###### Auto-complete business term
 ```
 curl "http://localhost:8080/businessTerms?action=autocomplete" -d '{"query": "defin", "field": "definition", "limit": 10, "filter": {"criteria": []}}' -X POST -H 'X-RestLi-Protocol-Version: 2.0.0' | jq
+```
+
+##### Graph results
+```
+http://localhost:7474/browser/
 ```
 
 #### Debugging
