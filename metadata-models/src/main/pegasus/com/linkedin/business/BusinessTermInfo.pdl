@@ -1,0 +1,30 @@
+namespace com.linkedin.business
+
+import com.linkedin.common.Uri
+
+/**
+ * Properties associated with a BusinessTerm
+ */
+record BusinessTermInfo {
+
+  /**
+   * Definition of business term
+   */
+  definition: string
+
+  /**
+   * Source of the Business Term (INTERNAL or EXTERNAL) with default value as INTERNAL
+   */
+  termSource: string
+
+  /**
+   * External Reference to the business-term (URL)
+   */
+  sourceRef: optional string
+
+  /**
+   * The abstracted URI such as https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/CashInstrument.
+   */
+  sourceURI: optional Uri
+
+}

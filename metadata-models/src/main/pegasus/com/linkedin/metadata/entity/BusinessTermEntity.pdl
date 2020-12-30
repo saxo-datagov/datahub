@@ -1,0 +1,19 @@
+namespace com.linkedin.metadata.entity
+
+import com.linkedin.common.BusinessTermUrn
+
+/**
+ * Data model for a BusinessTerm entity
+ */
+record BusinessTermEntity includes BaseEntity {
+
+  /**
+   * Urn for the BusinessTerm
+   */
+  urn: BusinessTermUrn
+
+  /**
+   * Business term name
+   */
+  name: optional string
+}

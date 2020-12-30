@@ -16,3 +16,4 @@ create_index corpuserinfodocument corp-user/settings.json corp-user/mappings.jso
 create_index dashboarddocument dashboard/settings.json dashboard/mappings.json
 create_index dataprocessdocument data-process/settings.json data-process/mappings.json
 create_index datasetdocument dataset/settings.json dataset/mappings.json
+create_index businessterminfodocument business-term/settings.json business-term/mappings.json

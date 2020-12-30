@@ -5,6 +5,7 @@ import com.linkedin.metadata.builders.search.BaseIndexBuilder;
 import com.linkedin.metadata.builders.search.ChartIndexBuilder;
 import com.linkedin.metadata.builders.search.CorpGroupIndexBuilder;
 import com.linkedin.metadata.builders.search.DashboardIndexBuilder;
+import com.linkedin.metadata.builders.search.BusinessTermInfoIndexBuilder;
 import com.linkedin.metadata.builders.search.DataProcessIndexBuilder;
 import com.linkedin.metadata.builders.search.DatasetIndexBuilder;
 import com.linkedin.metadata.restli.DefaultRestliClientFactory;
@@ -46,6 +47,7 @@ public class IndexBuildersConfig {
     builders.add(new DatasetIndexBuilder());
     builders.add(new DataProcessIndexBuilder());
     builders.add(new DashboardIndexBuilder());
+    builders.add(new BusinessTermInfoIndexBuilder());
     return builders;
   }
 

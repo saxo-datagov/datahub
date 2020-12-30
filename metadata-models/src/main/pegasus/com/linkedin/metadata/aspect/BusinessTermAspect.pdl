@@ -1,0 +1,9 @@
+namespace com.linkedin.metadata.aspect
+
+import com.linkedin.business.BusinessTermInfo
+import com.linkedin.common.Ownership
+
+/**
+ * A union of all supported metadata aspects for a CorpUser
+ */
+typeref BusinessTermAspect = union[BusinessTermInfo, Ownership]

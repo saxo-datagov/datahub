@@ -1,0 +1,29 @@
+namespace com.linkedin.common
+
+/**
+ * Business Term
+ */
+@java.class = "com.linkedin.common.urn.BusinessTermUrn"
+@validate.`com.linkedin.common.validator.TypedUrnValidator` = {
+  "accessible" : true,
+  "owningTeam" : "urn:li:internalTeam:datahub",
+  "entityType" : "businessTerm",
+  "constructable" : true,
+  "namespace" : "li",
+  "name" : "BusinessTerm",
+  "doc" : "business term",
+  "owners" : [ "urn:li:corpuser:fbar", "urn:li:corpuser:bfoo" ],
+  "fields" : [ {
+    "name" : "name",
+    "doc" : "The name of business term.",
+    "type" : "string",
+    "maxLength" : 20
+  },{
+        "name" : "domain",
+        "doc" : "The domain of business term.",
+        "type" : "string",
+        "maxLength" : 20
+      } ],
+  "maxLength" : 36
+}
+typeref BusinessTermUrn = string

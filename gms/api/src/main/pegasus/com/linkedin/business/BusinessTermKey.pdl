@@ -1,0 +1,16 @@
+namespace com.linkedin.business
+
+/**
+ * Key for BusinessTerm resource
+ */
+record BusinessTermKey {
+
+  @validate.strlen = {
+    "max" : 20,
+    "min" : 1
+  }
+  name: string
+
+  domain: string
+
+}

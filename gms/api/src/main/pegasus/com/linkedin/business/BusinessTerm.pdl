@@ -1,0 +1,25 @@
+namespace com.linkedin.business
+
+import com.linkedin.common.Ownership
+/**
+ * Metadata for a business term
+ */
+record BusinessTerm {
+
+  /**
+   * business term name
+   */
+  name: string
+
+  domain: string
+
+  /**
+   * BusinessTermInfo
+   */
+  businessTermInfo: optional BusinessTermInfo
+
+  /**
+   * Ownership
+   */
+  ownership: optional Ownership
+}
