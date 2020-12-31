@@ -22,6 +22,12 @@ curl 'http://localhost:8080/businessTerms/' -H 'X-RestLi-Protocol-Version:2.0.0'
 ```
 curl "http://localhost:8080/businessTerms?q=search&input=name&start=0&count=10" -X GET -H 'X-RestLi-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: finder' | jq
 ```
+
+###### Search business terms owned by a user
+```
+curl "http://localhost:8080/businessTerms?q=search&input=owners%3Adatahub&start=0&count=10" -X GET -H 'X-RestLi-Protocol-Version: 2.0.0' -H 'X-RestLi-Method: finder' | jq
+```
+ 
 ###### Auto-complete business term
 ```
 curl "http://localhost:8080/businessTerms?action=autocomplete" -d '{"query": "defin", "field": "definition", "limit": 10, "filter": {"criteria": []}}' -X POST -H 'X-RestLi-Protocol-Version: 2.0.0' | jq
