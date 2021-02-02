@@ -7,8 +7,7 @@ FROM artifacts.sys.dom/docker/gradle:5.6.4-jdk8 as prod-build
 ENV DOCKERIZE_VERSION v0.6.1
 
 COPY --chown=gradle:gradle . /datahub-src
-
-RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz  --proxy http://dk.proxy.mid.dom:80 | tar -C /usr/local/bin -xzv
+RUN cp -r /datahub-src/dockerize /usr/local/bin
 
 RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
     && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /datahub-src/SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
