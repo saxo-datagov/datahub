@@ -39,6 +39,8 @@ dependencies {
     runtime externalDependency.logbackClassic
     runtime externalDependency.logstash
 
+    implementation 'com.saxobank.datagov.tools:oauth-utils:1.0.0'
+
 }
 
 task avroSchemaSources(type: Copy) {
