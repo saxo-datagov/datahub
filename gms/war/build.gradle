@@ -14,6 +14,8 @@ dependencies {
 
   runtime spec.product.pegasus.restliDocgen
   runtime spec.product.pegasus.restliSpringBridge
+  
+  implementation 'com.saxobank.datagov.tools:oauth-utils:1.0.0'
 }
 
 configurations {
