@@ -12,5 +12,6 @@ export enum DatasetTab {
   Compliance = 'compliance',
   Relationships = 'relationships',
   Health = 'health',
-  DatasetGroups = 'datasetgroups'
+  DatasetGroups = 'datasetgroups',
+  DataQuality = 'dataquality'
 }

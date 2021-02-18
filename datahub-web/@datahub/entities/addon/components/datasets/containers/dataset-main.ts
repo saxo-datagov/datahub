@@ -62,6 +62,8 @@ export default class DatasetMainContainer extends Component {
    */
   urn!: string;
 
+  dqUrl!: string;
+
   /**
    * Enum of tab properties
    */
@@ -156,13 +158,15 @@ export default class DatasetMainContainer extends Component {
   /**
    * List of tasks to perform on instantiation of this container
    */
-  @(task(function*(this: DatasetMainContainer): IterableIterator<Promise<DatasetEntity | boolean>> {
+  @(task(function*(this: DatasetMainContainer): IterableIterator<Promise<DatasetEntity | boolean | string>> {
     this.resetState();
 
     try {
       yield this.reifyEntityTask.perform();
 
       yield this.getPiiStatusTask.perform();
+
+      yield this.reifyDqUrlTask.perform();
     } catch (e) {
       set(this, 'error', {
         isNotFoundApiError: isNotFoundApiError(e),
@@ -170,7 +174,7 @@ export default class DatasetMainContainer extends Component {
       });
     }
   }).restartable())
-  containerDataTask!: ETaskPromise<DatasetEntity | boolean>;
+  containerDataTask!: ETaskPromise<DatasetEntity | boolean | string>;
 
   /**
    * Materializes the DatasetEntity instance
@@ -185,6 +189,16 @@ export default class DatasetMainContainer extends Component {
     }
   }).restartable())
   reifyEntityTask!: ETaskPromise<DatasetEntity>;
+
+  @(task(function*(this: DatasetMainContainer): IterableIterator<Promise<string>> {
+    const { entity } = this;
+    //TODO: META-8267 Container notifications decorator
+    if (entity) {
+      const entityName = (entity && entity['name']) || '';
+      this.setDqUrl(entityName);
+    }
+  }).restartable())
+  reifyDqUrlTask!: ETaskPromise<string>;
 
   /**
    * Gets the PII status for any non UMP dataset
@@ -211,6 +225,24 @@ export default class DatasetMainContainer extends Component {
     });
   }
 
+  setDqUrl(datasetName: string): void {
+    const dqBaseUrl = this.configurator?.getConfig('dqBaseUrl');
+    const dqDashboardId = this.configurator?.getConfig('dqDashboardId');
+    const dqDashboardTitle = this.configurator?.getConfig('dqDashboardTitle');
+    const dqUrl =
+      dqBaseUrl +
+      '/app/dashboards#/view/' +
+      dqDashboardId +
+      '?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-30d,to:now))' +
+      "&_a=(filters:!(),fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t)," +
+      "query:(language:kuery,query:'dataset_name%20:%20%22" +
+      datasetName +
+      "%22%20'),timeRestore:!t,title:'" +
+      dqDashboardTitle +
+      "',viewMode:view)";
+
+    set(this, 'dqUrl', dqUrl);
+  }
   /**
    * This will return the paths for an entity. We should be able to consume entity.readPath
    * direcly but since datasets are not migrated we need to flag guard it.
@@ -240,7 +272,8 @@ export default class DatasetMainContainer extends Component {
       DatasetTab.Properties,
       DatasetTab.Status,
       DatasetTab.Ownership,
-      DatasetTab.Relationships
+      DatasetTab.Relationships,
+      DatasetTab.DataQuality
     ];
 
     return [...TabProperties.filter((tab): boolean => tabs.includes(tab.id)), ...CommonTabProperties];
