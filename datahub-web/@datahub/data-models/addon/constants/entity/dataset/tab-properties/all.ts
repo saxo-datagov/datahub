@@ -55,5 +55,11 @@ export const TabProperties: Array<ITabProperties> = [
     lazyRender: true
   },
   DatasetPropertiesTab,
-  ...CommonTabProperties
+  ...CommonTabProperties,
+  {
+    id: DatasetTab.DataQuality,
+    title: 'Data Quality',
+    contentComponent: 'dataquality/data-quality',
+    lazyRender: false
+  }
 ];

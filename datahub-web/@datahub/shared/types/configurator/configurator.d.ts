@@ -85,6 +85,15 @@ export interface IAppConfig {
 
   // Entity feature config targets to be used when determining configurations for specific entities
   entityFeatureConfigTargets?: Record<string, Array<string>>;
+
+  // DQ base url
+  dqBaseUrl: string;
+
+  // DQ dashboard ID
+  dqDashboardId: string;
+
+  // DQ dashboard Title
+  dqDashboardTitle: string;
 }
 
 /**
