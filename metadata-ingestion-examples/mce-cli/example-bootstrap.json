@@ -115,6 +115,31 @@
                   }
                 ]
               }
+            },
+            {
+              "com.linkedin.business.BusinessTermLink": {
+                "businessTerm": "urn:li:businessTerm:(market,bidSize)",
+                "auditStamp": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
+              }
+            },
+            {
+              "com.linkedin.dataset.DatasetFieldBusinessTerms": {
+                "fieldMappings": [
+                  {
+                    "sourceField": "urn:li:datasetField:(urn:li:dataset:(urn:li:dataPlatform:hdfs,SampleHdfsDataset,PROD),field_foo)",
+                    "businessTerm": {
+                      "businessTerm": "urn:li:businessTerm:market.bidSize",
+                      "auditStamp": {
+                        "time": 1581407189000,
+                        "actor": "urn:li:corpuser:jdoe"
+                      }
+                    }
+                  }
+                ]
+              }
             }
           ]
         }
@@ -345,6 +370,37 @@
                   "urn:li:dataset:(urn:li:dataPlatform:hbase,barSky,PROD)",
                   "urn:li:dataset:(urn:li:dataPlatform:hbase,barOcean,PROD)"
                 ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "proposedSnapshot": {
+        "com.linkedin.metadata.snapshot.BusinessTermSnapshot": {
+          "urn": "urn:li:businessTerm:market.bidSize",
+          "aspects": [
+            {
+              "com.linkedin.business.BusinessTermInfo": {
+                "definition": "definition",
+                "termSource": "termSource",
+                "sourceRef": "sourceRef",
+                "sourceURI": "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/DateTime"
+              }
+            },
+            {
+              "com.linkedin.common.Ownership": {
+                "owners": [
+                  {
+                    "owner": "urn:li:corpuser:jdoe",
+                    "type": "DATAOWNER"
+                  }
+                ],
+                "lastModified": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
               }
             }
           ]
