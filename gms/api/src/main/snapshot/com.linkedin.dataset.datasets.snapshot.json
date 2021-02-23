@@ -1,36 +1,83 @@
 {
   "models" : [ {
     "type" : "record",
-    "name" : "AuditStamp",
-    "namespace" : "com.linkedin.common",
-    "doc" : "Data captured on a resource/association/sub-resource level giving insight into when that resource/association/sub-resource moved into a particular lifecycle stage, and who acted to move it into that specific lifecycle stage.",
+    "name" : "BusinessTermLink",
+    "namespace" : "com.linkedin.business",
+    "doc" : "Related business term information including the source reporting the linkage",
     "fields" : [ {
-      "name" : "time",
+      "name" : "businessTerm",
       "type" : {
         "type" : "typeref",
-        "name" : "Time",
-        "doc" : "Number of milliseconds since midnight, January 1, 1970 UTC. It must be a positive number",
-        "ref" : "long"
-      },
-      "doc" : "When did the resource/association/sub-resource move into the specific lifecycle stage represented by this AuditEvent."
-    }, {
-      "name" : "actor",
-      "type" : {
-        "type" : "typeref",
-        "name" : "Urn",
+        "name" : "BusinessTermUrn",
+        "namespace" : "com.linkedin.common",
+        "doc" : "Business Term",
         "ref" : "string",
         "java" : {
-          "class" : "com.linkedin.common.urn.Urn"
+          "class" : "com.linkedin.common.urn.BusinessTermUrn"
+        },
+        "validate" : {
+          "com.linkedin.common.validator.TypedUrnValidator" : {
+            "accessible" : true,
+            "constructable" : true,
+            "doc" : "business term",
+            "entityType" : "businessTerm",
+            "fields" : [ {
+              "doc" : "The name of business term.",
+              "maxLength" : 20,
+              "name" : "name",
+              "type" : "string"
+            }, {
+              "doc" : "The domain of business term.",
+              "maxLength" : 20,
+              "name" : "domain",
+              "type" : "string"
+            } ],
+            "maxLength" : 36,
+            "name" : "BusinessTerm",
+            "namespace" : "li",
+            "owners" : [ "urn:li:corpuser:fbar", "urn:li:corpuser:bfoo" ],
+            "owningTeam" : "urn:li:internalTeam:datahub"
+          }
         }
       },
-      "doc" : "The entity (e.g. a member URN) which will be credited for moving the resource/association/sub-resource into the specific lifecycle stage. It is also the one used to authorize the change."
+      "doc" : "The related business term"
     }, {
-      "name" : "impersonator",
-      "type" : "Urn",
-      "doc" : "The entity (e.g. a service URN) which performs the change on behalf of the Actor and must be authorized to act as the Actor.",
-      "optional" : true
+      "name" : "auditStamp",
+      "type" : {
+        "type" : "record",
+        "name" : "AuditStamp",
+        "namespace" : "com.linkedin.common",
+        "doc" : "Data captured on a resource/association/sub-resource level giving insight into when that resource/association/sub-resource moved into a particular lifecycle stage, and who acted to move it into that specific lifecycle stage.",
+        "fields" : [ {
+          "name" : "time",
+          "type" : {
+            "type" : "typeref",
+            "name" : "Time",
+            "doc" : "Number of milliseconds since midnight, January 1, 1970 UTC. It must be a positive number",
+            "ref" : "long"
+          },
+          "doc" : "When did the resource/association/sub-resource move into the specific lifecycle stage represented by this AuditEvent."
+        }, {
+          "name" : "actor",
+          "type" : {
+            "type" : "typeref",
+            "name" : "Urn",
+            "ref" : "string",
+            "java" : {
+              "class" : "com.linkedin.common.urn.Urn"
+            }
+          },
+          "doc" : "The entity (e.g. a member URN) which will be credited for moving the resource/association/sub-resource into the specific lifecycle stage. It is also the one used to authorize the change."
+        }, {
+          "name" : "impersonator",
+          "type" : "Urn",
+          "doc" : "The entity (e.g. a service URN) which performs the change on behalf of the Actor and must be authorized to act as the Actor.",
+          "optional" : true
+        } ]
+      },
+      "doc" : "Audit stamp containing who reported the related business term"
     } ]
-  }, {
+  }, "com.linkedin.common.AuditStamp", {
     "type" : "record",
     "name" : "BaseFieldMapping",
     "namespace" : "com.linkedin.common",
@@ -64,7 +111,7 @@
       } ],
       "doc" : "Transfomration function between the fields involved"
     } ]
-  }, {
+  }, "com.linkedin.common.BusinessTermUrn", {
     "type" : "record",
     "name" : "ChangeAuditStamps",
     "namespace" : "com.linkedin.common",
@@ -855,6 +902,33 @@
     } ]
   }, "com.linkedin.dataset.DatasetDeprecation", {
     "type" : "record",
+    "name" : "DatasetFieldBusinessTerm",
+    "namespace" : "com.linkedin.dataset",
+    "doc" : "Representation of mapping between fields in source dataset to the business term",
+    "fields" : [ {
+      "name" : "sourceField",
+      "type" : "com.linkedin.common.DatasetFieldUrn",
+      "doc" : "Source fields from which the fine grained lineage is derived"
+    }, {
+      "name" : "businessTerm",
+      "type" : "com.linkedin.business.BusinessTermLink",
+      "doc" : "Destination field which is derived from source fields"
+    } ]
+  }, {
+    "type" : "record",
+    "name" : "DatasetFieldBusinessTerms",
+    "namespace" : "com.linkedin.dataset",
+    "doc" : "Fine Grained business term mappings for fields in a dataset",
+    "fields" : [ {
+      "name" : "fieldMappings",
+      "type" : {
+        "type" : "array",
+        "items" : "DatasetFieldBusinessTerm"
+      },
+      "doc" : "field to business term mappings"
+    } ]
+  }, {
+    "type" : "record",
     "name" : "DatasetFieldMapping",
     "namespace" : "com.linkedin.dataset",
     "doc" : "Representation of mapping between fields in source dataset to the field in destination dataset",
@@ -970,7 +1044,7 @@
     "name" : "DatasetAspect",
     "namespace" : "com.linkedin.metadata.aspect",
     "doc" : "A union of all supported metadata aspects for a Dataset",
-    "ref" : [ "com.linkedin.dataset.DatasetProperties", "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetUpstreamLineage", "com.linkedin.dataset.UpstreamLineage", "com.linkedin.common.InstitutionalMemory", "com.linkedin.common.Ownership", "com.linkedin.common.Status", "com.linkedin.schema.SchemaMetadata" ]
+    "ref" : [ "com.linkedin.dataset.DatasetProperties", "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetUpstreamLineage", "com.linkedin.dataset.UpstreamLineage", "com.linkedin.common.InstitutionalMemory", "com.linkedin.common.Ownership", "com.linkedin.common.Status", "com.linkedin.schema.SchemaMetadata", "com.linkedin.business.BusinessTermLink", "com.linkedin.dataset.DatasetFieldBusinessTerms" ]
   }, {
     "type" : "record",
     "name" : "AggregationMetadata",
