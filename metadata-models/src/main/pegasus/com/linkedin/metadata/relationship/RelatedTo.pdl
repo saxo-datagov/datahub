@@ -1,0 +1,15 @@
+namespace com.linkedin.metadata.relationship
+
+/**
+ * A generic model for the related-to relationship
+ */
+@pairings = [ {
+  "destination" : "com.linkedin.common.urn.BusinessTermUrn",
+  "source" : "com.linkedin.common.urn.DatasetUrn"
+}, {
+   "destination" : "com.linkedin.common.urn.BusinessTermUrn",
+   "source" : "com.linkedin.common.urn.DatasetFieldUrn"
+ } ]
+record RelatedTo includes BaseRelationship {
+
+}

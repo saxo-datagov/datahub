@@ -1,0 +1,11 @@
+namespace com.linkedin.dataset
+
+/**
+ * Fine Grained business term mappings for fields in a dataset
+ */
+record DatasetFieldBusinessTerms {
+  /**
+   * field to business term mappings
+   */
+  fieldMappings: array[DatasetFieldBusinessTerm]
+}

@@ -1,0 +1,21 @@
+namespace com.linkedin.business
+
+import com.linkedin.common.AuditStamp
+import com.linkedin.common.BusinessTermUrn
+
+/**
+ * Related business term information including the source reporting the linkage
+ */
+record BusinessTermLink {
+
+  /**
+   * The related business term
+   */
+  businessTerm: BusinessTermUrn
+
+  /**
+   * Audit stamp containing who reported the related business term
+   */
+  auditStamp: AuditStamp
+
+}
