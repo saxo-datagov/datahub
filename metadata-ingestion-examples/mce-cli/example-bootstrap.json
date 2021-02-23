@@ -131,7 +131,7 @@
                   {
                     "sourceField": "urn:li:datasetField:(urn:li:dataset:(urn:li:dataPlatform:hdfs,SampleHdfsDataset,PROD),field_foo)",
                     "businessTerm": {
-                      "businessTerm": "urn:li:businessTerm:market.bidSize",
+                      "businessTerm": "urn:li:businessTerm:(market,bidSize)",
                       "auditStamp": {
                         "time": 1581407189000,
                         "actor": "urn:li:corpuser:jdoe"
@@ -379,7 +379,7 @@
     {
       "proposedSnapshot": {
         "com.linkedin.metadata.snapshot.BusinessTermSnapshot": {
-          "urn": "urn:li:businessTerm:market.bidSize",
+          "urn": "urn:li:businessTerm:(market,bidSize)",
           "aspects": [
             {
               "com.linkedin.business.BusinessTermInfo": {
