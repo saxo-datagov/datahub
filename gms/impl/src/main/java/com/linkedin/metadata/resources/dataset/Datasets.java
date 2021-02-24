@@ -1,5 +1,6 @@
 package com.linkedin.metadata.resources.dataset;
 
+import com.linkedin.business.BusinessTermLink;
 import com.linkedin.common.InstitutionalMemory;
 import com.linkedin.common.Ownership;
 import com.linkedin.common.Status;
@@ -8,6 +9,7 @@ import com.linkedin.common.urn.Urn;
 import com.linkedin.data.template.StringArray;
 import com.linkedin.dataset.Dataset;
 import com.linkedin.dataset.DatasetDeprecation;
+import com.linkedin.dataset.DatasetFieldBusinessTerms;
 import com.linkedin.dataset.DatasetKey;
 import com.linkedin.dataset.DatasetProperties;
 import com.linkedin.dataset.UpstreamLineage;
@@ -152,6 +154,10 @@ public final class Datasets extends BaseBrowsableEntityResource<
         value.setRemoved(((Status) aspect).isRemoved());
       } else if (aspect instanceof UpstreamLineage) {
         value.setUpstreamLineage((UpstreamLineage) aspect);
+      } else if (aspect instanceof BusinessTermLink) {
+        value.setBusinessTermLink((BusinessTermLink) aspect);
+      } else if (aspect instanceof DatasetFieldBusinessTerms) {
+        value.setDatasetFieldBusinessTerms((DatasetFieldBusinessTerms) aspect);
       }
     });
     return value;
@@ -185,6 +191,13 @@ public final class Datasets extends BaseBrowsableEntityResource<
     if (dataset.hasRemoved()) {
       aspects.add(DatasetAspect.create(new Status().setRemoved(dataset.isRemoved())));
     }
+    if (dataset.getBusinessTermLink() != null) {
+      aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getBusinessTermLink()));
+    }
+    if (dataset.getDatasetFieldBusinessTerms() != null) {
+      aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getDatasetFieldBusinessTerms()));
+    }
+
     return ModelUtils.newSnapshot(DatasetSnapshot.class, datasetUrn, aspects);
   }
 

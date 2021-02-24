@@ -899,35 +899,43 @@
       },
       "doc" : "Upstream lineage metadata of the dataset",
       "optional" : true
-    } ]
-  }, "com.linkedin.dataset.DatasetDeprecation", {
-    "type" : "record",
-    "name" : "DatasetFieldBusinessTerm",
-    "namespace" : "com.linkedin.dataset",
-    "doc" : "Representation of mapping between fields in source dataset to the business term",
-    "fields" : [ {
-      "name" : "sourceField",
-      "type" : "com.linkedin.common.DatasetFieldUrn",
-      "doc" : "Source fields from which the fine grained lineage is derived"
     }, {
-      "name" : "businessTerm",
+      "name" : "businessTermLink",
       "type" : "com.linkedin.business.BusinessTermLink",
-      "doc" : "Destination field which is derived from source fields"
-    } ]
-  }, {
-    "type" : "record",
-    "name" : "DatasetFieldBusinessTerms",
-    "namespace" : "com.linkedin.dataset",
-    "doc" : "Fine Grained business term mappings for fields in a dataset",
-    "fields" : [ {
-      "name" : "fieldMappings",
+      "doc" : "Related business term of the dataset",
+      "optional" : true
+    }, {
+      "name" : "datasetFieldBusinessTerms",
       "type" : {
-        "type" : "array",
-        "items" : "DatasetFieldBusinessTerm"
+        "type" : "record",
+        "name" : "DatasetFieldBusinessTerms",
+        "doc" : "Fine Grained business term mappings for fields in a dataset",
+        "fields" : [ {
+          "name" : "fieldMappings",
+          "type" : {
+            "type" : "array",
+            "items" : {
+              "type" : "record",
+              "name" : "DatasetFieldBusinessTerm",
+              "doc" : "Representation of mapping between fields in source dataset to the business term",
+              "fields" : [ {
+                "name" : "sourceField",
+                "type" : "com.linkedin.common.DatasetFieldUrn",
+                "doc" : "Source fields from which the fine grained lineage is derived"
+              }, {
+                "name" : "businessTerm",
+                "type" : "com.linkedin.business.BusinessTermLink",
+                "doc" : "Destination field which is derived from source fields"
+              } ]
+            }
+          },
+          "doc" : "field to business term mappings"
+        } ]
       },
-      "doc" : "field to business term mappings"
+      "doc" : "Related business term of the dataset fields",
+      "optional" : true
     } ]
-  }, {
+  }, "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetFieldBusinessTerm", "com.linkedin.dataset.DatasetFieldBusinessTerms", {
     "type" : "record",
     "name" : "DatasetFieldMapping",
     "namespace" : "com.linkedin.dataset",
