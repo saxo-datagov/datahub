@@ -24,8 +24,15 @@ COPY --from=prod-build /usr/local/bin /usr/local/bin
 COPY --from=prod-build /mce-consumer-job.jar /datahub/datahub-mce-consumer/bin/
 COPY --from=prod-build /datahub-src/docker/datahub-mce-consumer/start.sh /datahub/datahub-mce-consumer/scripts/
 COPY --from=prod-build /datahub-src/SaxoBankInternalIssuingCA11.cer /SaxoBankInternalIssuingCA11.cer
+COPY --from=prod-build /datahub-src/TST-SaxoBankInternalRootCA1.cer /TST-SaxoBankInternalRootCA1.cer
 RUN chmod +x /datahub/datahub-mce-consumer/scripts/start.sh
 
+#Adding ssl certificates here as not allowed in helm charts due to saxo security policy
+##Deployment ssl certtificate for test
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias TST-SaxoBankInternalRootCA1 -file /TST-SaxoBankInternalRootCA1.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+
+#Deployment ssl certtificate for dev and prod
 RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
     && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 

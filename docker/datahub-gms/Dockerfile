@@ -21,7 +21,14 @@ COPY --from=prod-build /war.war /datahub/datahub-gms/bin/war.war
 COPY --from=prod-build /datahub-src/jetty-runner.jar /jetty-runner.jar
 COPY --from=prod-build /datahub-src/docker/datahub-gms/start.sh /datahub/datahub-gms/scripts/start.sh
 COPY --from=prod-build /datahub-src/SaxoBankInternalIssuingCA11.cer /SaxoBankInternalIssuingCA11.cer
+COPY --from=prod-build /datahub-src/TST-SaxoBankInternalRootCA1.cer /TST-SaxoBankInternalRootCA1.cer
 
+#Adding ssl certificates here as not allowed in helm charts due to saxo security policy
+##Deployment ssl certtificate for test
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias TST-SaxoBankInternalRootCA1 -file /TST-SaxoBankInternalRootCA1.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+
+#Deployment ssl certtificate for dev and prod
 RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
     && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 
