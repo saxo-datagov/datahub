@@ -535,6 +535,14 @@ const businessTerm = {
     description: 'description for business',
 } as BusinessTerm;
 
+const businessTerm1 = {
+    __typename: 'BusinessTerm',
+    urn: 'urn:li:businessTerm:bidSize',
+    type: EntityType.BusinessTerm,
+    name: 'market price',
+    description: 'description for business',
+} as BusinessTerm;
+
 /*
     Define mock data to be returned by Apollo MockProvider. 
 */
@@ -888,6 +896,10 @@ export const mocks = [
                             __typename: 'BusinessTerm',
                             ...businessTerm,
                         },
+                        {
+                            __typename: 'BusinessTerm',
+                            ...businessTerm1,
+                        },
                     ],
                     facets: [
                         {
@@ -937,6 +949,10 @@ export const mocks = [
                         {
                             __typename: 'BusinessTerm',
                             ...businessTerm,
+                        },
+                        {
+                            __typename: 'BusinessTerm',
+                            ...businessTerm1,
                         },
                     ],
                     facets: [

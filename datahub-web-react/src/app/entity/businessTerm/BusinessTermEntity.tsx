@@ -41,6 +41,7 @@ export class BusinessTermEntity implements Entity<BusinessTerm> {
     renderProfile: (urn: string) => JSX.Element = (_) => (
         <>
             <h1>Business Term page</h1>
+            <p>Name: market price</p>
         </>
     );
 
