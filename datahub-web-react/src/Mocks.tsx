@@ -46,66 +46,401 @@ const user2 = {
 };
 
 const dataset1 = {
-    urn: 'urn:li:dataset:1',
-    type: EntityType.Dataset,
-    platform: {
-        urn: 'urn:li:dataPlatform:hdfs',
-        name: 'HDFS',
-        type: EntityType.DataPlatform,
+    upstreamLineage: {
+        __typename: 'UpstreamLineage',
+        upstreams: [
+            {
+                __typename: 'RelatedDataset',
+                dataset: {
+                    __typename: 'Dataset',
+                    urn: 'urn:li:dataset:(urn:li:dataPlatform:kafka,SampleKafkaDataset,PROD)',
+                    name: 'SampleKafkaDataset',
+                    type: 'DATASET',
+                    origin: 'PROD',
+                    description: '',
+                    uri: null,
+                    platform: {
+                        __typename: 'DataPlatform',
+                        name: 'kafka',
+                    },
+                    platformNativeType: null,
+                    tags: [],
+                    properties: null,
+                    ownership: {
+                        __typename: 'Ownership',
+                        owners: [
+                            {
+                                __typename: 'Owner',
+                                owner: {
+                                    __typename: 'CorpUser',
+                                    urn: 'urn:li:corpuser:jdoe',
+                                    type: 'CORP_USER',
+                                    username: 'jdoe',
+                                    info: {
+                                        __typename: 'CorpUserInfo',
+                                        active: true,
+                                        displayName: 'John Doe',
+                                        title: 'Software Engineer',
+                                        email: 'jdoe@linkedin.com',
+                                        firstName: null,
+                                        lastName: null,
+                                        fullName: 'John Doe',
+                                    },
+                                    editableInfo: null,
+                                },
+                                type: 'DATAOWNER',
+                            },
+                            {
+                                __typename: 'Owner',
+                                owner: {
+                                    __typename: 'CorpUser',
+                                    urn: 'urn:li:corpuser:datahub',
+                                    type: 'CORP_USER',
+                                    username: 'datahub',
+                                    info: {
+                                        __typename: 'CorpUserInfo',
+                                        active: true,
+                                        displayName: 'Data Hub',
+                                        title: 'CEO',
+                                        email: 'datahub@linkedin.com',
+                                        firstName: null,
+                                        lastName: null,
+                                        fullName: 'Data Hub',
+                                    },
+                                    editableInfo: {
+                                        __typename: 'CorpUserEditableInfo',
+                                        pictureLink:
+                                            'https://raw.githubusercontent.com/linkedin/datahub/master/datahub-web/packages/data-portal/public/assets/images/default_avatar.png',
+                                    },
+                                },
+                                type: 'DATAOWNER',
+                            },
+                        ],
+                        lastModified: {
+                            __typename: 'AuditStamp',
+                            time: 1581407189000,
+                        },
+                    },
+                    institutionalMemory: {
+                        __typename: 'InstitutionalMemory',
+                        elements: [
+                            {
+                                __typename: 'InstitutionalMemoryMetadata',
+                                url: 'https://www.linkedin.com',
+                                author: 'urn:li:corpuser:jdoe',
+                                description: 'Sample doc',
+                                created: {
+                                    __typename: 'AuditStamp',
+                                    actor: 'urn:li:corpuser:jdoe',
+                                    time: 1581407189000,
+                                },
+                            },
+                        ],
+                    },
+                    schema: {
+                        __typename: 'Schema',
+                        datasetUrn: null,
+                        name: 'SampleKafkaSchema',
+                        platformUrn: 'urn:li:dataPlatform:kafka',
+                        version: 0,
+                        hash: '',
+                        platformSchema: {
+                            __typename: 'TableSchema',
+                            schema:
+                                "{'type:'record','name:'SampleKafkaSchema','namespace:'com.linkedin.dataset','doc:'Sample Kafka dataset','fields:[{'name:'field_foo','type:['string']},{'name:'field_bar','type:['boolean']}]}",
+                        },
+                        fields: [
+                            {
+                                __typename: 'SchemaField',
+                                fieldPath: 'field_foo',
+                                jsonPath: null,
+                                nullable: false,
+                                description: 'Foo field description',
+                                type: 'STRING',
+                                nativeDataType: 'string',
+                                recursive: false,
+                            },
+                            {
+                                __typename: 'SchemaField',
+                                fieldPath: 'field_bar',
+                                jsonPath: null,
+                                nullable: false,
+                                description: 'Bar field description',
+                                type: 'BOOLEAN',
+                                nativeDataType: 'boolean',
+                                recursive: false,
+                            },
+                        ],
+                        primaryKeys: null,
+                    },
+                    deprecation: null,
+                },
+                type: 'TRANSFORMED',
+                created: {
+                    __typename: 'AuditStamp',
+                    time: 1581407189000,
+                },
+            },
+        ],
     },
-    platformNativeType: 'TABLE',
-    name: 'The Great Test Dataset',
+    downstreamLineage: {
+        __typename: 'DownstreamLineage',
+        downstreams: [
+            {
+                __typename: 'RelatedDataset',
+                dataset: {
+                    __typename: 'Dataset',
+                    urn: 'urn:li:dataset:(urn:li:dataPlatform:hive,SampleHiveDataset,PROD)',
+                    name: 'SampleHiveDataset',
+                    type: 'DATASET',
+                    origin: 'PROD',
+                    description: '',
+                    uri: null,
+                    platform: {
+                        __typename: 'DataPlatform',
+                        name: 'hive',
+                    },
+                    platformNativeType: null,
+                    tags: [],
+                    properties: null,
+                    ownership: {
+                        __typename: 'Ownership',
+                        owners: [
+                            {
+                                __typename: 'Owner',
+                                owner: {
+                                    __typename: 'CorpUser',
+                                    urn: 'urn:li:corpuser:jdoe',
+                                    type: 'CORP_USER',
+                                    username: 'jdoe',
+                                    info: {
+                                        __typename: 'CorpUserInfo',
+                                        active: true,
+                                        displayName: 'John Doe',
+                                        title: 'Software Engineer',
+                                        email: 'jdoe@linkedin.com',
+                                        firstName: null,
+                                        lastName: null,
+                                        fullName: 'John Doe',
+                                    },
+                                    editableInfo: null,
+                                },
+                                type: 'DATAOWNER',
+                            },
+                            {
+                                __typename: 'Owner',
+                                owner: {
+                                    __typename: 'CorpUser',
+                                    urn: 'urn:li:corpuser:datahub',
+                                    type: 'CORP_USER',
+                                    username: 'datahub',
+                                    info: {
+                                        __typename: 'CorpUserInfo',
+                                        active: true,
+                                        displayName: 'Data Hub',
+                                        title: 'CEO',
+                                        email: 'datahub@linkedin.com',
+                                        firstName: null,
+                                        lastName: null,
+                                        fullName: 'Data Hub',
+                                    },
+                                    editableInfo: {
+                                        __typename: 'CorpUserEditableInfo',
+                                        pictureLink:
+                                            'https://raw.githubusercontent.com/linkedin/datahub/master/datahub-web/packages/data-portal/public/assets/images/default_avatar.png',
+                                    },
+                                },
+                                type: 'DATAOWNER',
+                            },
+                        ],
+                        lastModified: {
+                            __typename: 'AuditStamp',
+                            time: 1581407189000,
+                        },
+                    },
+                    institutionalMemory: {
+                        __typename: 'InstitutionalMemory',
+                        elements: [
+                            {
+                                __typename: 'InstitutionalMemoryMetadata',
+                                url: 'https://www.linkedin.com',
+                                author: 'urn:li:corpuser:jdoe',
+                                description: 'Sample doc',
+                                created: {
+                                    __typename: 'AuditStamp',
+                                    actor: 'urn:li:corpuser:jdoe',
+                                    time: 1581407189000,
+                                },
+                            },
+                        ],
+                    },
+                    schema: {
+                        __typename: 'Schema',
+                        datasetUrn: null,
+                        name: 'SampleHiveSchema',
+                        platformUrn: 'urn:li:dataPlatform:hive',
+                        version: 0,
+                        hash: '',
+                        platformSchema: {
+                            __typename: 'TableSchema',
+                            schema:
+                                "{'type:'record','name:'SampleHiveSchema','namespace:'com.linkedin.dataset','doc:'Sample Hive dataset','fields:[{'name:'field_foo','type:['string']},{'name:'field_bar','type:['boolean']}]}",
+                        },
+                        fields: [
+                            {
+                                __typename: 'SchemaField',
+                                fieldPath: 'field_foo',
+                                jsonPath: null,
+                                nullable: false,
+                                description: 'Foo field description',
+                                type: 'STRING',
+                                nativeDataType: 'string',
+                                recursive: false,
+                            },
+                            {
+                                __typename: 'SchemaField',
+                                fieldPath: 'field_bar',
+                                jsonPath: null,
+                                nullable: false,
+                                description: 'Bar field description',
+                                type: 'BOOLEAN',
+                                nativeDataType: 'boolean',
+                                recursive: false,
+                            },
+                        ],
+                        primaryKeys: null,
+                    },
+                    deprecation: null,
+                },
+                type: 'TRANSFORMED',
+                created: {
+                    __typename: 'AuditStamp',
+                    time: 1581407189000,
+                },
+            },
+        ],
+    },
+    urn: 'urn:li:dataset:(urn:li:dataPlatform:hdfs,SampleHdfsDataset,PROD)',
+    name: 'SampleHdfsDataset11',
+    type: 'DATASET',
     origin: 'PROD',
-    tags: ['Private', 'PII'],
-    description: 'This is the greatest dataset in the world, youre gonna love it!',
-    uri: 'www.google.com',
-    properties: [
-        {
-            key: 'TestProperty',
-            value: 'My property value.',
-        },
-        {
-            key: 'AnotherTestProperty',
-            value: 'My other property value.',
-        },
-    ],
-    created: {
-        time: 0,
+    description: '',
+    uri: null,
+    platform: {
+        __typename: 'DataPlatform',
+        name: 'hdfs',
     },
-    lastModified: {
-        time: 0,
-    },
+    platformNativeType: null,
+    tags: [],
+    properties: null,
     ownership: {
+        __typename: 'Ownership',
         owners: [
             {
+                __typename: 'Owner',
                 owner: {
-                    ...user1,
+                    __typename: 'CorpUser',
+                    urn: 'urn:li:corpuser:jdoe',
+                    type: 'CORP_USER',
+                    username: 'jdoe',
+                    info: {
+                        __typename: 'CorpUserInfo',
+                        active: true,
+                        displayName: 'John Doe',
+                        title: 'Software Engineer',
+                        email: 'jdoe@linkedin.com',
+                        firstName: null,
+                        lastName: null,
+                        fullName: 'John Doe',
+                    },
+                    editableInfo: null,
                 },
                 type: 'DATAOWNER',
             },
             {
+                __typename: 'Owner',
                 owner: {
-                    ...user2,
+                    __typename: 'CorpUser',
+                    urn: 'urn:li:corpuser:datahub',
+                    type: 'CORP_USER',
+                    username: 'datahub',
+                    info: {
+                        __typename: 'CorpUserInfo',
+                        active: true,
+                        displayName: 'Data Hub',
+                        title: 'CEO',
+                        email: 'datahub@linkedin.com',
+                        firstName: null,
+                        lastName: null,
+                        fullName: 'Data Hub',
+                    },
+                    editableInfo: {
+                        __typename: 'CorpUserEditableInfo',
+                        pictureLink:
+                            'https://raw.githubusercontent.com/linkedin/datahub/master/datahub-web/packages/data-portal/public/assets/images/default_avatar.png',
+                    },
                 },
-                type: 'DELEGATE',
+                type: 'DATAOWNER',
             },
         ],
         lastModified: {
-            time: 0,
+            __typename: 'AuditStamp',
+            time: 1581407189000,
         },
     },
     institutionalMemory: {
+        __typename: 'InstitutionalMemory',
         elements: [
             {
-                url: 'https://www.google.com',
-                description: 'This only points to Google',
+                __typename: 'InstitutionalMemoryMetadata',
+                url: 'https://www.linkedin.com',
+                author: 'urn:li:corpuser:jdoe',
+                description: 'Sample doc',
                 created: {
-                    actor: 'urn:li:corpuser:1',
-                    time: 1612396473001,
+                    __typename: 'AuditStamp',
+                    actor: 'urn:li:corpuser:jdoe',
+                    time: 1581407189000,
                 },
             },
         ],
     },
+    schema: {
+        __typename: 'Schema',
+        datasetUrn: null,
+        name: 'SampleHdfsSchema',
+        platformUrn: 'urn:li:dataPlatform:hdfs',
+        version: 0,
+        hash: '',
+        platformSchema: {
+            __typename: 'TableSchema',
+            schema:
+                "{'type:'record','name:'SampleHdfsSchema','namespace:'com.linkedin.dataset','doc:'Sample HDFS dataset','fields:[{'name:'field_foo','type:['string']},{'name:'field_bar','type:['boolean']}]}",
+        },
+        fields: [
+            {
+                __typename: 'SchemaField',
+                fieldPath: 'field_foo',
+                jsonPath: null,
+                nullable: false,
+                description: 'Foo field description',
+                type: 'STRING',
+                nativeDataType: 'string',
+                recursive: false,
+            },
+            {
+                __typename: 'SchemaField',
+                fieldPath: 'field_bar',
+                jsonPath: null,
+                nullable: false,
+                description: 'Bar field description',
+                type: 'BOOLEAN',
+                nativeDataType: 'boolean',
+                recursive: false,
+            },
+        ],
+        primaryKeys: null,
+    },
+    deprecation: null,
 };
 
 const dataset2 = {
@@ -216,12 +551,13 @@ export const mocks = [
         request: {
             query: GetDatasetDocument,
             variables: {
-                urn: 'urn:li:dataset:1',
+                urn: 'urn:li:dataset:(urn:li:dataPlatform:hdfs,SampleHdfsDataset,PROD)',
             },
         },
         result: {
             data: {
                 dataset: {
+                    __typename: 'Dataset',
                     ...dataset1,
                 },
             },
