@@ -7,7 +7,7 @@ import {
 } from './graphql/search.generated';
 import { LoginDocument } from './graphql/auth.generated';
 import { GetUserDocument } from './graphql/user.generated';
-import { Dataset, EntityType } from './types.generated';
+import { Dataset, EntityType, BusinessTerm } from './types.generated';
 
 const user1 = {
     username: 'sdas',
@@ -527,6 +527,14 @@ const dataset3 = {
     },
 } as Dataset;
 
+const businessTerm = {
+    __typename: 'BusinessTerm',
+    urn: 'urn:li:businessTerm:bidSize',
+    type: EntityType.BusinessTerm,
+    name: 'bidSize',
+    description: 'description for business',
+} as BusinessTerm;
+
 /*
     Define mock data to be returned by Apollo MockProvider. 
 */
@@ -710,7 +718,7 @@ export const mocks = [
             data: {
                 autoComplete: {
                     query: 't',
-                    suggestions: ['The Great Test Dataset', 'Some other test'],
+                    suggestions: ['The Great Test Dataset', 'Some other test', 'test'],
                 },
             },
         },
@@ -729,7 +737,7 @@ export const mocks = [
             data: {
                 autoComplete: {
                     query: 'b',
-                    suggestions: ['business term 1', 'business term 2'],
+                    suggestions: ['business term 1', 'business term 2', 'term'],
                 },
             },
         },
@@ -813,12 +821,7 @@ export const mocks = [
                     query: 'test',
                     start: 0,
                     count: 10,
-                    filters: [
-                        {
-                            field: 'platform',
-                            value: 'kafka',
-                        },
-                    ],
+                    filters: null,
                 },
             },
         },
@@ -833,7 +836,107 @@ export const mocks = [
                     entities: [
                         {
                             __typename: 'Dataset',
-                            ...dataset3,
+                            ...dataset1,
+                        },
+                    ],
+                    facets: [
+                        {
+                            field: 'origin',
+                            aggregations: [
+                                {
+                                    value: 'PROD',
+                                    count: 3,
+                                },
+                            ],
+                        },
+                        {
+                            field: 'platform',
+                            aggregations: [
+                                { value: 'hdfs', count: 1 },
+                                { value: 'mysql', count: 1 },
+                                { value: 'kafka', count: 1 },
+                            ],
+                        },
+                    ],
+                },
+            } as GetSearchResultsQuery,
+        },
+    },
+    {
+        request: {
+            query: GetSearchResultsDocument,
+            variables: {
+                input: {
+                    type: 'BUSINESS_TERM',
+                    query: 'term',
+                    start: 0,
+                    count: 10,
+                    filters: [],
+                },
+            },
+        },
+        result: {
+            data: {
+                __typename: 'Query',
+                search: {
+                    __typename: 'SearchResults',
+                    start: 0,
+                    count: 1,
+                    total: 1,
+                    entities: [
+                        {
+                            __typename: 'BusinessTerm',
+                            ...businessTerm,
+                        },
+                    ],
+                    facets: [
+                        {
+                            field: 'origin',
+                            aggregations: [
+                                {
+                                    value: 'PROD',
+                                    count: 3,
+                                },
+                            ],
+                        },
+                        {
+                            field: 'platform',
+                            aggregations: [
+                                { value: 'hdfs', count: 1 },
+                                { value: 'mysql', count: 1 },
+                                { value: 'kafka', count: 1 },
+                            ],
+                        },
+                    ],
+                },
+            } as GetSearchResultsQuery,
+        },
+    },
+    {
+        request: {
+            query: GetSearchResultsDocument,
+            variables: {
+                input: {
+                    type: 'BUSINESS_TERM',
+                    query: 'term',
+                    start: 0,
+                    count: 10,
+                    filters: null,
+                },
+            },
+        },
+        result: {
+            data: {
+                __typename: 'Query',
+                search: {
+                    __typename: 'SearchResults',
+                    start: 0,
+                    count: 1,
+                    total: 1,
+                    entities: [
+                        {
+                            __typename: 'BusinessTerm',
+                            ...businessTerm,
                         },
                     ],
                     facets: [

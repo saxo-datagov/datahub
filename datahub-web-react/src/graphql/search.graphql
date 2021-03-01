@@ -145,6 +145,12 @@ query getSearchResults($input: SearchInput!) {
                     }
                 }
             }
+            ... on BusinessTerm {
+                urn
+                type
+                name
+                description
+            }
         }
         facets {
             field

@@ -38,7 +38,14 @@ export class BusinessTermEntity implements Entity<BusinessTerm> {
 
     getCollectionName: () => string = () => 'BusinessTerms';
 
-    renderProfile: (urn: string) => JSX.Element = (_) => <>profile</>;
+    renderProfile: (urn: string) => JSX.Element = (_) => (
+        <>
+            <h1>Business Term page</h1>
+        </>
+    );
 
-    renderPreview = (_: PreviewType, data: BusinessTerm) => <>preview{data}</>;
+    renderPreview = (_: PreviewType, data: BusinessTerm) => {
+        console.log('data', data);
+        return <>Name: {data.name}</>;
+    };
 }
