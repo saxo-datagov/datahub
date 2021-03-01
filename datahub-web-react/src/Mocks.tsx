@@ -720,6 +720,25 @@ export const mocks = [
             query: GetAutoCompleteResultsDocument,
             variables: {
                 input: {
+                    type: 'BUSINESS_TERM',
+                    query: 'b',
+                },
+            },
+        },
+        result: {
+            data: {
+                autoComplete: {
+                    query: 'b',
+                    suggestions: ['business term 1', 'business term 2'],
+                },
+            },
+        },
+    },
+    {
+        request: {
+            query: GetAutoCompleteResultsDocument,
+            variables: {
+                input: {
                     type: 'USER',
                     query: 'j',
                 },

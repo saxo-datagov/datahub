@@ -7,6 +7,7 @@ import { Routes } from './app/Routes';
 import { mocks } from './Mocks';
 import EntityRegistry from './app/entity/EntityRegistry';
 import { DatasetEntity } from './app/entity/dataset/DatasetEntity';
+import { BusinessTermEntity } from './app/entity/businessTerm/BusinessTermEntity';
 import { UserEntity } from './app/entity/user/User';
 import { EntityRegistryContext } from './entityRegistryContext';
 import { DashboardEntity } from './app/entity/dashboard/DashboardEntity';
@@ -37,11 +38,13 @@ const client = new ApolloClient({
         },
     }),
     credentials: 'include',
+    connectToDevTools: true,
 });
 
 const App: React.VFC = () => {
     const entityRegistry = useMemo(() => {
         const register = new EntityRegistry();
+        register.register(new BusinessTermEntity());
         register.register(new DatasetEntity());
         register.register(new DashboardEntity());
         register.register(new ChartEntity());

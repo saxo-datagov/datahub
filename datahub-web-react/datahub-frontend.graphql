@@ -241,6 +241,7 @@ type CorpUser {
 enum EntityType {
     DATASET
     USER
+    BUSINESS_TERM
 }
 
 # Search Input

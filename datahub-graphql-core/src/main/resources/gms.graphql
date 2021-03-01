@@ -45,6 +45,8 @@ enum EntityType {
     The Chart Entity
     """
     CHART
+
+    BUSINESS_TERM
 }
 
 type Query {
@@ -682,6 +684,13 @@ type CorpUser implements Entity {
     Writable info about the corp user
     """
     editableInfo: CorpUserEditableInfo
+}
+
+type BusinessTerm implements Entity {
+    urn: String!
+    type: EntityType!
+    name: String!
+    description: String
 }
 
 type CorpUserInfo {
