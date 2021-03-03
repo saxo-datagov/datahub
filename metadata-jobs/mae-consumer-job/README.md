@@ -34,10 +34,8 @@ the application directly from command line after a successful [build](#build):
 
 ## Endpoints
 Spring boot actuator has been enabled for MAE Application. 
-`healthcheck`, `metrics` and `info` web endpoints are enabled by default.
+`healthcheck`, `prometheus metrics` and `info` web endpoints are enabled by default.
 
-`healthcheck` - http://localhost:9091/actuator/health
+`healthcheck` - http://localhost:9091/health
 
-`metrics` - http://localhost:9091/actuator/metrics
-
-To retrieve a specific metric - http://localhost:9091/actuator/metrics/process.uptime
+`prometheus metrics` - http://localhost:9091/metrics
