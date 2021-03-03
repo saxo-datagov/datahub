@@ -45,11 +45,8 @@ listen on port 5005 for a remote debugger.
 
 ## Endpoints
 Spring boot actuator has been enabled for MCE Application. 
-`healthcheck`, `metrics` and `info` web endpoints are enabled by default.
+`healthcheck`, `prometheus metrics` and `info` web endpoints are enabled by default.
 
-`healthcheck` - http://localhost:9090/actuator/health
+`healthcheck` - http://localhost:9090/health
 
-`metrics` - http://localhost:9090/actuator/metrics
-
-To retrieve a specific metric - http://localhost:9090/actuator/metrics/kafka.consumer.records.consumed.total
-
+`prometheus metrics` - http://localhost:9090/metrics
