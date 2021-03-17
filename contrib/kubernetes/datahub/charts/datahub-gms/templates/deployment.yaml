@@ -53,6 +53,21 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  esResp=$(curl -o -I -s -w "%{http_code}" http://localhost:8080/corpUsers)
+                  mysqlResp=$(curl -o -I -s -w "%{http_code}" -H "X-RestLi-Protocol-Version:2.0.0" -H "X-RestLi-Method: finder" 'http://localhost:8080/datasets?q=search&input=db')
+                  neo4jResp=$(curl -o -I -s -w "%{http_code}" -H "X-RestLi-Protocol-Version:2.0.0" -H "X-RestLi-Method: get" 'http://localhost:8080/datasets/($params:(),name:test,origin:test,platform:urn%3Ali%3AdataPlatform%3AtestSource)/downstreamLineage')
+                  if [ $mysqlResp != 200 ] || [ $esResp != 200 ] || [ $neo4jResp != 200 ]
+                  then
+                    exit 1;
+                  fi
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
           env:
             - name: EBEAN_DATASOURCE_USERNAME
               valueFrom:
