@@ -78,6 +78,7 @@ project.ext.externalDependency = [
     'logbackClassic': 'ch.qos.logback:logback-classic:1.2.3',
     'lombok': 'org.projectlombok:lombok:1.18.12',
     'mariadbConnector': 'org.mariadb.jdbc:mariadb-java-client:2.6.0',
+    'micrometerPrometheusRegistry': 'io.micrometer:micrometer-registry-prometheus:1.5.5',
     'mockito': 'org.mockito:mockito-core:3.0.0',
     'mysqlConnector': 'mysql:mysql-connector-java:5.1.47',
     'neo4jHarness': 'org.neo4j.test:neo4j-harness:3.4.11',
