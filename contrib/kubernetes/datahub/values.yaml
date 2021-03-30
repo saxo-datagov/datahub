@@ -35,7 +35,7 @@ datahub-ingestion-cron:
 elasticsearchSetupJob:
   enabled: true
   image:
-    repository: linkedin/datahub-elasticsearch-setup
+    repository: artifacts.cf.saxo/docker/linkedin/datahub-elasticsearch-setup
     tag: "latest"
 
 global:
