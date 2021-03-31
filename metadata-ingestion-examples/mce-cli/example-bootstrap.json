@@ -115,6 +115,29 @@
                   }
                 ]
               }
+            },
+            {
+              "com.linkedin.dataset.DatasetGlossaryTerm": {
+                "glossaryTermUrn": "urn:li:glossaryTerm:(finance.market,bidTime)",
+                "auditStamp": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
+              }
+            },
+            {
+              "com.linkedin.dataset.DatasetFieldGlossaryTerm": {
+                "fieldMappings": [
+                  {
+                    "sourceField": "urn:li:datasetField:(urn:li:dataset:(urn:li:dataPlatform:kafka,SampleKafkaDataset,PROD),field_foo)",
+                    "glossaryTermUrn": "urn:li:glossaryTerm:(finance.market,bidTime)"
+                  }
+                ],
+                "auditStamp": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
+              }
             }
           ]
         }
@@ -345,6 +368,93 @@
                   "urn:li:dataset:(urn:li:dataPlatform:hbase,barSky,PROD)",
                   "urn:li:dataset:(urn:li:dataPlatform:hbase,barOcean,PROD)"
                 ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "proposedSnapshot": {
+        "com.linkedin.metadata.snapshot.GlossaryTermSnapshot": {
+          "urn": "urn:li:glossaryTerm:(finance.market,bidTime)",
+          "aspects": [
+            {
+              "com.linkedin.glossary.GlossaryTermInfo": {
+                "definition": "business term definition",
+                "sourceRef": "EXTERNAL",
+                "termSource": "FIBO",
+                "sourceURI": "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/DateTime"
+              }
+            },
+            {
+              "com.linkedin.common.Ownership": {
+                "owners": [
+                  {
+                    "owner": "urn:li:corpuser:jdoe",
+                    "type": "DATAOWNER"
+                  }
+                ],
+                "lastModified": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "proposedSnapshot": {
+        "com.linkedin.metadata.snapshot.GlossaryNodeSnapshot": {
+          "urn": "urn:li:glossaryNode:(null,finance)",
+          "aspects": [
+            {
+              "com.linkedin.glossary.GlossaryNodeInfo": {
+                "definition": "market business node definition"
+              }
+            },
+            {
+              "com.linkedin.common.Ownership": {
+                "owners": [
+                  {
+                    "owner": "urn:li:corpuser:jdoe",
+                    "type": "DATAOWNER"
+                  }
+                ],
+                "lastModified": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "proposedSnapshot": {
+        "com.linkedin.metadata.snapshot.GlossaryNodeSnapshot": {
+          "urn": "urn:li:glossaryNode:(finance,market)",
+          "aspects": [
+            {
+              "com.linkedin.glossary.GlossaryNodeInfo": {
+                "definition": "market business node definition"
+              }
+            },
+            {
+              "com.linkedin.common.Ownership": {
+                "owners": [
+                  {
+                    "owner": "urn:li:corpuser:jdoe",
+                    "type": "DATAOWNER"
+                  }
+                ],
+                "lastModified": {
+                  "time": 1581407189000,
+                  "actor": "urn:li:corpuser:jdoe"
+                }
               }
             }
           ]

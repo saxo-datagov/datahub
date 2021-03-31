@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -80,15 +81,18 @@ public class MetadataAuditEventsProcessor {
    */
   private void updateNeo4j(final RecordTemplate snapshot) {
     try {
-      final BaseGraphBuilder graphBuilder = RegisteredGraphBuilders.getGraphBuilder(snapshot.getClass()).get();
-      final GraphBuilder.GraphUpdates updates = graphBuilder.build(snapshot);
+      final Optional<BaseGraphBuilder> graphBuilder = RegisteredGraphBuilders.getGraphBuilder(snapshot.getClass());
 
-      if (!updates.getEntities().isEmpty()) {
-        graphWriterDAO.addEntities(updates.getEntities());
-      }
+      if (graphBuilder.isPresent()) {
+        final GraphBuilder.GraphUpdates updates = graphBuilder.get().build(snapshot);
 
-      for (GraphBuilder.RelationshipUpdates update : updates.getRelationshipUpdates()) {
-        graphWriterDAO.addRelationships(update.getRelationships(), update.getPreUpdateOperation());
+        if (!updates.getEntities().isEmpty()) {
+          graphWriterDAO.addEntities(updates.getEntities());
+        }
+
+        for (GraphBuilder.RelationshipUpdates update : updates.getRelationshipUpdates()) {
+          graphWriterDAO.addRelationships(update.getRelationships(), update.getPreUpdateOperation());
+        }
       }
     } catch (Exception ex) {
       log.error(ex.toString() + " " + Arrays.toString(ex.getStackTrace()));

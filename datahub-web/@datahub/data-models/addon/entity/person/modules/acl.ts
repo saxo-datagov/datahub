@@ -55,6 +55,6 @@ export class AclAccess<T> {
     this.accessType = accessType;
     this.status = status;
     this.expiration = expiration;
-    this.businessJustification = businessJustification;
+    this.glossaryJustification = businessJustification;
   }
 }

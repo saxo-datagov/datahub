@@ -192,6 +192,38 @@
       "PROD" : "Designates production fabrics"
     }
   }, {
+    "type" : "typeref",
+    "name" : "GlossaryTermUrn",
+    "namespace" : "com.linkedin.common",
+    "doc" : "Business Term",
+    "ref" : "string",
+    "java" : {
+      "class" : "com.linkedin.common.urn.GlossaryTermUrn"
+    },
+    "validate" : {
+      "com.linkedin.common.validator.TypedUrnValidator" : {
+        "accessible" : true,
+        "constructable" : true,
+        "doc" : "business term",
+        "entityType" : "glossaryTerm",
+        "fields" : [ {
+          "doc" : "The name of business term.",
+          "maxLength" : 20,
+          "name" : "name",
+          "type" : "string"
+        }, {
+          "doc" : "The Parent business nodes(in sequence) to this business term.",
+          "name" : "glossaryNodePath",
+          "type" : "string"
+        } ],
+        "maxLength" : 36,
+        "name" : "GlossaryTerm",
+        "namespace" : "li",
+        "owners" : [ "urn:li:corpuser:fbar", "urn:li:corpuser:bfoo" ],
+        "owningTeam" : "urn:li:internalTeam:datahub"
+      }
+    }
+  }, {
     "type" : "record",
     "name" : "InstitutionalMemory",
     "namespace" : "com.linkedin.common",
@@ -852,8 +884,60 @@
       },
       "doc" : "Upstream lineage metadata of the dataset",
       "optional" : true
+    }, {
+      "name" : "datasetGlossaryTerm",
+      "type" : {
+        "type" : "record",
+        "name" : "DatasetGlossaryTerm",
+        "doc" : "Related business term information for a dataset",
+        "fields" : [ {
+          "name" : "glossaryTermUrn",
+          "type" : "com.linkedin.common.GlossaryTermUrn",
+          "doc" : "The related business term"
+        }, {
+          "name" : "auditStamp",
+          "type" : "com.linkedin.common.AuditStamp",
+          "doc" : "Audit stamp containing who reported the related business term"
+        } ]
+      },
+      "doc" : "Related business term of the dataset",
+      "optional" : true
+    }, {
+      "name" : "datasetFieldGlossaryTerm",
+      "type" : {
+        "type" : "record",
+        "name" : "DatasetFieldGlossaryTerm",
+        "doc" : "Fine Grained business term mappings for fields in a dataset",
+        "fields" : [ {
+          "name" : "fieldMappings",
+          "type" : {
+            "type" : "array",
+            "items" : {
+              "type" : "record",
+              "name" : "FieldGlossaryTermMapping",
+              "doc" : "Representation of mapping between fields in source dataset to the business term",
+              "fields" : [ {
+                "name" : "sourceField",
+                "type" : "com.linkedin.common.DatasetFieldUrn",
+                "doc" : "Source field for which related business term is being defined"
+              }, {
+                "name" : "glossaryTermUrn",
+                "type" : "com.linkedin.common.GlossaryTermUrn",
+                "doc" : "The related business term"
+              } ]
+            }
+          },
+          "doc" : "field to business term mappings"
+        }, {
+          "name" : "auditStamp",
+          "type" : "com.linkedin.common.AuditStamp",
+          "doc" : "Audit stamp containing who reported the related business terms"
+        } ]
+      },
+      "doc" : "Related business term of the dataset fields",
+      "optional" : true
     } ]
-  }, "com.linkedin.dataset.DatasetDeprecation", {
+  }, "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetFieldGlossaryTerm", {
     "type" : "record",
     "name" : "DatasetFieldMapping",
     "namespace" : "com.linkedin.dataset",
@@ -876,7 +960,7 @@
       "type" : "com.linkedin.common.DatasetFieldUrn",
       "doc" : "Destination field which is derived from source fields"
     } ]
-  }, "com.linkedin.dataset.DatasetFieldUpstream", "com.linkedin.dataset.DatasetKey", "com.linkedin.dataset.DatasetLineageType", {
+  }, "com.linkedin.dataset.DatasetFieldUpstream", "com.linkedin.dataset.DatasetGlossaryTerm", "com.linkedin.dataset.DatasetKey", "com.linkedin.dataset.DatasetLineageType", {
     "type" : "record",
     "name" : "DatasetProperties",
     "namespace" : "com.linkedin.dataset",
@@ -952,7 +1036,7 @@
       },
       "doc" : "List of downstream dataset lineage information"
     } ]
-  }, "com.linkedin.dataset.PlatformNativeType", "com.linkedin.dataset.SchemaFieldPath", "com.linkedin.dataset.Upstream", "com.linkedin.dataset.UpstreamLineage", {
+  }, "com.linkedin.dataset.FieldGlossaryTermMapping", "com.linkedin.dataset.PlatformNativeType", "com.linkedin.dataset.SchemaFieldPath", "com.linkedin.dataset.Upstream", "com.linkedin.dataset.UpstreamLineage", {
     "type" : "record",
     "name" : "UpstreamLineageDelta",
     "namespace" : "com.linkedin.dataset",
@@ -970,7 +1054,7 @@
     "name" : "DatasetAspect",
     "namespace" : "com.linkedin.metadata.aspect",
     "doc" : "A union of all supported metadata aspects for a Dataset",
-    "ref" : [ "com.linkedin.dataset.DatasetProperties", "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetUpstreamLineage", "com.linkedin.dataset.UpstreamLineage", "com.linkedin.common.InstitutionalMemory", "com.linkedin.common.Ownership", "com.linkedin.common.Status", "com.linkedin.schema.SchemaMetadata" ]
+    "ref" : [ "com.linkedin.dataset.DatasetProperties", "com.linkedin.dataset.DatasetDeprecation", "com.linkedin.dataset.DatasetUpstreamLineage", "com.linkedin.dataset.UpstreamLineage", "com.linkedin.common.InstitutionalMemory", "com.linkedin.common.Ownership", "com.linkedin.common.Status", "com.linkedin.schema.SchemaMetadata", "com.linkedin.dataset.DatasetGlossaryTerm", "com.linkedin.dataset.DatasetFieldGlossaryTerm" ]
   }, {
     "type" : "record",
     "name" : "AggregationMetadata",
@@ -1453,6 +1537,48 @@
             } ],
             "entity" : {
               "path" : "/datasets/{dataset}/downstreamLineage"
+            }
+          }
+        }, {
+          "name" : "fieldGlossaryTerm",
+          "namespace" : "com.linkedin.dataset",
+          "path" : "/datasets/{dataset}/fieldGlossaryTerm",
+          "schema" : "com.linkedin.dataset.DatasetFieldGlossaryTerm",
+          "doc" : "Rest.li entry point: /datasets/{datasetKey}/fieldGlossaryTerm\n\ngenerated from: com.linkedin.metadata.resources.dataset.FieldGlossaryTermsResource",
+          "collection" : {
+            "identifier" : {
+              "name" : "fieldGlossaryTermId",
+              "type" : "long"
+            },
+            "supports" : [ "create", "get" ],
+            "methods" : [ {
+              "method" : "create"
+            }, {
+              "method" : "get"
+            } ],
+            "entity" : {
+              "path" : "/datasets/{dataset}/fieldGlossaryTerm/{fieldGlossaryTermId}"
+            }
+          }
+        }, {
+          "name" : "glossaryTerm",
+          "namespace" : "com.linkedin.dataset",
+          "path" : "/datasets/{dataset}/glossaryTerm",
+          "schema" : "com.linkedin.dataset.DatasetGlossaryTerm",
+          "doc" : "Rest.li entry point: /datasets/{datasetKey}/glossaryTerm\n\ngenerated from: com.linkedin.metadata.resources.dataset.GlossaryTermResource",
+          "collection" : {
+            "identifier" : {
+              "name" : "glossaryTermId",
+              "type" : "long"
+            },
+            "supports" : [ "create", "get" ],
+            "methods" : [ {
+              "method" : "create"
+            }, {
+              "method" : "get"
+            } ],
+            "entity" : {
+              "path" : "/datasets/{dataset}/glossaryTerm/{glossaryTermId}"
             }
           }
         }, {

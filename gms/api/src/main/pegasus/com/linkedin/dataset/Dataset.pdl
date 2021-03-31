@@ -111,4 +111,13 @@ record Dataset includes DatasetKey, ChangeAuditStamps, VersionTag {
    */
   upstreamLineage: optional UpstreamLineage
 
+  /**
+   * Related business term of the dataset
+   */
+  datasetGlossaryTerm: optional DatasetGlossaryTerm
+
+  /**
+    * Related business term of the dataset fields
+    */
+  datasetFieldGlossaryTerm: optional DatasetFieldGlossaryTerm
 }

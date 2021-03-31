@@ -1,0 +1,28 @@
+namespace com.linkedin.common
+
+/**
+ * Business Node
+ */
+@java.class = "com.linkedin.common.urn.GlossaryNodeUrn"
+@validate.`com.linkedin.common.validator.TypedUrnValidator` = {
+  "accessible" : true,
+  "owningTeam" : "urn:li:internalTeam:datahub",
+  "entityType" : "glossaryNode",
+  "constructable" : true,
+  "namespace" : "li",
+  "name" : "GlossaryNode",
+  "doc" : "Standardized business node identifier",
+  "owners" : [ "urn:li:corpuser:fbar", "urn:li:corpuser:bfoo" ],
+  "fields" : [ {
+    "name" : "name",
+    "doc" : "The name of business node.",
+    "type" : "string",
+    "maxLength" : 20
+  },{
+       "name" : "glossaryNodePath",
+       "doc" : "The Parent business nodes(in sequence) to this business term.",
+       "type" : "string"
+  } ],
+  "maxLength" : 36
+}
+typeref GlossaryNodeUrn = string

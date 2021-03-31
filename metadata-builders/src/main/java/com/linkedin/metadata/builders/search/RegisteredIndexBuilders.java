@@ -20,6 +20,8 @@ public class RegisteredIndexBuilders {
           add(new DashboardIndexBuilder());
           add(new DataProcessIndexBuilder());
           add(new DatasetIndexBuilder());
+          add(new GlossaryTermInfoIndexBuilder());
+          add(new GlossaryNodeInfoIndexBuilder());
         }
       });
 

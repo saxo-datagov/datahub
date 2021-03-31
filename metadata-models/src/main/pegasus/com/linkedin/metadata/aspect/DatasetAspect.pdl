@@ -8,6 +8,8 @@ import com.linkedin.dataset.DatasetProperties
 import com.linkedin.dataset.DatasetUpstreamLineage
 import com.linkedin.dataset.UpstreamLineage
 import com.linkedin.schema.SchemaMetadata
+import com.linkedin.dataset.DatasetGlossaryTerm
+import com.linkedin.dataset.DatasetFieldGlossaryTerm
 
 /**
  * A union of all supported metadata aspects for a Dataset
@@ -20,5 +22,7 @@ typeref DatasetAspect = union[
   InstitutionalMemory,
   Ownership,
   Status,
-  SchemaMetadata
+  SchemaMetadata,
+  DatasetGlossaryTerm,
+  DatasetFieldGlossaryTerm
 ]
