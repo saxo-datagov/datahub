@@ -86,14 +86,13 @@ public final class GlossaryTerms extends BaseSearchableEntityResource<
   @Override
   @Nonnull
   protected GlossaryTermUrn toUrn(@Nonnull ComplexResourceKey<GlossaryTermKey, EmptyRecord> key) {
-    return new GlossaryTermUrn(key.getKey().getGlossaryNodePath(), key.getKey().getName());
+    return new GlossaryTermUrn(key.getKey().getName());
   }
 
   @Override
   @Nonnull
   protected ComplexResourceKey<GlossaryTermKey, EmptyRecord> toKey(@Nonnull GlossaryTermUrn urn) {
-    return new ComplexResourceKey<>(new GlossaryTermKey().setName(urn.getNameEntity()).
-            setGlossaryNodePath(urn.getGlossaryNodePathEntity()), new EmptyRecord());
+    return new ComplexResourceKey<>(new GlossaryTermKey().setName(urn.getNameEntity()), new EmptyRecord());
   }
 
   @Override

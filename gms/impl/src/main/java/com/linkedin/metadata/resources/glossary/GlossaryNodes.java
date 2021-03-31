@@ -100,14 +100,13 @@ public final class GlossaryNodes extends BaseSearchableEntityResource<
   @Override
   @Nonnull
   protected GlossaryNodeUrn toUrn(@Nonnull ComplexResourceKey<GlossaryNodeKey, EmptyRecord> key) {
-    return new GlossaryNodeUrn(key.getKey().getGlossaryNodePath(), key.getKey().getName());
+    return new GlossaryNodeUrn(key.getKey().getName());
   }
 
   @Override
   @Nonnull
   protected ComplexResourceKey<GlossaryNodeKey, EmptyRecord> toKey(@Nonnull GlossaryNodeUrn urn) {
-    return new ComplexResourceKey<>(new GlossaryNodeKey().setName(urn.getNameEntity()).
-            setGlossaryNodePath(urn.getGlossaryNodePathEntity()), new EmptyRecord());
+    return new ComplexResourceKey<>(new GlossaryNodeKey().setName(urn.getNameEntity()), new EmptyRecord());
   }
 
   @Override

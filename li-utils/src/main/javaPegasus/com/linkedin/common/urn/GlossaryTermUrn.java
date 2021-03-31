@@ -15,20 +15,14 @@ public final class GlossaryTermUrn extends Urn {
   public static final String ENTITY_TYPE = "glossaryTerm";
 
   private final String _name;
-  private final String _glossaryNodePath;
 
-  public GlossaryTermUrn(String glossaryNodePath, String name) {
-    super(ENTITY_TYPE, TupleKey.create(glossaryNodePath, name));
+  public GlossaryTermUrn(String name) {
+    super(ENTITY_TYPE, TupleKey.create(name));
     this._name = name;
-    this._glossaryNodePath = glossaryNodePath;
   }
 
   public String getNameEntity() {
     return _name;
-  }
-
-  public String getGlossaryNodePathEntity() {
-    return _glossaryNodePath;
   }
 
   public static GlossaryTermUrn createFromString(String rawUrn) throws URISyntaxException {
@@ -42,12 +36,11 @@ public final class GlossaryTermUrn extends Urn {
       throw new URISyntaxException(urn.toString(), "Urn entity type should be 'glossaryTerm'.");
     } else {
       TupleKey key = urn.getEntityKey();
-      if (key.size() != 2) {
+      if (key.size() != 1) {
         throw new URISyntaxException(urn.toString(), "Invalid number of keys.");
       } else {
         try {
-          return new GlossaryTermUrn((String) key.getAs(0, String.class),
-                  (String) key.getAs(1, String.class));
+          return new GlossaryTermUrn((String) key.getAs(0, String.class));
         } catch (Exception var3) {
           throw new URISyntaxException(urn.toString(), "Invalid URN Parameter: '" + var3.getMessage());
         }

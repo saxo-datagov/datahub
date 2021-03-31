@@ -136,13 +136,12 @@ public class GlossaryNodes extends BaseSearchableClient<GlossaryNode> {
   @Nonnull
   private GlossaryNodeKey toGlossaryNodeKey(@Nonnull GlossaryNodeUrn urn) {
     return new GlossaryNodeKey()
-            .setName(urn.getNameEntity())
-            .setGlossaryNodePath(urn.getGlossaryNodePathEntity());
+            .setName(urn.getNameEntity());
   }
 
   @Nonnull
   protected GlossaryNodeUrn toGlossaryNodeUrn(@Nonnull GlossaryNodeKey key) {
-    return new GlossaryNodeUrn(key.getGlossaryNodePath(), key.getName());
+    return new GlossaryNodeUrn(key.getName());
   }
 
   @Nonnull
