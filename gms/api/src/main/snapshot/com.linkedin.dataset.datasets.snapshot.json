@@ -207,16 +207,11 @@
         "doc" : "business term",
         "entityType" : "glossaryTerm",
         "fields" : [ {
-          "doc" : "The name of business term.",
-          "maxLength" : 20,
+          "doc" : "The name of business term with hierarchy.",
           "name" : "name",
           "type" : "string"
-        }, {
-          "doc" : "The Parent business nodes(in sequence) to this business term.",
-          "name" : "glossaryNodePath",
-          "type" : "string"
         } ],
-        "maxLength" : 36,
+        "maxLength" : 56,
         "name" : "GlossaryTerm",
         "namespace" : "li",
         "owners" : [ "urn:li:corpuser:fbar", "urn:li:corpuser:bfoo" ],

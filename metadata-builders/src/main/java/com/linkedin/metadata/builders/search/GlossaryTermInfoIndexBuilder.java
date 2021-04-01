@@ -31,6 +31,19 @@ public class GlossaryTermInfoIndexBuilder extends BaseIndexBuilder<GlossaryTermI
   }
 
   @Nonnull
+  private static String buildBrowsePath(@Nonnull GlossaryTermUrn urn) {
+    return "/" + urn.getNameEntity().replace('.', '/').toLowerCase();
+  }
+
+  @Nonnull
+  private static GlossaryTermInfoDocument setUrnDerivedFields(@Nonnull GlossaryTermUrn urn) {
+    return new GlossaryTermInfoDocument()
+            .setName(urn.getNameEntity())
+            .setUrn(urn)
+            .setBrowsePaths(new StringArray(Collections.singletonList(buildBrowsePath(urn))));
+  }
+
+  @Nonnull
   private GlossaryTermInfoDocument getDocumentToUpdateFromAspect(@Nonnull GlossaryTermUrn urn,
       @Nonnull GlossaryTermInfo glossaryTermInfo) {
     final String name = urn.getNameEntity() == null ? "" : urn.getNameEntity();
@@ -45,7 +58,7 @@ public class GlossaryTermInfoIndexBuilder extends BaseIndexBuilder<GlossaryTermI
   @Nonnull
   private List<GlossaryTermInfoDocument> getDocumentsToUpdateFromSnapshotType(@Nonnull GlossaryTermSnapshot glossaryTermSnapshot) {
     GlossaryTermUrn urn = glossaryTermSnapshot.getUrn();
-    return glossaryTermSnapshot.getAspects().stream().map(aspect -> {
+    final List<GlossaryTermInfoDocument> glossaryTermInfoDocuments = glossaryTermSnapshot.getAspects().stream().map(aspect -> {
       if (aspect.isGlossaryTermInfo()) {
         return getDocumentToUpdateFromAspect(urn, aspect.getGlossaryTermInfo());
       } else if (aspect.isOwnership()) {
@@ -53,6 +66,8 @@ public class GlossaryTermInfoIndexBuilder extends BaseIndexBuilder<GlossaryTermI
       }
       return null;
     }).filter(Objects::nonNull).collect(Collectors.toList());
+    glossaryTermInfoDocuments.add(setUrnDerivedFields(urn));
+    return glossaryTermInfoDocuments;
   }
 
   @Override

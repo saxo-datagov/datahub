@@ -377,7 +377,7 @@
     {
       "proposedSnapshot": {
         "com.linkedin.metadata.snapshot.GlossaryTermSnapshot": {
-          "urn": "urn:li:glossaryTerm:finance.market.bidTime",
+          "urn": "urn:li:glossaryTerm:finance.market.bidTime1",
           "aspects": [
             {
               "com.linkedin.glossary.GlossaryTermInfo": {

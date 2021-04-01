@@ -9,12 +9,13 @@ import com.linkedin.glossary.GlossaryTermKey;
 import com.linkedin.metadata.aspect.GlossaryTermAspect;
 import com.linkedin.metadata.dao.BaseLocalDAO;
 import com.linkedin.metadata.dao.BaseSearchDAO;
+import com.linkedin.metadata.dao.BaseBrowseDAO;
 import com.linkedin.metadata.dao.utils.ModelUtils;
 import com.linkedin.metadata.query.SearchResultMetadata;
 import com.linkedin.metadata.query.AutoCompleteResult;
 import com.linkedin.metadata.query.SortCriterion;
 import com.linkedin.metadata.restli.BackfillResult;
-import com.linkedin.metadata.restli.BaseSearchableEntityResource;
+import com.linkedin.metadata.restli.BaseBrowsableEntityResource;
 import com.linkedin.metadata.search.GlossaryTermInfoDocument;
 import com.linkedin.metadata.snapshot.GlossaryTermSnapshot;
 import com.linkedin.parseq.Task;
@@ -24,6 +25,7 @@ import com.linkedin.restli.server.CollectionResult;
 import com.linkedin.restli.server.PagingContext;
 import com.linkedin.metadata.query.Filter;
 import com.linkedin.restli.server.annotations.Action;
+import com.linkedin.metadata.query.BrowseResult;
 import com.linkedin.restli.server.annotations.ActionParam;
 import com.linkedin.restli.server.annotations.Finder;
 import com.linkedin.restli.server.annotations.Optional;
@@ -43,7 +45,7 @@ import javax.inject.Named;
 import static com.linkedin.metadata.restli.RestliConstants.*;
 
 @RestLiCollection(name = "glossaryTerms", namespace = "com.linkedin.glossary", keyName = "glossaryTerm")
-public final class GlossaryTerms extends BaseSearchableEntityResource<
+public final class GlossaryTerms extends BaseBrowsableEntityResource<
     // @formatter:off
     ComplexResourceKey<GlossaryTermKey, EmptyRecord>,
     GlossaryTerm,
@@ -65,6 +67,10 @@ public final class GlossaryTerms extends BaseSearchableEntityResource<
   @Named("glossaryTermSearchDAO")
   private BaseSearchDAO _esSearchDAO;
 
+  @Inject
+  @Named("glossaryTermBrowseDao")
+  private BaseBrowseDAO _browseDAO;
+
   @Override
   @Nonnull
   protected BaseLocalDAO getLocalDAO() {
@@ -75,6 +81,12 @@ public final class GlossaryTerms extends BaseSearchableEntityResource<
   @Nonnull
   protected BaseSearchDAO getSearchDAO() {
     return _esSearchDAO;
+  }
+
+  @Override
+  @Nonnull
+  protected BaseBrowseDAO getBrowseDAO() {
+    return _browseDAO;
   }
 
   @Nonnull
@@ -192,4 +204,14 @@ public final class GlossaryTerms extends BaseSearchableEntityResource<
       @ActionParam(PARAM_ASPECTS) @Optional @Nullable String[] aspectNames) {
     return super.backfill(urnString, aspectNames);
   }
+
+  @Action(name = ACTION_BROWSE)
+  @Override
+  @Nonnull
+  public Task<BrowseResult> browse(@ActionParam(PARAM_PATH) @Nonnull String path,
+                                   @ActionParam(PARAM_FILTER) @Optional @Nullable Filter filter, @ActionParam(PARAM_START) int start,
+                                   @ActionParam(PARAM_LIMIT) int limit) {
+    return super.browse(path, filter, start, limit);
+  }
+
 }
