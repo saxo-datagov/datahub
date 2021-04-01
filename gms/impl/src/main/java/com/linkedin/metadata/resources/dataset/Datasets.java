@@ -9,6 +9,8 @@ import com.linkedin.common.urn.Urn;
 import com.linkedin.data.template.StringArray;
 import com.linkedin.dataset.Dataset;
 import com.linkedin.dataset.DatasetDeprecation;
+import com.linkedin.dataset.DatasetFieldGlossaryTerm;
+import com.linkedin.dataset.DatasetGlossaryTerm;
 import com.linkedin.dataset.DatasetKey;
 import com.linkedin.dataset.DatasetProperties;
 import com.linkedin.dataset.UpstreamLineage;
@@ -158,6 +160,10 @@ public final class Datasets extends BaseBrowsableEntityResource<
         value.setGlobalTags(GlobalTags.class.cast(aspect));
       } else if (aspect instanceof EditableSchemaMetadata) {
         value.setEditableSchemaMetadata(EditableSchemaMetadata.class.cast(aspect));
+      } else if (aspect instanceof DatasetGlossaryTerm) {
+        value.setDatasetGlossaryTerm((DatasetGlossaryTerm) aspect);
+      } else if (aspect instanceof DatasetFieldGlossaryTerm) {
+        value.setDatasetFieldGlossaryTerm((DatasetFieldGlossaryTerm) aspect);
       }
   });
     return value;
@@ -191,6 +197,13 @@ public final class Datasets extends BaseBrowsableEntityResource<
     if (dataset.hasRemoved()) {
       aspects.add(DatasetAspect.create(new Status().setRemoved(dataset.isRemoved())));
     }
+    if (dataset.getDatasetGlossaryTerm() != null) {
+      aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getDatasetGlossaryTerm()));
+    }
+    if (dataset.getDatasetFieldGlossaryTerm() != null) {
+      aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getDatasetFieldGlossaryTerm()));
+    }
+
     if (dataset.hasGlobalTags()) {
       aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getGlobalTags()));
     }

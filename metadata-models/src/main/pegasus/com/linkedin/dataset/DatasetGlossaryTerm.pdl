@@ -1,0 +1,20 @@
+namespace com.linkedin.dataset
+
+import com.linkedin.common.AuditStamp
+import com.linkedin.common.GlossaryTermUrn
+
+/**
+ * Related business term information for a dataset
+ */
+record DatasetGlossaryTerm {
+
+  /**
+   * The related business term
+   */
+  glossaryTermUrn: GlossaryTermUrn
+
+  /**
+   * Audit stamp containing who reported the related business term
+   */
+  auditStamp: AuditStamp
+}

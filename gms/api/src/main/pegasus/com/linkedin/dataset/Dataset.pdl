@@ -122,4 +122,14 @@ record Dataset includes DatasetKey, ChangeAuditStamps, VersionTag {
    * List of global tags applied to the dataset
    */
   globalTags: optional GlobalTags
+
+  /**
+   * Related business term of the dataset
+   */
+  datasetGlossaryTerm: optional DatasetGlossaryTerm
+
+  /**
+    * Related business term of the dataset fields
+    */
+  datasetFieldGlossaryTerm: optional DatasetFieldGlossaryTerm
 }

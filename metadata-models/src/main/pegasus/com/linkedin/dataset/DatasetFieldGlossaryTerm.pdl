@@ -1,0 +1,18 @@
+namespace com.linkedin.dataset
+
+import com.linkedin.common.AuditStamp
+
+/**
+ * Fine Grained business term mappings for fields in a dataset
+ */
+record DatasetFieldGlossaryTerm {
+  /**
+   * field to business term mappings
+   */
+  fieldMappings: array[FieldGlossaryTermMapping]
+
+  /**
+   * Audit stamp containing who reported the related business terms
+   */
+   auditStamp: AuditStamp
+}

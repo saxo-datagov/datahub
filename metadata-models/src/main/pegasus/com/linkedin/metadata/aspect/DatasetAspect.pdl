@@ -10,6 +10,8 @@ import com.linkedin.dataset.UpstreamLineage
 import com.linkedin.schema.SchemaMetadata
 import com.linkedin.schema.EditableSchemaMetadata
 import com.linkedin.common.GlobalTags
+import com.linkedin.dataset.DatasetGlossaryTerm
+import com.linkedin.dataset.DatasetFieldGlossaryTerm
 
 /**
  * A union of all supported metadata aspects for a Dataset
@@ -25,4 +27,6 @@ typeref DatasetAspect = union[
   SchemaMetadata,
   EditableSchemaMetadata,
   GlobalTags
+  DatasetGlossaryTerm,
+  DatasetFieldGlossaryTerm
 ]

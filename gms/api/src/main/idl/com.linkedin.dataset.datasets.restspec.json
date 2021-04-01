@@ -177,6 +177,48 @@
           }
         }
       }, {
+        "name" : "fieldGlossaryTerm",
+        "namespace" : "com.linkedin.dataset",
+        "path" : "/datasets/{dataset}/fieldGlossaryTerm",
+        "schema" : "com.linkedin.dataset.DatasetFieldGlossaryTerm",
+        "doc" : "Rest.li entry point: /datasets/{datasetKey}/fieldGlossaryTerm\n\ngenerated from: com.linkedin.metadata.resources.dataset.FieldGlossaryTermsResource",
+        "collection" : {
+          "identifier" : {
+            "name" : "fieldGlossaryTermId",
+            "type" : "long"
+          },
+          "supports" : [ "create", "get" ],
+          "methods" : [ {
+            "method" : "create"
+          }, {
+            "method" : "get"
+          } ],
+          "entity" : {
+            "path" : "/datasets/{dataset}/fieldGlossaryTerm/{fieldGlossaryTermId}"
+          }
+        }
+      }, {
+        "name" : "glossaryTerm",
+        "namespace" : "com.linkedin.dataset",
+        "path" : "/datasets/{dataset}/glossaryTerm",
+        "schema" : "com.linkedin.dataset.DatasetGlossaryTerm",
+        "doc" : "Rest.li entry point: /datasets/{datasetKey}/glossaryTerm\n\ngenerated from: com.linkedin.metadata.resources.dataset.GlossaryTermResource",
+        "collection" : {
+          "identifier" : {
+            "name" : "glossaryTermId",
+            "type" : "long"
+          },
+          "supports" : [ "create", "get" ],
+          "methods" : [ {
+            "method" : "create"
+          }, {
+            "method" : "get"
+          } ],
+          "entity" : {
+            "path" : "/datasets/{dataset}/glossaryTerm/{glossaryTermId}"
+          }
+        }
+      }, {
         "name" : "institutionalMemory",
         "namespace" : "com.linkedin.dataset",
         "path" : "/datasets/{dataset}/institutionalMemory",

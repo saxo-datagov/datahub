@@ -21,3 +21,6 @@ create_index dataprocessdocument data-process/settings.json data-process/mapping
 create_index datasetdocument dataset/settings.json dataset/mappings.json
 create_index mlmodeldocument ml-model/settings.json ml-model/mappings.json
 create_index tagdocument tags/settings.json tags/mappings.json
+create_index glossaryterminfodocument glossary/term/settings.json glossary/term/mappings.json
+create_index glossarynodeinfodocument glossary/node/settings.json glossary/node/mappings.json
+
