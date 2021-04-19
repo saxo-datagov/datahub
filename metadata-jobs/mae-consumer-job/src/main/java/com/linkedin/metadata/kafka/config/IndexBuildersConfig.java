@@ -10,6 +10,8 @@ import com.linkedin.metadata.builders.search.DataProcessIndexBuilder;
 import com.linkedin.metadata.builders.search.DatasetIndexBuilder;
 import com.linkedin.metadata.builders.search.MLModelIndexBuilder;
 import com.linkedin.metadata.builders.search.TagIndexBuilder;
+import com.linkedin.metadata.builders.search.GlossaryTermInfoIndexBuilder;
+import com.linkedin.metadata.builders.search.GlossaryNodeInfoIndexBuilder;
 import com.linkedin.metadata.restli.DefaultRestliClientFactory;
 import com.linkedin.restli.client.Client;
 import java.util.HashSet;
@@ -52,6 +54,8 @@ public class IndexBuildersConfig {
     builders.add(new DashboardIndexBuilder());
     builders.add(new MLModelIndexBuilder());
     builders.add(new TagIndexBuilder());
+    builders.add(new GlossaryTermInfoIndexBuilder());
+    builders.add(new GlossaryNodeInfoIndexBuilder());
     return builders;
   }
 
