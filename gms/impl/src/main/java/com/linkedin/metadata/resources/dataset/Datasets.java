@@ -9,6 +9,7 @@ import com.linkedin.common.urn.Urn;
 import com.linkedin.data.template.StringArray;
 import com.linkedin.dataset.Dataset;
 import com.linkedin.dataset.DatasetDeprecation;
+import com.linkedin.common.GlossaryTerms;
 import com.linkedin.dataset.DatasetKey;
 import com.linkedin.dataset.DatasetProperties;
 import com.linkedin.dataset.UpstreamLineage;
@@ -158,6 +159,8 @@ public final class Datasets extends BaseBrowsableEntityResource<
         value.setGlobalTags(GlobalTags.class.cast(aspect));
       } else if (aspect instanceof EditableSchemaMetadata) {
         value.setEditableSchemaMetadata(EditableSchemaMetadata.class.cast(aspect));
+      } else if (aspect instanceof GlossaryTerms) {
+        value.setGlossaryTerms((GlossaryTerms) aspect);
       }
   });
     return value;
@@ -190,6 +193,9 @@ public final class Datasets extends BaseBrowsableEntityResource<
     }
     if (dataset.hasRemoved()) {
       aspects.add(DatasetAspect.create(new Status().setRemoved(dataset.isRemoved())));
+    }
+    if (dataset.hasGlossaryTerms()) {
+      aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getGlossaryTerms()));
     }
     if (dataset.hasGlobalTags()) {
       aspects.add(ModelUtils.newAspectUnion(DatasetAspect.class, dataset.getGlobalTags()));
