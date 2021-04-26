@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, RouteProps, Redirect } from 'react-router-dom';
 import { useReactiveVar } from '@apollo/client';
 import { BrowseResultsPage } from './browse/BrowseResultsPage';
-import { LogIn } from './auth/LogIn';
 import { NoPageFound } from './shared/NoPageFound';
 import { EntityPage } from './entity/EntityPage';
 import { PageRoutes } from '../conf/Global';
@@ -18,7 +17,6 @@ const ProtectedRoute = ({
     isLoggedIn: boolean;
 } & RouteProps) => {
     if (!isLoggedIn) {
-        window.location.replace(PageRoutes.AUTHENTICATE);
         return null;
     }
     return <Route {...props} />;
@@ -36,7 +34,10 @@ export const Routes = (): JSX.Element => {
             <Switch>
                 <ProtectedRoute isLoggedIn={isLoggedIn} exact path="/" render={() => <HomePage />} />
 
-                <Route path={PageRoutes.LOG_IN} component={LogIn} />
+                <Route path={PageRoutes.LOG_IN}>
+                    <Redirect to="/" />
+                </Route>
+
                 {entityRegistry.getEntities().map((entity) => (
                     <ProtectedRoute
                         key={entity.getPathName()}
