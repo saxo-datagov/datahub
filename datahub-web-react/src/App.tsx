@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Cookies from 'js-cookie';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, ServerError } from '@apollo/client';
@@ -7,6 +7,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { ThemeProvider } from 'styled-components';
 
 import './App.less';
+import { message } from 'antd';
 import { Routes } from './app/Routes';
 import { mocks } from './Mocks';
 import EntityRegistry from './app/entity/EntityRegistry';
@@ -64,6 +65,39 @@ const client = new ApolloClient({
 
 const App: React.VFC = () => {
     const [dynamicThemeConfig, setDynamicThemeConfig] = useState<Theme>(defaultThemeConfig);
+
+    type FormValues = {
+        username: string;
+        password: string;
+    };
+
+    const handleLogin = useCallback((values: FormValues) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: values.username, password: values.password }),
+        };
+        fetch('/logIn', requestOptions)
+            .then(async (response) => {
+                if (!response.ok) {
+                    const data = await response.json();
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+                isLoggedInVar(true);
+                return Promise.resolve();
+            })
+            .catch((error) => {
+                message.error(`Failed to log in! ${error}`);
+            });
+    }, []);
+
+    useMemo(() => {
+        handleLogin({
+            username: 'dataworkbench',
+            password: 'dataworkbench',
+        });
+    }, [handleLogin]);
 
     useEffect(() => {
         import(`./conf/theme/${process.env.REACT_APP_THEME_CONFIG}`).then((theme) => {
