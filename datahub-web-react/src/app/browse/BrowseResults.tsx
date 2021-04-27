@@ -80,6 +80,7 @@ export const BrowseResults = ({
                             showTitle
                             showLessItems
                             onChange={onChangePage}
+                            showSizeChanger={false}
                         />
                     </Col>
                 </Row>
