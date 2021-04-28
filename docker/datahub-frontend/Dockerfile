@@ -11,9 +11,6 @@ ENV CI=true
 
 COPY --chown=gradle:gradle . /datahub-src
 
-RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
-    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /datahub-src/SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
-
 RUN npm install -g yarn@1.13.0
 
 RUN yarn config set strict-ssl false \
