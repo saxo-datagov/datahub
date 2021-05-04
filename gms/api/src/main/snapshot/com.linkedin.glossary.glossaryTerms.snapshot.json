@@ -134,15 +134,7 @@
       "type" : "AuditStamp",
       "doc" : "Audit stamp containing who last modified the record and when."
     } ]
-  }, "com.linkedin.common.OwnershipSource", "com.linkedin.common.OwnershipSourceType", "com.linkedin.common.OwnershipType", "com.linkedin.common.Time", {
-    "type" : "typeref",
-    "name" : "Uri",
-    "namespace" : "com.linkedin.common",
-    "ref" : "string",
-    "java" : {
-      "class" : "java.net.URI"
-    }
-  }, "com.linkedin.common.Urn", {
+  }, "com.linkedin.common.OwnershipSource", "com.linkedin.common.OwnershipSourceType", "com.linkedin.common.OwnershipType", "com.linkedin.common.Time", "com.linkedin.common.Urn", {
     "type" : "record",
     "name" : "GlossaryTerm",
     "namespace" : "com.linkedin.glossary",
@@ -172,7 +164,7 @@
           "optional" : true
         }, {
           "name" : "sourceURI",
-          "type" : "com.linkedin.common.Uri",
+          "type" : "string",
           "doc" : "The abstracted URI such as https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/CashInstrument.",
           "optional" : true
         }, {
@@ -584,6 +576,13 @@
           "type" : "int"
         } ],
         "returns" : "com.linkedin.metadata.query.BrowseResult"
+      }, {
+        "name" : "getBrowsePaths",
+        "parameters" : [ {
+          "name" : "urn",
+          "type" : "com.linkedin.common.Urn"
+        } ],
+        "returns" : "{ \"type\" : \"array\", \"items\" : \"string\" }"
       }, {
         "name" : "getSnapshot",
         "parameters" : [ {

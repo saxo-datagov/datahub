@@ -157,6 +157,19 @@ query getSearchResults($input: SearchInput!) {
                     }
                 }
             }
+            ... on GlossaryTerm {
+                name
+                glossaryTermInfo {
+                    definition
+                    termSource
+                    sourceRef
+                    sourceURI
+                    customProperties {
+                        key
+                        value
+                    }
+                }
+            }
         }
         facets {
             field

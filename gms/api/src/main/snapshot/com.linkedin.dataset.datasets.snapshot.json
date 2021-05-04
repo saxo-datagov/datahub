@@ -908,7 +908,7 @@
                 }, {
                   "type" : "record",
                   "name" : "UrnForeignKey",
-                  "doc" : "If SchemaMetadata fields make any external references and references are of type com.linkeidn.common.Urn or any children, this models can be used to mark it.",
+                  "doc" : "If SchemaMetadata fields make any external references and references are of type com.linkedin.common.Urn or any children, this models can be used to mark it.",
                   "fields" : [ {
                     "name" : "currentFieldPath",
                     "type" : "com.linkedin.dataset.SchemaFieldPath",

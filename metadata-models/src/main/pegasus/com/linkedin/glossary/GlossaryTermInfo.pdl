@@ -1,6 +1,5 @@
 namespace com.linkedin.glossary
 
-import com.linkedin.common.Uri
 import com.linkedin.common.GlossaryNodeUrn
 
 /**
@@ -26,7 +25,7 @@ record GlossaryTermInfo {
   /**
    * The abstracted URI such as https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/CashInstrument.
    */
-  sourceURI: optional Uri
+  sourceURI: optional string
 
   /**
    * A key-value map to capture any other non-standardized properties for the glossary term
