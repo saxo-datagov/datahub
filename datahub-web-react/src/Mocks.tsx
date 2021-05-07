@@ -6,7 +6,7 @@ import {
     GetSearchResultsQuery,
 } from './graphql/search.generated';
 import { GetUserDocument } from './graphql/user.generated';
-import { Dataset, EntityType, PlatformType } from './types.generated';
+import { Dataset, EntityType, GlossaryTerm, PlatformType } from './types.generated';
 import { GetTagDocument } from './graphql/tag.generated';
 
 const user1 = {
@@ -236,6 +236,37 @@ const dataset3 = {
     editableSchemaMetadata: null,
     deprecation: null,
 } as Dataset;
+
+const glossaryTerm1 = {
+    urn: 'urn:li:glossaryTerm:1',
+    type: EntityType.GlossaryTerm,
+    name: 'Another glossary term',
+    ownership: {
+        owners: [
+            {
+                owner: {
+                    ...user1,
+                },
+                type: 'DATAOWNER',
+            },
+            {
+                owner: {
+                    ...user2,
+                },
+                type: 'DELEGATE',
+            },
+        ],
+        lastModified: {
+            time: 0,
+        },
+    },
+    glossaryTermInfo: {
+        definition: 'New glossary term',
+        termSource: 'termSource',
+        sourceRef: 'sourceRef',
+        sourceURI: 'sourceURI',
+    },
+} as GlossaryTerm;
 
 const sampleTag = {
     urn: 'urn:li:tag:abc-sample-tag',
@@ -730,6 +761,56 @@ export const mocks = [
                         {
                             __typename: 'Dataset',
                             ...dataset3,
+                        },
+                    ],
+                    facets: [
+                        {
+                            field: 'origin',
+                            aggregations: [
+                                {
+                                    value: 'PROD',
+                                    count: 3,
+                                },
+                            ],
+                        },
+                        {
+                            field: 'platform',
+                            aggregations: [
+                                { value: 'hdfs', count: 1 },
+                                { value: 'mysql', count: 1 },
+                                { value: 'kafka', count: 1 },
+                            ],
+                        },
+                    ],
+                },
+            } as GetSearchResultsQuery,
+        },
+    },
+    {
+        request: {
+            query: GetSearchResultsDocument,
+            variables: {
+                input: {
+                    type: 'GLOSSARY_TERM',
+                    query: 'tags:abc-sample-tag',
+                    start: 0,
+                    count: 1,
+                    filters: [],
+                },
+            },
+        },
+        result: {
+            data: {
+                __typename: 'Query',
+                search: {
+                    __typename: 'SearchResults',
+                    start: 0,
+                    count: 1,
+                    total: 1,
+                    entities: [
+                        {
+                            __typename: 'GLOSSARY_TERM',
+                            ...glossaryTerm1,
                         },
                     ],
                     facets: [
