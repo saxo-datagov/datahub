@@ -2,6 +2,7 @@ import React from 'react';
 import { EntityType, FabricType, Owner, GlobalTags } from '../../../../types.generated';
 import DefaultPreviewCard from '../../../preview/DefaultPreviewCard';
 import { useEntityRegistry } from '../../../useEntityRegistry';
+import { capitalizeFirstLetter } from '../../../shared/capitalizeFirstLetter';
 
 export const Preview = ({
     urn,
@@ -12,6 +13,7 @@ export const Preview = ({
     platformLogo,
     owners,
     globalTags,
+    snippet,
 }: {
     urn: string;
     name: string;
@@ -21,8 +23,10 @@ export const Preview = ({
     platformLogo?: string | null;
     owners?: Array<Owner> | null;
     globalTags?: GlobalTags | null;
+    snippet?: React.ReactNode | null;
 }): JSX.Element => {
     const entityRegistry = useEntityRegistry();
+    const capitalPlatformName = capitalizeFirstLetter(platformName);
     return (
         <DefaultPreviewCard
             url={`/${entityRegistry.getPathName(EntityType.Dataset)}/${urn}`}
@@ -30,7 +34,7 @@ export const Preview = ({
             description={description || ''}
             type="Dataset"
             logoUrl={platformLogo || ''}
-            platform={platformName}
+            platform={capitalPlatformName}
             qualifier={origin}
             tags={globalTags || undefined}
             owners={
@@ -42,6 +46,7 @@ export const Preview = ({
                     };
                 }) || []
             }
+            snippet={snippet}
         />
     );
 };

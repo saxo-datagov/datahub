@@ -8,13 +8,16 @@ import {
 import { Ownership as OwnershipView } from '../../shared/Ownership';
 import SchemaView from './schema/Schema';
 import { EntityProfile } from '../../../shared/EntityProfile';
-import { Dataset, GlobalTags } from '../../../../types.generated';
+import { Dataset, EntityType, GlobalTags } from '../../../../types.generated';
 import LineageView from './Lineage';
-import PropertiesView from './Properties';
+import { Properties as PropertiesView } from '../../shared/Properties';
 import DocumentsView from './Documentation';
 import DatasetHeader from './DatasetHeader';
 import { Message } from '../../../shared/Message';
 import TagGroup from '../../../shared/tags/TagGroup';
+import useIsLineageMode from '../../../lineage/utils/useIsLineageMode';
+import { useEntityRegistry } from '../../../useEntityRegistry';
+import { useGetAuthenticatedUser } from '../../../useGetAuthenticatedUser';
 
 export enum TabType {
     Ownership = 'Ownership',
@@ -31,7 +34,9 @@ const EMPTY_ARR: never[] = [];
  * Responsible for display the Dataset Page
  */
 export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
+    const entityRegistry = useEntityRegistry();
     const { loading, error, data } = useGetDatasetQuery({ variables: { urn } });
+    const user = useGetAuthenticatedUser();
     const [updateDataset] = useUpdateDatasetMutation({
         update(cache, { data: newDataset }) {
             cache.modify({
@@ -46,9 +51,10 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
             });
         },
     });
+    const isLineageMode = useIsLineageMode();
 
     if (error || (!loading && !error && !data)) {
-        return <Alert type="error" message={error?.message || 'Entity failed to load'} />;
+        return <Alert type="error" message={error?.message || `Entity failed to load for urn ${urn}`} />;
     }
 
     const getHeader = (dataset: Dataset) => <DatasetHeader dataset={dataset} />;
@@ -82,7 +88,7 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
                 content: (
                     <OwnershipView
                         owners={(ownership && ownership.owners) || EMPTY_ARR}
-                        lastModifiedAt={(ownership && ownership.lastModified.time) || 0}
+                        lastModifiedAt={(ownership && ownership.lastModified?.time) || 0}
                         updateOwnership={(update) =>
                             updateDataset({ variables: { input: { urn, ownership: update } } })
                         }
@@ -104,6 +110,7 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
                 path: 'docs',
                 content: (
                     <DocumentsView
+                        authenticatedUserUrn={user?.urn}
                         documents={institutionalMemory?.elements || EMPTY_ARR}
                         updateDocumentation={(update) =>
                             updateDataset({ variables: { input: { urn, institutionalMemory: update } } })
@@ -119,6 +126,9 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
             {loading && <Message type="loading" content="Loading..." style={{ marginTop: '10%' }} />}
             {data && data.dataset && (
                 <EntityProfile
+                    titleLink={`/${entityRegistry.getPathName(
+                        EntityType.Dataset,
+                    )}/${urn}?is_lineage_mode=${isLineageMode}`}
                     title={data.dataset.name}
                     tags={
                         <TagGroup

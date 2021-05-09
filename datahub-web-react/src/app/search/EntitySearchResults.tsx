@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FilterOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { Alert, Button, Card, Divider, List, Modal, Pagination, Row, Typography } from 'antd';
+import { Alert, Button, Card, Divider, Drawer, List, Pagination, Row, Typography } from 'antd';
+import { ListProps } from 'antd/lib/list';
 import { SearchCfg } from '../../conf';
 import { useGetSearchResultsQuery } from '../../graphql/search.generated';
-import { EntityType, FacetFilterInput } from '../../types.generated';
+import { EntityType, FacetFilterInput, SearchResult } from '../../types.generated';
 import { IconStyleType } from '../entity/Entity';
 import { Message } from '../shared/Message';
 import { useEntityRegistry } from '../useEntityRegistry';
@@ -27,6 +28,12 @@ const ResultList = styled(List)`
         margin-top: 12px;
         padding: 16px 32px;
         box-shadow: ${(props) => props.theme.styles['box-shadow']};
+    }
+`;
+
+const ApplyButton = styled(Button)`
+    && {
+        margin: 20px 25px 0 25px;
     }
 `;
 
@@ -59,7 +66,7 @@ export const EntitySearchResults = ({ type, query, page, filters, onChangeFilter
         },
     });
 
-    const results = data?.search?.entities || [];
+    const results = data?.search?.searchResults || [];
     const pageStart = data?.search?.start || 0;
     const pageSize = data?.search?.count || 0;
     const totalResults = data?.search?.total || 0;
@@ -104,19 +111,14 @@ export const EntitySearchResults = ({ type, query, page, filters, onChangeFilter
                     </>
                 )}
             </Button>
-            <Modal
-                title="Filters"
-                footer={<Button onClick={onApplyFilters}>Apply</Button>}
-                visible={isEditingFilters}
-                destroyOnClose
-                onCancel={onCloseEditFilters}
-            >
+            <Drawer title="Filters" placement="left" closable visible={isEditingFilters} onClose={onCloseEditFilters}>
                 <SearchFilters
                     facets={data?.search?.facets || []}
                     selectedFilters={selectedFilters}
                     onFilterSelect={onFilterSelect}
                 />
-            </Modal>
+                <ApplyButton onClick={onApplyFilters}>Apply</ApplyButton>
+            </Drawer>
             <Typography.Paragraph style={styles.resultSummary}>
                 Showing{' '}
                 <b>
@@ -124,7 +126,7 @@ export const EntitySearchResults = ({ type, query, page, filters, onChangeFilter
                 </b>{' '}
                 of <b>{totalResults}</b> results
             </Typography.Paragraph>
-            <ResultList
+            <ResultList<React.FC<ListProps<SearchResult>>>
                 header={
                     <Card bodyStyle={styles.resultHeaderCardBody} style={styles.resultHeaderCard as any}>
                         {entityRegistry.getIcon(type, 36, IconStyleType.ACCENT)}
@@ -132,9 +134,9 @@ export const EntitySearchResults = ({ type, query, page, filters, onChangeFilter
                 }
                 dataSource={results}
                 split={false}
-                renderItem={(item, index) => (
+                renderItem={(searchResult, index) => (
                     <>
-                        <List.Item>{entityRegistry.renderSearchResult(type, item)}</List.Item>
+                        <List.Item>{entityRegistry.renderSearchResult(type, searchResult)}</List.Item>
                         {index < results.length - 1 && <Divider />}
                     </>
                 )}
@@ -147,6 +149,7 @@ export const EntitySearchResults = ({ type, query, page, filters, onChangeFilter
                     total={totalResults}
                     showLessItems
                     onChange={onChangePage}
+                    showSizeChanger={false}
                 />
             </Row>
         </div>

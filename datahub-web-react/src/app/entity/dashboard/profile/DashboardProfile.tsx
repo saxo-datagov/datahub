@@ -1,6 +1,5 @@
 import { Alert } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
 import {
     GetDashboardDocument,
     useGetDashboardQuery,
@@ -13,18 +12,15 @@ import DashboardHeader from './DashboardHeader';
 import DashboardCharts from './DashboardCharts';
 import { Message } from '../../../shared/Message';
 import TagGroup from '../../../shared/tags/TagGroup';
-
-const PageContainer = styled.div`
-    padding: 32px 100px;
-`;
+import { Properties as PropertiesView } from '../../shared/Properties';
 
 export enum TabType {
     Ownership = 'Ownership',
     Charts = 'Charts',
+    Properties = 'Properties',
 }
 
-const ENABLED_TAB_TYPES = [TabType.Ownership, TabType.Charts];
-
+const ENABLED_TAB_TYPES = [TabType.Ownership, TabType.Charts, TabType.Properties];
 /**
  * Responsible for reading & writing users.
  */
@@ -55,7 +51,7 @@ export default function DashboardProfile({ urn }: { urn: string }) {
             platform={dashboard.tool}
             ownership={dashboard.ownership}
             lastModified={dashboard.info?.lastModified}
-            url={dashboard.info?.url}
+            externalUrl={dashboard.info?.externalUrl}
         />
     );
 
@@ -68,9 +64,16 @@ export default function DashboardProfile({ urn }: { urn: string }) {
                     <OwnershipView
                         owners={(ownership && ownership.owners) || []}
                         lastModifiedAt={(ownership && ownership.lastModified.time) || 0}
-                        updateOwnership={() => console.log('Update dashboard not yet implemented')}
+                        updateOwnership={(update) =>
+                            updateDashboard({ variables: { input: { urn, ownership: update } } })
+                        }
                     />
                 ),
+            },
+            {
+                name: TabType.Properties,
+                path: TabType.Properties.toLowerCase(),
+                content: <PropertiesView properties={info?.customProperties || []} />,
             },
             {
                 name: TabType.Charts,
@@ -81,27 +84,23 @@ export default function DashboardProfile({ urn }: { urn: string }) {
     };
 
     return (
-        <PageContainer>
-            <>
-                {loading && <Message type="loading" content="Loading..." style={{ marginTop: '10%' }} />}
-                {data && data.dashboard && (
-                    <EntityProfile
-                        title={data.dashboard.info?.name || ''}
-                        tags={
-                            <TagGroup
-                                editableTags={data.dashboard?.globalTags as GlobalTags}
-                                canAdd
-                                canRemove
-                                updateTags={(globalTags) =>
-                                    updateDashboard({ variables: { input: { urn, globalTags } } })
-                                }
-                            />
-                        }
-                        tabs={getTabs(data.dashboard as Dashboard)}
-                        header={getHeader(data.dashboard as Dashboard)}
-                    />
-                )}
-            </>
-        </PageContainer>
+        <>
+            {loading && <Message type="loading" content="Loading..." style={{ marginTop: '10%' }} />}
+            {data && data.dashboard && (
+                <EntityProfile
+                    title={data.dashboard.info?.name || ''}
+                    tags={
+                        <TagGroup
+                            editableTags={data.dashboard?.globalTags as GlobalTags}
+                            canAdd
+                            canRemove
+                            updateTags={(globalTags) => updateDashboard({ variables: { input: { urn, globalTags } } })}
+                        />
+                    }
+                    tabs={getTabs(data.dashboard as Dashboard)}
+                    header={getHeader(data.dashboard as Dashboard)}
+                />
+            )}
+        </>
     );
 }

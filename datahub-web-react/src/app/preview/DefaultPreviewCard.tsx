@@ -1,9 +1,10 @@
-import { Avatar, Divider, Image, Row, Space, Tag, Tooltip, Typography } from 'antd';
+import { Avatar, Divider, Image, Row, Space, Tag, Typography } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { EntityType, GlobalTags } from '../../types.generated';
-import defaultAvatar from '../../images/default_avatar.png';
 import { useEntityRegistry } from '../useEntityRegistry';
+import CustomAvatar from '../shared/avatar/CustomAvatar';
 import TagGroup from '../shared/tags/TagGroup';
 
 interface Props {
@@ -17,10 +18,18 @@ interface Props {
     qualifier?: string | null;
     tags?: GlobalTags;
     owners?: Array<{ urn: string; name?: string; photoUrl?: string }>;
+    snippet?: React.ReactNode;
 }
 
+const DescriptionParagraph = styled(Typography.Paragraph)`
+    &&& {
+        margin-bottom: 0px;
+        padding-left: 8px;
+    }
+`;
+
 const styles = {
-    row: { width: '100%' },
+    row: { width: '100%', marginBottom: '0px' },
     leftColumn: { maxWidth: '75%' },
     rightColumn: { maxWidth: '25%' },
     logoImage: { width: '48px' },
@@ -28,8 +37,6 @@ const styles = {
     typeName: { color: '#585858' },
     platformName: { color: '#585858' },
     ownedBy: { color: '#585858' },
-    description: { paddingLeft: 8, margin: 0 },
-    noDescription: { color: '#d8d8d8' },
 };
 
 export default function DefaultPreviewCard({
@@ -43,6 +50,7 @@ export default function DefaultPreviewCard({
     qualifier,
     tags,
     owners,
+    snippet,
 }: Props) {
     const entityRegistry = useEntityRegistry();
     return (
@@ -55,7 +63,7 @@ export default function DefaultPreviewCard({
                             <Typography.Text strong style={styles.name}>
                                 {name}
                             </Typography.Text>
-                            {(type || platform || tags) && (
+                            {(type || platform || qualifier) && (
                                 <Space split={<Divider type="vertical" />} size={16}>
                                     <Typography.Text>{type}</Typography.Text>
                                     <Typography.Text strong>{platform}</Typography.Text>
@@ -65,28 +73,30 @@ export default function DefaultPreviewCard({
                         </Space>
                     </Space>
                 </Link>
-                {description.length === 0 ? (
-                    <Typography.Paragraph style={{ ...styles.description, ...styles.noDescription }}>
-                        No description
-                    </Typography.Paragraph>
-                ) : (
-                    <Typography.Paragraph style={styles.description}>{description}</Typography.Paragraph>
-                )}
+                <div>
+                    {description.length === 0 ? (
+                        <DescriptionParagraph type="secondary">No description</DescriptionParagraph>
+                    ) : (
+                        <DescriptionParagraph>{description}</DescriptionParagraph>
+                    )}
+                    {snippet}
+                </div>
             </Space>
             <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
-                {tags && tags.tags?.length && <TagGroup editableTags={tags} maxShow={3} />}
                 <Space direction="vertical" size={12}>
-                    <Typography.Text strong>Owned By</Typography.Text>
+                    <Typography.Text strong>{owners && owners.length > 0 ? 'Owned By' : ''}</Typography.Text>
                     <Avatar.Group maxCount={4}>
                         {owners?.map((owner) => (
-                            <Tooltip title={owner.name} key={owner.urn}>
-                                <Link to={`/${entityRegistry.getPathName(EntityType.CorpUser)}/${owner.urn}`}>
-                                    <Avatar src={owner.photoUrl || defaultAvatar} />
-                                </Link>
-                            </Tooltip>
+                            <CustomAvatar
+                                key={owner.urn}
+                                name={owner.name}
+                                url={`/${entityRegistry.getPathName(EntityType.CorpUser)}/${owner.urn}`}
+                                photoUrl={owner.photoUrl}
+                            />
                         ))}
                     </Avatar.Group>
                 </Space>
+                <TagGroup editableTags={tags} maxShow={3} />
             </Space>
         </Row>
     );

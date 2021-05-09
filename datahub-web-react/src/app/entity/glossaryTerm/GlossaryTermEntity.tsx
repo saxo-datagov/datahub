@@ -37,9 +37,13 @@ export class GlossaryTermEntity implements Entity<GlossaryTerm> {
 
     getPathName = () => 'glossary';
 
+    isLineageEnabled = () => false;
+
     getCollectionName = () => 'Business Glossary';
 
     renderProfile = (urn: string) => <div>Coming soon.... {urn}</div>;
+
+    renderSearch = () => <div>Render search up coming</div>
 
     renderPreview = (_: PreviewType, data: GlossaryTerm) => {
         return (
