@@ -11,6 +11,7 @@ import com.linkedin.ml.client.MLModels;
 import com.linkedin.restli.client.Client;
 import com.linkedin.tag.client.Tags;
 import com.linkedin.util.Configuration;
+import com.linkedin.glossary.client.GlossaryTerms;
 
 /**
  * Provides access to clients for use in fetching data from downstream GMS services.
@@ -37,6 +38,7 @@ public class GmsClientFactory {
     private static MLModels _mlModels;
     private static Lineages _lineages;
     private static Tags _tags;
+    private static GlossaryTerms _glossaryTerms;
 
 
     private GmsClientFactory() { }
@@ -127,5 +129,16 @@ public class GmsClientFactory {
             }
         }
         return _tags;
+    }
+
+    public static GlossaryTerms getGlossaryTermsClient() {
+        if (_glossaryTerms == null) {
+            synchronized (GmsClientFactory.class) {
+                if (_glossaryTerms == null) {
+                    _glossaryTerms = new GlossaryTerms(REST_CLIENT);
+                }
+            }
+        }
+        return _glossaryTerms;
     }
 }

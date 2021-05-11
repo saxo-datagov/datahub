@@ -32,6 +32,7 @@ import com.linkedin.datahub.graphql.resolvers.type.EntityInterfaceTypeResolver;
 import com.linkedin.datahub.graphql.resolvers.type.PlatformSchemaUnionTypeResolver;
 import com.linkedin.datahub.graphql.types.tag.TagType;
 import com.linkedin.datahub.graphql.types.mlmodel.MLModelType;
+import com.linkedin.datahub.graphql.types.glossary.GlossaryTermType;
 
 import graphql.schema.idl.RuntimeWiring;
 import org.apache.commons.io.IOUtils;
@@ -67,6 +68,7 @@ public class GmsGraphQLEngine {
     public static final DownstreamLineageType DOWNSTREAM_LINEAGE_TYPE = new DownstreamLineageType(GmsClientFactory.getLineagesClient());
     public static final TagType TAG_TYPE = new TagType(GmsClientFactory.getTagsClient());
     public static final MLModelType ML_MODEL_TYPE = new MLModelType(GmsClientFactory.getMLModelsClient());
+    public static final GlossaryTermType GLOSSARY_TERM_TYPE = new GlossaryTermType(GmsClientFactory.getGlossaryTermsClient());
 
     /**
      * Configures the graph objects that can be fetched primary key.
@@ -79,7 +81,8 @@ public class GmsGraphQLEngine {
             CHART_TYPE,
             DASHBOARD_TYPE,
             TAG_TYPE,
-            ML_MODEL_TYPE
+            ML_MODEL_TYPE,
+            GLOSSARY_TERM_TYPE
     );
 
     /**
@@ -188,6 +191,10 @@ public class GmsGraphQLEngine {
                     new LoadableTypeResolver<>(
                         ML_MODEL_TYPE,
                         (env) -> env.getArgument(URN_FIELD_NAME))))
+                .dataFetcher("glossaryTerm", new AuthenticatedResolver<>(
+                        new LoadableTypeResolver<>(
+                                GLOSSARY_TERM_TYPE,
+                                (env) -> env.getArgument(URN_FIELD_NAME))))
         );
     }
 

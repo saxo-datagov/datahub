@@ -908,7 +908,7 @@
                 }, {
                   "type" : "record",
                   "name" : "UrnForeignKey",
-                  "doc" : "If SchemaMetadata fields make any external references and references are of type com.linkeidn.common.Urn or any children, this models can be used to mark it.",
+                  "doc" : "If SchemaMetadata fields make any external references and references are of type com.linkedin.common.Urn or any children, this models can be used to mark it.",
                   "fields" : [ {
                     "name" : "currentFieldPath",
                     "type" : "com.linkedin.dataset.SchemaFieldPath",
@@ -1623,27 +1623,6 @@
             } ],
             "entity" : {
               "path" : "/datasets/{dataset}/downstreamLineage"
-            }
-          }
-        }, {
-          "name" : "glossaryTerms",
-          "namespace" : "com.linkedin.dataset",
-          "path" : "/datasets/{dataset}/glossaryTerms",
-          "schema" : "com.linkedin.common.GlossaryTerms",
-          "doc" : "Rest.li entry point: /datasets/{datasetKey}/glossaryTerms\n\ngenerated from: com.linkedin.metadata.resources.dataset.GlossaryTermsResource",
-          "collection" : {
-            "identifier" : {
-              "name" : "glossaryTermsId",
-              "type" : "long"
-            },
-            "supports" : [ "create", "get" ],
-            "methods" : [ {
-              "method" : "create"
-            }, {
-              "method" : "get"
-            } ],
-            "entity" : {
-              "path" : "/datasets/{dataset}/glossaryTerms/{glossaryTermsId}"
             }
           }
         }, {
