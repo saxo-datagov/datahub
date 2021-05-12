@@ -7,7 +7,7 @@
 version: '3.8'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.4.0
+    image: artifacts.cf.saxo/docker/confluentinc/cp-zookeeper:5.4.0
     env_file: zookeeper/env/docker.env
     hostname: zookeeper
     container_name: zookeeper
@@ -17,7 +17,7 @@ services:
       - zkdata:/var/opt/zookeeper
 
   broker:
-    image: confluentinc/cp-kafka:5.4.0
+    image: artifacts.cf.saxo/docker/confluentinc/cp-kafka:5.4.0
     env_file: broker/env/docker.env
     hostname: broker
     container_name: broker
@@ -28,7 +28,7 @@ services:
       - "9092:9092"
 
   kafka-rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.4.0
+    image: artifacts.cf.saxo/docker/confluentinc/cp-kafka-rest:5.4.0
     env_file: kafka-rest-proxy/env/docker.env
     hostname: kafka-rest-proxy
     container_name: kafka-rest-proxy
@@ -40,7 +40,7 @@ services:
       - schema-registry
 
   kafka-topics-ui:
-    image: landoop/kafka-topics-ui:0.9.4
+    image: artifacts.cf.saxo/docker/landoop/kafka-topics-ui:0.9.4
     env_file: kafka-topics-ui/env/docker.env
     hostname: kafka-topics-ui
     container_name: kafka-topics-ui
@@ -56,7 +56,7 @@ services:
   kafka-setup:
     build:
       context: kafka-setup
-    image: linkedin/datahub-kafka-setup:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-kafka-setup:${DATAHUB_VERSION:-latest}
     env_file: kafka-setup/env/docker.env
     hostname: kafka-setup
     container_name: kafka-setup
@@ -65,7 +65,7 @@ services:
       - schema-registry
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.4.0
+    image: artifacts.cf.saxo/docker/confluentinc/cp-schema-registry:5.4.0
     env_file: schema-registry/env/docker.env
     hostname: schema-registry
     container_name: schema-registry
@@ -76,7 +76,7 @@ services:
       - "8081:8081"
 
   schema-registry-ui:
-    image: landoop/schema-registry-ui:latest
+    image: artifacts.cf.saxo/docker/landoop/schema-registry-ui:latest
     env_file: schema-registry-ui/env/docker.env
     container_name: schema-registry-ui
     hostname: schema-registry-ui
@@ -86,7 +86,7 @@ services:
       - schema-registry
 
   elasticsearch:
-    image: elasticsearch:7.9.3
+    image: artifacts.cf.saxo/docker/elasticsearch:7.9.3
     env_file: elasticsearch/env/docker.env
     container_name: elasticsearch
     hostname: elasticsearch
@@ -96,7 +96,7 @@ services:
       - esdata:/usr/share/elasticsearch/data
 
   kibana:
-    image: kibana:7.9.3
+    image: artifacts.cf.saxo/docker/kibana:7.9.3
     env_file: kibana/env/docker.env
     container_name: kibana
     hostname: kibana
@@ -106,7 +106,7 @@ services:
       - elasticsearch
 
   neo4j:
-    image: neo4j:4.0.6
+    image: artifacts.cf.saxo/docker/neo4j:4.0.6
     env_file: neo4j/env/docker.env
     hostname: neo4j
     container_name: neo4j
@@ -121,7 +121,7 @@ services:
     build:
       context: ../
       dockerfile: docker/elasticsearch-setup/Dockerfile
-    image: linkedin/datahub-elasticsearch-setup:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-elasticsearch-setup:${DATAHUB_VERSION:-latest}
     env_file: elasticsearch-setup/env/docker.env
     hostname: elasticsearch-setup
     container_name: elasticsearch-setup
@@ -132,7 +132,7 @@ services:
     build:
         context: ../
         dockerfile: docker/datahub-gms/Dockerfile
-    image: linkedin/datahub-gms:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-gms:${DATAHUB_VERSION:-latest}
     hostname: datahub-gms
     container_name: datahub-gms
     ports:
@@ -147,7 +147,7 @@ services:
     build:
       context: ../
       dockerfile: docker/datahub-frontend/Dockerfile
-    image: linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
     env_file: datahub-frontend/env/docker.env
     hostname: datahub-frontend-react
     container_name: datahub-frontend-react
@@ -160,7 +160,7 @@ services:
     build:
       context: ../
       dockerfile: docker/datahub-mae-consumer/Dockerfile
-    image: linkedin/datahub-mae-consumer:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-mae-consumer:${DATAHUB_VERSION:-latest}
     env_file: datahub-mae-consumer/env/docker.env
     hostname: datahub-mae-consumer
     container_name: datahub-mae-consumer
@@ -175,7 +175,7 @@ services:
     build:
       context: ../
       dockerfile: docker/datahub-mce-consumer/Dockerfile
-    image: linkedin/datahub-mce-consumer:${DATAHUB_VERSION:-latest}
+    image: artifacts.cf.saxo/docker/linkedin/datahub-mce-consumer:${DATAHUB_VERSION:-latest}
     env_file: datahub-mce-consumer/env/docker.env
     hostname: datahub-mce-consumer
     container_name: datahub-mce-consumer

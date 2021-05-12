@@ -5,7 +5,7 @@ services:
   mysql:
     container_name: mysql
     hostname: mysql
-    image: mysql:5.7
+    image: artifacts.cf.saxo/docker/mysql:5.7
     env_file: mysql/env/docker.env
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
