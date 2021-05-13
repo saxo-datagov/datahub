@@ -31,13 +31,6 @@ export default function GlossaryTermProfile() {
         searchTypes,
     );
 
-    const getFqdn = () => {
-        const customPropertyObject = data?.glossaryTerm?.glossaryTermInfo.customProperties?.find(
-            (_) => _.key === 'FQDN',
-        );
-        return customPropertyObject?.value;
-    };
-
     const contentLoading =
         Object.keys(ownershipResult).some((type) => {
             return ownershipResult[type].loading;
@@ -66,9 +59,12 @@ export default function GlossaryTermProfile() {
             </Row>
             <GlossaryTermHeader
                 definition={data?.glossaryTerm?.glossaryTermInfo?.definition || ''}
-                termSource={data?.glossaryTerm?.glossaryTermInfo?.termSource || ''}
                 sourceRef={data?.glossaryTerm?.glossaryTermInfo?.sourceRef || ''}
-                fqdn={getFqdn() || ''}
+                sourceUrl={data?.glossaryTerm?.glossaryTermInfo?.sourceUrl as string}
+                customProperties={
+                    (data?.glossaryTerm?.glossaryTermInfo.customProperties as Array<{ key: string; value: string }>) ||
+                    []
+                }
                 ownership={data?.glossaryTerm?.ownership}
             />
             <Divider />

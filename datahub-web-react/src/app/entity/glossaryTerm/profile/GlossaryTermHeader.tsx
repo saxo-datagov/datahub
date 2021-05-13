@@ -7,12 +7,12 @@ import defaultAvatar from '../../../../images/default_avatar.png';
 
 type Props = {
     definition: string;
-    termSource: string;
     sourceRef: string;
-    fqdn: string;
+    sourceUrl: string;
     ownership?: any;
+    customProperties: Array<{ key: string; value: string }>;
 };
-export default function GlossaryTermHeader({ definition, termSource, sourceRef, fqdn, ownership }: Props) {
+export default function GlossaryTermHeader({ definition, sourceRef, sourceUrl, ownership, customProperties }: Props) {
     const entityRegistry = useEntityRegistry();
     return (
         <>
@@ -20,15 +20,23 @@ export default function GlossaryTermHeader({ definition, termSource, sourceRef, 
                 <Typography.Paragraph>{definition}</Typography.Paragraph>
                 <Space split={<Divider type="vertical" />}>
                     <Typography.Text>Source</Typography.Text>
-                    <Typography.Text strong>{termSource}</Typography.Text>
-                    <Link to={sourceRef} target="_blank">
-                        view source
-                    </Link>
+                    <Typography.Text strong>{sourceRef}</Typography.Text>
+                    {sourceUrl && (
+                        <Link to={sourceUrl} target="_blank">
+                            view source
+                        </Link>
+                    )}
                 </Space>
-                <Space split={<Divider type="vertical" />}>
-                    <Typography.Text>Fully Qualified Name</Typography.Text>
-                    <Typography.Text strong>{fqdn}</Typography.Text>
-                </Space>
+                {customProperties &&
+                    customProperties.map((data) => {
+                        return (
+                            <Space split={<Divider type="vertical" />}>
+                                <Typography.Text>{data.key}</Typography.Text>
+                                <Typography.Text strong>{data.value}</Typography.Text>
+                            </Space>
+                        );
+                    })}
+
                 {ownership && (
                     <Avatar.Group maxCount={6} size="large">
                         {ownership?.owners?.map((owner) => (
