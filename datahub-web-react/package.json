@@ -92,7 +92,7 @@
         "eslint-plugin-react": "^7.21.5",
         "prettier": "^2.2.1"
     },
-    "proxy": "http://localhost:9002",
+    "proxy": "https://dev-frontend.datagovernance.one.eu41d.inf.iitech.dk",
     "resolutions": {
         "@ant-design/colors": "5.0.0"
     }
