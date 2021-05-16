@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import TestPageContainer from '../../../../utils/test-utils/TestPageContainer';
-import EntityOwnership from '../EntityOwnership';
+import EntityOwnership from '../RelatedEntity';
 
 const ownershipResult = {
     DATASET: [

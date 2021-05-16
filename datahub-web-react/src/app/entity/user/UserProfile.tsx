@@ -19,7 +19,7 @@ const messageStyle = { marginTop: '10%' };
  * Responsible for reading & writing users.
  */
 export default function UserProfile() {
-    const { urn, subview, item } = useUserParams();
+    const { urn } = useUserParams();
     const { loading, error, data } = useGetUserQuery({ variables: { urn } });
     const username = data?.corpUser?.username;
 
@@ -58,7 +58,7 @@ export default function UserProfile() {
                 teams={data?.corpUser?.editableInfo?.teams}
             />
             <Divider />
-            <UserDetails urn={urn} subview={subview} item={item} ownerships={ownershipResult} />
+            <UserDetails ownerships={ownershipResult} />
         </PageContainer>
     );
 }

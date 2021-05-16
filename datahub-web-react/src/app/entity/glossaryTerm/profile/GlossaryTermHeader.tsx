@@ -10,9 +10,8 @@ type Props = {
     sourceRef: string;
     sourceUrl: string;
     ownership?: any;
-    customProperties: Array<{ key: string; value: string }>;
 };
-export default function GlossaryTermHeader({ definition, sourceRef, sourceUrl, ownership, customProperties }: Props) {
+export default function GlossaryTermHeader({ definition, sourceRef, sourceUrl, ownership }: Props) {
     const entityRegistry = useEntityRegistry();
     return (
         <>
@@ -27,16 +26,6 @@ export default function GlossaryTermHeader({ definition, sourceRef, sourceUrl, o
                         </Link>
                     )}
                 </Space>
-                {customProperties &&
-                    customProperties.map((data) => {
-                        return (
-                            <Space split={<Divider type="vertical" />}>
-                                <Typography.Text>{data.key}</Typography.Text>
-                                <Typography.Text strong>{data.value}</Typography.Text>
-                            </Space>
-                        );
-                    })}
-
                 {ownership && (
                     <Avatar.Group maxCount={6} size="large">
                         {ownership?.owners?.map((owner) => (

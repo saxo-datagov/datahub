@@ -27,6 +27,9 @@ module.exports = {
         'require-await': 'warn',
         'import/prefer-default-export': 'off', // TODO: remove this lint rule
         'import/extensions': 'off',
+        "prettier/prettier": ["error", {
+            "endOfLine":"auto"
+        }],
         'react/jsx-props-no-spreading': 'off',
         'no-plusplus': 'off',
         'no-prototype-builtins': 'off',

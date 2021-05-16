@@ -1,22 +1,27 @@
-import { Alert, Col, Divider, Row } from 'antd';
+import { Alert } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
 import { useGetGlossaryTermQuery } from '../../../../graphql/glossaryTerm.generated';
-import { EntityType } from '../../../../types.generated';
+import { EntityType, GlossaryTerm } from '../../../../types.generated';
 import { useGetEntitySearchResults } from '../../../../utils/customGraphQL/useGetEntitySearchResults';
+import { EntityProfile } from '../../../shared/EntityProfile';
+import EntitySearchResult from '../../../shared/entitySearch/EntitySearchResult';
 import useUserParams from '../../../shared/entitySearch/routingUtils/useUserParams';
 import { Message } from '../../../shared/Message';
 import { useEntityRegistry } from '../../../useEntityRegistry';
-import GlossaryTermDetails from './GlossaryTermDetails';
+import { Properties as PropertiesView } from '../../shared/Properties';
 import GlossaryTermHeader from './GlossaryTermHeader';
 
-const PageContainer = styled.div`
-    padding: 32px 100px;
-`;
 const messageStyle = { marginTop: '10%' };
 
+export enum TabType {
+    RelatedEntity = 'Related Entities',
+    Properties = 'Properties',
+}
+
+const ENABLED_TAB_TYPES = [TabType.Properties, TabType.RelatedEntity];
+
 export default function GlossaryTermProfile() {
-    const { urn, subview, item } = useUserParams();
+    const { urn } = useUserParams();
     const { loading, error, data } = useGetGlossaryTermQuery({ variables: { urn } });
 
     const entityRegistry = useEntityRegistry();
@@ -24,7 +29,7 @@ export default function GlossaryTermProfile() {
     searchTypes.splice(searchTypes.indexOf(EntityType.GlossaryTerm), 1);
 
     const glossaryTermName = data?.glossaryTerm?.name;
-    const ownershipResult = useGetEntitySearchResults(
+    const entitySearchResult = useGetEntitySearchResults(
         {
             query: `${glossaryTermName}`,
         },
@@ -32,43 +37,60 @@ export default function GlossaryTermProfile() {
     );
 
     const contentLoading =
-        Object.keys(ownershipResult).some((type) => {
-            return ownershipResult[type].loading;
+        Object.keys(entitySearchResult).some((type) => {
+            return entitySearchResult[type].loading;
         }) || loading;
+
+    const getTabs = ({ glossaryTermInfo }: GlossaryTerm) => {
+        return [
+            {
+                name: TabType.RelatedEntity,
+                path: TabType.RelatedEntity.toLocaleLowerCase(),
+                content: <EntitySearchResult searchResult={entitySearchResult} />,
+            },
+            {
+                name: TabType.Properties,
+                path: TabType.Properties.toLocaleLowerCase(),
+                content: <PropertiesView properties={glossaryTermInfo.customProperties || []} />,
+            },
+        ].filter((tab) => ENABLED_TAB_TYPES.includes(tab.name));
+    };
+
+    const getHeader = ({ glossaryTermInfo, ownership }: GlossaryTerm) => {
+        return (
+            <GlossaryTermHeader
+                sourceRef={glossaryTermInfo?.sourceRef || ''}
+                sourceUrl={glossaryTermInfo?.sourceUrl as string}
+                definition={glossaryTermInfo.definition}
+                ownership={ownership}
+            />
+        );
+    };
 
     if (error || (!loading && !error && !data)) {
         return <Alert type="error" message={error?.message || 'Entity failed to load'} />;
     }
 
-    Object.keys(ownershipResult).forEach((type) => {
-        const entities = ownershipResult[type].data?.search?.entities;
+    Object.keys(entitySearchResult).forEach((type) => {
+        const entities = entitySearchResult[type].data?.search?.entities;
         if (!entities || entities.length === 0) {
-            delete ownershipResult[type];
+            delete entitySearchResult[type];
         } else {
-            ownershipResult[type] = ownershipResult[type].data?.search?.entities;
+            entitySearchResult[type] = entitySearchResult[type].data?.search?.entities;
         }
     });
 
     return (
-        <PageContainer>
+        <>
             {contentLoading && <Message type="loading" content="Loading..." style={messageStyle} />}
-            <Row style={{ padding: '20px 0px 10px 0px' }}>
-                <Col span={24}>
-                    <h1>{data?.glossaryTerm?.name}</h1>
-                </Col>
-            </Row>
-            <GlossaryTermHeader
-                definition={data?.glossaryTerm?.glossaryTermInfo?.definition || ''}
-                sourceRef={data?.glossaryTerm?.glossaryTermInfo?.sourceRef || ''}
-                sourceUrl={data?.glossaryTerm?.glossaryTermInfo?.sourceUrl as string}
-                customProperties={
-                    (data?.glossaryTerm?.glossaryTermInfo.customProperties as Array<{ key: string; value: string }>) ||
-                    []
-                }
-                ownership={data?.glossaryTerm?.ownership}
-            />
-            <Divider />
-            <GlossaryTermDetails urn={urn} subview={subview} item={item} ownerships={ownershipResult} />
-        </PageContainer>
+            {data && data.glossaryTerm && (
+                <EntityProfile
+                    title={data.glossaryTerm.name}
+                    tags={null}
+                    header={getHeader(data?.glossaryTerm as GlossaryTerm)}
+                    tabs={getTabs(data.glossaryTerm as GlossaryTerm)}
+                />
+            )}
+        </>
     );
 }

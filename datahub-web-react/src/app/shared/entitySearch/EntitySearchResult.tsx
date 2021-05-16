@@ -1,22 +1,11 @@
 import { Menu } from 'antd';
-import { MenuProps } from 'antd/lib/menu';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { EntityType } from '../../../types.generated';
-import { navigateToSubviewUrl } from './routingUtils/navigateToSubviewUrl';
+// import { navigateToSubviewUrl } from './routingUtils/navigateToSubviewUrl';
 import { Subview } from '../../entity/user/Subview';
 import { useEntityRegistry } from '../../useEntityRegistry';
-import EntityOwnership from './EntityOwnership';
-
-const MENU_KEY_DELIMETER = '__';
-
-const toMenuKey = (subview?: Subview, item?: string) => `${subview}${MENU_KEY_DELIMETER}${item}`;
-
-const fromMenuKey = (key: string): { subview: string; item: string } => {
-    const parts = key.split(MENU_KEY_DELIMETER);
-    return { subview: parts[0], item: parts[1] };
-};
+import EntityOwnership from './RelatedEntity';
 
 const MenuWrapper = styled.div`
     border: 2px solid #f5f5f5;
@@ -33,26 +22,18 @@ const DetailWrapper = styled.div`
 `;
 
 type Props = {
-    urn: string;
-    ownerships: { [key in EntityType]?: any[] };
-    subview?: Subview;
-    item?: string;
-    entityType: EntityType;
+    searchResult: { [key in EntityType]?: any[] };
 };
 
-export default function EntitySearchResult({ ownerships, subview, item, urn, entityType }: Props) {
+export default function EntitySearchResult({ searchResult }: Props) {
     const entityRegistry = useEntityRegistry();
-    const ownershipMenuOptions: Array<EntityType> = Object.keys(ownerships) as Array<EntityType>;
-    const history = useHistory();
-
-    const onMenuClick: MenuProps['onClick'] = ({ key }) => {
-        const { subview: nextSubview, item: nextItem } = fromMenuKey(String(key));
-        navigateToSubviewUrl({ urn, subview: nextSubview, item: nextItem, history, entityRegistry, entityType });
-    };
-
+    const ownershipMenuOptions: Array<EntityType> = Object.keys(searchResult) as Array<EntityType>;
+    const [selectedKey, setSelectedKey] = useState('dataset');
     const subviews = Object.values(Subview);
 
-    const selectedKey = toMenuKey(subview, item);
+    const onMenuClick = ({ key }) => {
+        setSelectedKey(key);
+    };
 
     return (
         <DetailWrapper>
@@ -63,19 +44,19 @@ export default function EntitySearchResult({ ownerships, subview, item, urn, ent
                     style={{ width: 256 }}
                     openKeys={subviews}
                     selectedKeys={[selectedKey]}
-                    onClick={onMenuClick}
+                    onClick={(key) => {
+                        onMenuClick(key);
+                    }}
                 >
-                    <Menu.SubMenu key={Subview.Ownership} title="Ownership">
-                        {ownershipMenuOptions.map((option) => (
-                            <Menu.Item key={toMenuKey(Subview.Ownership, entityRegistry.getPathName(option))}>
-                                {entityRegistry.getCollectionName(option)}
-                            </Menu.Item>
-                        ))}
-                    </Menu.SubMenu>
+                    {ownershipMenuOptions.map((option) => (
+                        <Menu.Item key={entityRegistry.getPathName(option)}>
+                            {entityRegistry.getCollectionName(option)}
+                        </Menu.Item>
+                    ))}
                 </Menu>
             </MenuWrapper>
             <Content>
-                {subview === Subview.Ownership && <EntityOwnership ownerships={ownerships} entityPath={item} />}
+                <EntityOwnership searchResult={searchResult} entityPath={selectedKey} />
             </Content>
         </DetailWrapper>
     );
