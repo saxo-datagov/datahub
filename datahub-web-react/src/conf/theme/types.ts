@@ -38,4 +38,7 @@ export type Theme = {
             }[];
         };
     };
+    config: {
+        disableOwnerUpdate: boolean;
+    };
 };
