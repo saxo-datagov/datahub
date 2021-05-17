@@ -141,6 +141,13 @@ export default function SchemaView({ schema, editableSchemaMetadata, updateEdita
     };
 
     const [showRaw, setShowRaw] = useState(false);
+    const getRawSchema = (schemaValue) => {
+        try {
+            return JSON.stringify(JSON.parse(schemaValue), null, 2);
+        } catch (e) {
+            return schemaValue;
+        }
+    };
 
     return (
         <>
@@ -154,7 +161,7 @@ export default function SchemaView({ schema, editableSchemaMetadata, updateEdita
                     <pre>
                         <code>
                             {schema?.platformSchema?.__typename === 'TableSchema' &&
-                                JSON.stringify(JSON.parse(schema.platformSchema.schema), null, 2)}
+                                getRawSchema(schema.platformSchema.schema)}
                         </code>
                     </pre>
                 </Typography.Text>
