@@ -31,4 +31,18 @@ describe('DatasetProfile', () => {
         expect(getByText('abc-sample-tag')).toBeInTheDocument();
         expect(getByText('abc-sample-tag').closest('a').href).toEqual('http://localhost/tag/urn:li:tag:abc-sample-tag');
     });
+
+    it('renders business terms', async () => {
+        const { queryByText } = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <TestPageContainer initialEntries={['/dataset/urn:li:dataset:3']}>
+                    <DatasetProfile urn="urn:li:dataset:3" />
+                </TestPageContainer>
+            </MockedProvider>,
+        );
+
+        await waitFor(() => expect(queryByText('sample-glossary-term')).toBeInTheDocument());
+
+        expect(queryByText('Tags & Terms')).toBeInTheDocument();
+    });
 });

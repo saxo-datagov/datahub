@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { EntityType, GlobalTags } from '../../types.generated';
 import defaultAvatar from '../../images/default_avatar.png';
 import { useEntityRegistry } from '../useEntityRegistry';
-import TagGroup from '../shared/tags/TagGroup';
+import TagTermGroup from '../shared/tags/TagTermGroup';
 
 interface Props {
     name: string;
@@ -74,7 +74,7 @@ export default function DefaultPreviewCard({
                 )}
             </Space>
             <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
-                {tags && tags.tags?.length && <TagGroup editableTags={tags} maxShow={3} />}
+                {tags && tags.tags?.length && <TagTermGroup editableTags={tags} maxShow={3} />}
                 <Space direction="vertical" size={12}>
                     <Typography.Text strong>Owned By</Typography.Text>
                     <Avatar.Group maxCount={4}>

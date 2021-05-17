@@ -16,8 +16,9 @@ import {
     GlobalTagsUpdate,
     EditableSchemaFieldInfo,
     EditableSchemaFieldInfoUpdate,
+    GlossaryTerms,
 } from '../../../../../types.generated';
-import TagGroup from '../../../../shared/tags/TagGroup';
+import TagTermGroup from '../../../../shared/tags/TagTermGroup';
 import { UpdateDatasetMutation } from '../../../../../graphql/dataset.generated';
 import { convertTagsForUpdate } from '../../../../shared/tags/utils/convertTagsForUpdate';
 
@@ -104,14 +105,15 @@ export default function SchemaView({ schema, editableSchemaMetadata, updateEdita
         return updateEditableSchema(existingMetadataAsUpdate);
     };
 
-    const tagGroupRender = (tags: GlobalTags, record: SchemaField, rowIndex: number | undefined) => {
+    const tagAndTermRender = (tags: GlobalTags, record: SchemaField, rowIndex: number | undefined) => {
         const relevantEditableFieldInfo = editableSchemaMetadata?.editableSchemaFieldInfo.find(
             (candidateEditableFieldInfo) => candidateEditableFieldInfo.fieldPath === record.fieldPath,
         );
         return (
-            <TagGroup
+            <TagTermGroup
                 uneditableTags={tags}
                 editableTags={relevantEditableFieldInfo?.globalTags}
+                glossaryTerms={record.glossaryTerms as GlossaryTerms}
                 canRemove
                 canAdd={hoveredIndex === rowIndex}
                 onOpenModal={() => setHoveredIndex(undefined)}
@@ -122,12 +124,12 @@ export default function SchemaView({ schema, editableSchemaMetadata, updateEdita
         );
     };
 
-    const tagColumn = {
+    const tagAndTermColumn = {
         width: 450,
-        title: 'Tags',
+        title: 'Tags & Terms',
         dataIndex: 'globalTags',
         key: 'tag',
-        render: tagGroupRender,
+        render: tagAndTermRender,
         onCell: (record: SchemaField, rowIndex: number | undefined) => ({
             onMouseEnter: () => {
                 setHoveredIndex(rowIndex);
@@ -160,7 +162,7 @@ export default function SchemaView({ schema, editableSchemaMetadata, updateEdita
                 <Table
                     pagination={false}
                     dataSource={schema?.fields}
-                    columns={[...defaultColumns, tagColumn]}
+                    columns={[...defaultColumns, tagAndTermColumn]}
                     rowKey="fieldPath"
                 />
             )}

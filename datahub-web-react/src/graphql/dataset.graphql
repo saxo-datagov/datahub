@@ -85,6 +85,14 @@ fragment nonRecursiveDatasetFields on Dataset {
                     }
                 }
             }
+            glossaryTerms {
+                terms {
+                    term {
+                        urn
+                        name
+                    }
+                }
+            }
         }
         primaryKeys
     }
@@ -115,6 +123,14 @@ fragment nonRecursiveDatasetFields on Dataset {
                 urn
                 name
                 description
+            }
+        }
+    }
+    glossaryTerms {
+        terms {
+            term {
+                urn
+                name
             }
         }
     }
@@ -211,6 +227,22 @@ query getDataset($urn: String!) {
                         }
                     }
                 }
+                glossaryTerms {
+                    terms {
+                        term {
+                            urn
+                            name
+                        }
+                    }
+                }
+                glossaryTerms {
+                    terms {
+                        term {
+                            urn
+                            name
+                        }
+                    }
+                }
             }
             primaryKeys
         }
@@ -241,6 +273,22 @@ query getDataset($urn: String!) {
                     urn
                     name
                     description
+                }
+            }
+        }
+        glossaryTerms {
+            terms {
+                term {
+                    urn
+                    name
+                }
+            }
+        }
+        glossaryTerms {
+            terms {
+                term {
+                    urn
+                    name
                 }
             }
         }

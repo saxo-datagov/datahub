@@ -8,6 +8,7 @@ import { RoutedTabs } from './RoutedTabs';
 export interface EntityProfileProps {
     title: string;
     tags?: React.ReactNode;
+    tagCardHeader?: string;
     header: React.ReactNode;
     tabs?: Array<{
         name: string;
@@ -40,12 +41,13 @@ const TagIcon = styled(TagOutlined)`
 const defaultProps = {
     tags: [],
     tabs: [],
+    tagCardHeader: 'Tags',
 };
 
 /**
  * A default container view for presenting Entity details.
  */
-export const EntityProfile = ({ title, tags, header, tabs }: EntityProfileProps) => {
+export const EntityProfile = ({ title, tags, header, tabs, tagCardHeader }: EntityProfileProps) => {
     const defaultTabPath = tabs && tabs?.length > 0 ? tabs[0].path : '';
 
     /* eslint-disable spaced-comment */
@@ -63,7 +65,7 @@ export const EntityProfile = ({ title, tags, header, tabs }: EntityProfileProps)
                     </div>
                     <TagCard>
                         <TagsTitle type="secondary" level={4}>
-                            <TagIcon /> Tags
+                            <TagIcon /> {tagCardHeader}
                         </TagsTitle>
                         {tags}
                     </TagCard>

@@ -8,13 +8,13 @@ import {
 import { Ownership as OwnershipView } from '../../shared/Ownership';
 import SchemaView from './schema/Schema';
 import { EntityProfile } from '../../../shared/EntityProfile';
-import { Dataset, GlobalTags } from '../../../../types.generated';
+import { Dataset, GlobalTags, GlossaryTerms } from '../../../../types.generated';
 import LineageView from './Lineage';
 import PropertiesView from './Properties';
 import DocumentsView from './Documentation';
 import DatasetHeader from './DatasetHeader';
 import { Message } from '../../../shared/Message';
-import TagGroup from '../../../shared/tags/TagGroup';
+import TagTermGroup from '../../../shared/tags/TagTermGroup';
 import DataQuality from '../../../shared/DataQuality';
 
 export enum TabType {
@@ -135,13 +135,15 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
                 <EntityProfile
                     title={data.dataset.name}
                     tags={
-                        <TagGroup
+                        <TagTermGroup
                             editableTags={data.dataset?.globalTags as GlobalTags}
+                            glossaryTerms={data.dataset?.glossaryTerms as GlossaryTerms}
                             canAdd
                             canRemove
                             updateTags={(globalTags) => updateDataset({ variables: { input: { urn, globalTags } } })}
                         />
                     }
+                    tagCardHeader={data.dataset?.glossaryTerms ? 'Tags & Terms' : 'Tags'}
                     tabs={getTabs(data.dataset as Dataset)}
                     header={getHeader(data.dataset as Dataset)}
                 />

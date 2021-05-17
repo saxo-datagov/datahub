@@ -8,7 +8,7 @@ import ChartHeader from './ChartHeader';
 import { GetChartDocument, useGetChartQuery, useUpdateChartMutation } from '../../../../graphql/chart.generated';
 import ChartSources from './ChartSources';
 import { Message } from '../../../shared/Message';
-import TagGroup from '../../../shared/tags/TagGroup';
+import TagTermGroup from '../../../shared/tags/TagTermGroup';
 
 const PageContainer = styled.div`
     padding: 32px 100px;
@@ -80,7 +80,7 @@ export default function ChartProfile({ urn }: { urn: string }) {
                 {data && data.chart && (
                     <EntityProfile
                         tags={
-                            <TagGroup
+                            <TagTermGroup
                                 editableTags={data.chart?.globalTags as GlobalTags}
                                 canAdd
                                 canRemove
