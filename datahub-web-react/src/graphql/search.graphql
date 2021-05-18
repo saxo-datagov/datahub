@@ -63,6 +63,14 @@ query getSearchResults($input: SearchInput!) {
                         }
                     }
                 }
+                glossaryTerms {
+                    terms {
+                        term {
+                            urn
+                            name
+                        }
+                    }
+                }
             }
             ... on CorpUser {
                 username

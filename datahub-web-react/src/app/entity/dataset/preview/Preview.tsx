@@ -1,5 +1,5 @@
 import React from 'react';
-import { EntityType, FabricType, Owner, GlobalTags } from '../../../../types.generated';
+import { EntityType, FabricType, Owner, GlobalTags, GlossaryTerms } from '../../../../types.generated';
 import DefaultPreviewCard from '../../../preview/DefaultPreviewCard';
 import { useEntityRegistry } from '../../../useEntityRegistry';
 
@@ -12,6 +12,7 @@ export const Preview = ({
     platformLogo,
     owners,
     globalTags,
+    glossaryTerms,
 }: {
     urn: string;
     name: string;
@@ -21,6 +22,7 @@ export const Preview = ({
     platformLogo?: string | null;
     owners?: Array<Owner> | null;
     globalTags?: GlobalTags | null;
+    glossaryTerms?: GlossaryTerms | null;
 }): JSX.Element => {
     const entityRegistry = useEntityRegistry();
     return (
@@ -42,6 +44,7 @@ export const Preview = ({
                     };
                 }) || []
             }
+            glossaryTerms={glossaryTerms || undefined}
         />
     );
 };

@@ -1,7 +1,7 @@
 import { Avatar, Divider, Image, Row, Space, Tag, Tooltip, Typography } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { EntityType, GlobalTags } from '../../types.generated';
+import { EntityType, GlobalTags, GlossaryTerms } from '../../types.generated';
 import defaultAvatar from '../../images/default_avatar.png';
 import { useEntityRegistry } from '../useEntityRegistry';
 import TagTermGroup from '../shared/tags/TagTermGroup';
@@ -16,6 +16,7 @@ interface Props {
     platform?: string;
     qualifier?: string | null;
     tags?: GlobalTags;
+    glossaryTerms?: GlossaryTerms;
     owners?: Array<{ urn: string; name?: string; photoUrl?: string }>;
 }
 
@@ -43,6 +44,7 @@ export default function DefaultPreviewCard({
     qualifier,
     tags,
     owners,
+    glossaryTerms,
 }: Props) {
     const entityRegistry = useEntityRegistry();
     return (
@@ -74,7 +76,6 @@ export default function DefaultPreviewCard({
                 )}
             </Space>
             <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
-                {tags && tags.tags?.length && <TagTermGroup editableTags={tags} maxShow={3} />}
                 <Space direction="vertical" size={12}>
                     <Typography.Text strong>Owned By</Typography.Text>
                     <Avatar.Group maxCount={4}>
@@ -87,6 +88,7 @@ export default function DefaultPreviewCard({
                         ))}
                     </Avatar.Group>
                 </Space>
+                <TagTermGroup glossaryTerms={glossaryTerms} editableTags={tags} maxShow={3} />
             </Space>
         </Row>
     );
