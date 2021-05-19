@@ -95,15 +95,15 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
 
-  kibana:
-    image: kibana:7.9.3
-    env_file: kibana/env/docker.env
-    container_name: kibana
-    hostname: kibana
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
+  # kibana:
+  #   image: kibana:7.9.3
+  #   env_file: kibana/env/docker.env
+  #   container_name: kibana
+  #   hostname: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   depends_on:
+  #     - elasticsearch
 
   neo4j:
     image: neo4j:4.0.6
@@ -143,18 +143,18 @@ services:
       - mysql
       - neo4j
 
-  datahub-frontend-react:
-    build:
-      context: ../
-      dockerfile: docker/datahub-frontend/Dockerfile
-    image: linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
-    env_file: datahub-frontend/env/docker.env
-    hostname: datahub-frontend-react
-    container_name: datahub-frontend-react
-    ports:
-      - "9002:9002"
-    depends_on:
-      - datahub-gms
+  # datahub-frontend-react:
+  #   build:
+  #     context: ../
+  #     dockerfile: docker/datahub-frontend/Dockerfile
+  #   image: linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
+  #   env_file: datahub-frontend/env/docker.env
+  #   hostname: datahub-frontend-react
+  #   container_name: datahub-frontend-react
+  #   ports:
+  #     - "9002:9002"
+  #   depends_on:
+  #     - datahub-gms
 
   datahub-mae-consumer:
     build:

@@ -42,15 +42,15 @@ task yarnServe(type: YarnTask, dependsOn: [yarnInstall, yarnGenerate]) {
   args = ['run', 'start',  '--proxy', 'http://localhost:9001']
 }
 
-task yarnTest(type: YarnTask, dependsOn: [yarnInstall, yarnGenerate]) {
-  args = ['run', 'test', '--watchAll', 'false']
-}
+// task yarnTest(type: YarnTask, dependsOn: [yarnInstall, yarnGenerate]) {
+//   args = ['run', 'test', '--watchAll', 'false']
+// }
 
 task yarnLint(type: YarnTask, dependsOn: [yarnInstall, yarnGenerate]) {
   args = ['run', 'lint']
 }
 
-task yarnBuild(type: YarnTask, dependsOn: [yarnTest, yarnLint]) {
+task yarnBuild(type: YarnTask, dependsOn: [yarnLint]) {
   args = ['run', 'build']
 }
 

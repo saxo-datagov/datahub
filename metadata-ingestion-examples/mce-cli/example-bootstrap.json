@@ -39,7 +39,7 @@
     {
       "proposedSnapshot": {
         "com.linkedin.metadata.snapshot.DatasetSnapshot": {
-          "urn": "urn:li:dataset:(urn:li:dataPlatform:kafka,SampleKafkaDataset,PROD)",
+          "urn": "urn:li:dataset:(urn:li:dataPlatform:kafka,abcKafkaDataset,PROD)",
           "aspects": [
             {
               "com.linkedin.common.Ownership": {
@@ -171,7 +171,7 @@
                       "time": 1581407189000,
                       "actor": "urn:li:corpuser:jdoe"
                     },
-                    "dataset": "urn:li:dataset:(urn:li:dataPlatform:kafka,SampleKafkaDataset,PROD)",
+                    "dataset": "urn:li:dataset:(urn:li:dataPlatform:kafka,abcKafkaDataset,PROD)",
                     "type": "TRANSFORMED"
                   }
                 ]
@@ -453,7 +453,7 @@
                 },
                 "inputs": [
                   {
-                    "string": "urn:li:dataset:(urn:li:dataPlatform:kafka,SampleKafkaDataset,PROD)"
+                    "string": "urn:li:dataset:(urn:li:dataPlatform:kafka,abcKafkaDataset,PROD)"
                   }
                 ],
                 "chartUrl": "https://www.looker.com",
