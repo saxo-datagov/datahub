@@ -290,6 +290,60 @@ type GlossaryTermInfo {
     customProperties: [StringMapEntry!]
 }
 
+type GlossaryTerm implements Entity {
+    """
+    Urn of the data platform
+    """
+    urn: String!
+
+    """
+    Ownership metadata of the dataset
+    """
+    ownership: Ownership
+
+    """
+    GMS Entity Type
+    """
+    type: EntityType!
+
+    """
+    Name of the data platform
+    """
+    name: String!
+
+    """
+    Details of the Glossary Term
+    """
+    glossaryTermInfo: GlossaryTermInfo!
+}
+
+type GlossaryTermInfo {
+    """
+    Name of the glossary term
+    """
+    definition: String!
+
+    """
+    Term Source of the glossary term
+    """
+    termSource: String!
+
+    """
+    Source Ref of the glossary term
+    """
+    sourceRef: String
+
+    """
+    Source URI of the glossary term
+    """
+    sourceUrl: String
+
+    """
+    Properties of the glossary term
+    """
+    customProperties: [StringMapEntry!]
+}
+
 type DataPlatform implements Entity {
     """
     Urn of the data platform

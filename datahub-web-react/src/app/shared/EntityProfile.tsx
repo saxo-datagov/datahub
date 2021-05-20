@@ -49,7 +49,6 @@ const defaultProps = {
  */
 export const EntityProfile = ({ title, tags, header, tabs, tagCardHeader }: EntityProfileProps) => {
     const defaultTabPath = tabs && tabs?.length > 0 ? tabs[0].path : '';
-
     /* eslint-disable spaced-comment */
     return (
         <Layout.Content style={{ padding: '0px 100px' }}>
@@ -63,12 +62,14 @@ export const EntityProfile = ({ title, tags, header, tabs, tagCardHeader }: Enti
                         </Row>
                         {header}
                     </div>
-                    <TagCard>
-                        <TagsTitle type="secondary" level={4}>
-                            <TagIcon /> {tagCardHeader}
-                        </TagsTitle>
-                        {tags}
-                    </TagCard>
+                    {tags && (
+                        <TagCard>
+                            <TagsTitle type="secondary" level={4}>
+                                <TagIcon /> {tagCardHeader}
+                            </TagsTitle>
+                            {tags}
+                        </TagCard>
+                    )}
                 </FlexSpace>
                 <Divider style={{ marginBottom: '0px' }} />
                 <Row style={{ padding: '0px 0px 10px 0px' }}>

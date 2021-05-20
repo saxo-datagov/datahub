@@ -38,6 +38,24 @@
     },
     {
       "proposedSnapshot": {
+        "com.linkedin.metadata.snapshot.CorpUserSnapshot": {
+          "urn": "urn:li:corpuser:dataworkbench",
+          "aspects": [
+            {
+              "com.linkedin.identity.CorpUserInfo": {
+                "active": true,
+                "displayName": "Data Workbench",
+                "fullName": "Data Workbench",
+                "email": "dataworkbench@linkedin.com",
+                "title": "Software Engineer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "proposedSnapshot": {
         "com.linkedin.metadata.snapshot.DatasetSnapshot": {
           "urn": "urn:li:dataset:(urn:li:dataPlatform:kafka,abcKafkaDataset,PROD)",
           "aspects": [
@@ -50,6 +68,10 @@
                   },
                   {
                     "owner": "urn:li:corpuser:datahub",
+                    "type": "DATAOWNER"
+                  },
+                  {
+                    "owner": "urn:li:corpuser:dataworkbench",
                     "type": "DATAOWNER"
                   }
                 ],
@@ -557,6 +579,10 @@
                 "owners": [
                   {
                     "owner": "urn:li:corpuser:jdoe",
+                    "type": "DATAOWNER"
+                  },
+                  {
+                    "owner": "urn:li:corpuser:dataworkbench",
                     "type": "DATAOWNER"
                   }
                 ],

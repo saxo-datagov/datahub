@@ -1,8 +1,5 @@
 repositories {
-    gradlePluginPortal()
-    jcenter()
     mavenLocal()
-    mavenCentral()
     maven {
         url "https://packages.confluent.io/maven/"
     }

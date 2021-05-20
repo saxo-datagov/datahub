@@ -40,7 +40,7 @@
         "web-vitals": "^0.2.4"
     },
     "scripts": {
-        "start": "yarn run generate && BROWSER=none craco start",
+        "start": "yarn run generate && craco start",
         "build": "yarn run generate && CI=false craco build && rm -rf dist/ && cp -r build/ dist/ && rm -r build/",
         "test": "craco test",
         "eject": "react-scripts eject",
@@ -92,7 +92,7 @@
         "eslint-plugin-react": "^7.21.5",
         "prettier": "^2.2.1"
     },
-    "proxy": "http://localhost:9002",
+    "proxy": "http://localhost:9002/",
     "resolutions": {
         "@ant-design/colors": "5.0.0"
     }
