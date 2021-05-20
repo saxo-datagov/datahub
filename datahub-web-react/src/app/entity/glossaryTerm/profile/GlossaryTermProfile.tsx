@@ -2,7 +2,7 @@ import { Alert } from 'antd';
 import React from 'react';
 import { useGetGlossaryTermQuery } from '../../../../graphql/glossaryTerm.generated';
 import { EntityType, GlossaryTerm } from '../../../../types.generated';
-import { useGetAllEntitySearchResults } from '../../../../utils/customGraphQL/useGetAllEntitySearchResults';
+import { useGetEntitySearchResults } from '../../../../utils/customGraphQL/useGetEntitySearchResults';
 import { EntityProfile } from '../../../shared/EntityProfile';
 import RelatedEntityResults from '../../../shared/entitySearch/RelatedEntityResults';
 import useUserParams from '../../../shared/entitySearch/routingUtils/useUserParams';
@@ -29,9 +29,12 @@ export default function GlossaryTermProfile() {
     searchTypes.splice(searchTypes.indexOf(EntityType.GlossaryTerm), 1);
 
     const glossaryTermName = data?.glossaryTerm?.name;
-    const entitySearchResult = useGetAllEntitySearchResults({
-        query: `${glossaryTermName}`,
-    });
+    const entitySearchResult = useGetEntitySearchResults(
+        {
+            query: `${glossaryTermName}`,
+        },
+        searchTypes,
+    );
 
     const contentLoading =
         Object.keys(entitySearchResult).some((type) => {

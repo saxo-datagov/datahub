@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import TestPageContainer from '../../../../../utils/test-utils/TestPageContainer';
-import { Subview } from '../../../user/Subview';
-import GlossaryTermDetails from '../GlossaryTermDetails';
+import { EntityType } from '../../../../types.generated';
+import TestPageContainer from '../../../../utils/test-utils/TestPageContainer';
+import RelatedEntityResults from '../RelatedEntityResults';
 
-const ownershipResult = {
+const searchResult = {
     DATASET: [
         {
             __typename: 'Dataset',
@@ -88,11 +88,8 @@ describe('Preview', () => {
     it('renders', () => {
         const { getByText } = render(
             <TestPageContainer>
-                <GlossaryTermDetails
-                    urn="urn:li:tag:abc-sample-tag"
-                    subview={Subview.Ownership}
-                    item="dataset"
-                    ownerships={ownershipResult}
+                <RelatedEntityResults
+                    searchResult={searchResult}
                 />
             </TestPageContainer>,
         );

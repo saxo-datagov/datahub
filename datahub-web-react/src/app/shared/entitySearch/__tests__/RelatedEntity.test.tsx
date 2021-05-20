@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import TestPageContainer from '../../../../utils/test-utils/TestPageContainer';
-import EntityOwnership from '../RelatedEntity';
+import RelatedEntity from '../RelatedEntity';
 
-const ownershipResult = {
+const searchResult = {
     DATASET: [
         {
             __typename: 'Dataset',
@@ -87,7 +87,7 @@ describe('Preview', () => {
     it('renders', () => {
         const { getByText } = render(
             <TestPageContainer>
-                <EntityOwnership entityPath="dataset" ownerships={ownershipResult} />
+                <RelatedEntity entityPath="dataset" searchResult={searchResult} />
             </TestPageContainer>,
         );
         expect(getByText('SampleKafkaDataset')).toBeInTheDocument();
