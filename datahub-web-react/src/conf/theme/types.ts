@@ -18,6 +18,28 @@ export type Theme = {
         'homepage-background-lower-fade': string;
         'box-shadow': string;
         'box-shadow-hover': string;
+        'preview-page'?: {
+            logo?: {
+                enable: boolean;
+                style: { [key: string]: string };
+            };
+            description?: {
+                enable: boolean;
+                noDescriptionText: string;
+                style: { [key: string]: string };
+            };
+        };
+        pagination?: {
+            defaultCurrent: number;
+            defaultPageSize: number;
+            hideOnSinglePage: number;
+            pageSizeOptions: Array<number>;
+            responsive: boolean;
+            showQuickJumper: boolean;
+            showSizeChange: boolean;
+            showTitle: boolean;
+            showTotal: boolean;
+        };
     };
     assets: {
         logoUrl: string;

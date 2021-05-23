@@ -1,7 +1,7 @@
 import { Divider, Image, Row, Space, Tag, Typography } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { GlobalTags, Owner } from '../../types.generated';
 import { useEntityRegistry } from '../useEntityRegistry';
 import AvatarsGroup from '../shared/avatar/AvatarsGroup';
@@ -28,12 +28,6 @@ const DescriptionParagraph = styled(Typography.Paragraph)`
     }
 `;
 
-const PreviewImage = styled(Image)`
-    max-height: 48px;
-    width: auto;
-    object-fit: contain;
-`;
-
 const styles = {
     row: { width: '100%', marginBottom: '0px' },
     leftColumn: { maxWidth: '75%' },
@@ -58,13 +52,17 @@ export default function DefaultPreviewCard({
     snippet,
 }: Props) {
     const entityRegistry = useEntityRegistry();
-
+    const theme = useTheme();
     return (
         <Row style={styles.row} justify="space-between">
             <Space direction="vertical" align="start" size={28} style={styles.leftColumn}>
                 <Link to={url}>
                     <Space direction="horizontal" size={20} align="center">
-                        {logoUrl ? <PreviewImage src={logoUrl} preview /> : logoComponent || ''}
+                        {theme.styles['preview-page']?.logo?.enable && logoUrl ? (
+                            <Image src={logoUrl} preview style={theme.styles['preview-page'].logo.style} />
+                        ) : (
+                            logoComponent || ''
+                        )}
 
                         <Space direction="vertical" size={8}>
                             <Typography.Text strong style={styles.name}>

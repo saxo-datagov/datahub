@@ -99,15 +99,15 @@ services:
         start_period: 2m
         retries: 4
 
-  kibana:
-    image: kibana:7.9.3
-    env_file: kibana/env/docker.env
-    container_name: kibana
-    hostname: kibana
-    ports:
-      - "5601:5601"
-    depends_on:
-      - elasticsearch
+  # kibana:
+  #   image: kibana:7.9.3
+  #   env_file: kibana/env/docker.env
+  #   container_name: kibana
+  #   hostname: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   depends_on:
+  #     - elasticsearch
 
   neo4j:
   neo4j:
@@ -148,47 +148,47 @@ services:
       - mysql
       - neo4j
 
-  datahub-frontend-react:
-    build:
-      context: ../
-      dockerfile: docker/datahub-frontend/Dockerfile
-    image: linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
-    env_file: datahub-frontend/env/docker.env
-    hostname: datahub-frontend-react
-    container_name: datahub-frontend-react
-    ports:
-      - "9002:9002"
-    depends_on:
-      - datahub-gms
+  # datahub-frontend-react:
+  #   build:
+  #     context: ../
+  #     dockerfile: docker/datahub-frontend/Dockerfile
+  #   image: linkedin/datahub-frontend-react:${DATAHUB_VERSION:-latest}
+  #   env_file: datahub-frontend/env/docker.env
+  #   hostname: datahub-frontend-react
+  #   container_name: datahub-frontend-react
+  #   ports:
+  #     - "9002:9002"
+  #   depends_on:
+  #     - datahub-gms
 
-  datahub-mae-consumer:
-    build:
-      context: ../
-      dockerfile: docker/datahub-mae-consumer/Dockerfile
-    image: linkedin/datahub-mae-consumer:${DATAHUB_VERSION:-latest}
-    env_file: datahub-mae-consumer/env/docker.env
-    hostname: datahub-mae-consumer
-    container_name: datahub-mae-consumer
-    ports:
-        - "9091:9091"
-    depends_on:
-      - kafka-setup
-      - elasticsearch-setup
-      - neo4j
+  # datahub-mae-consumer:
+  #   build:
+  #     context: ../
+  #     dockerfile: docker/datahub-mae-consumer/Dockerfile
+  #   image: linkedin/datahub-mae-consumer:${DATAHUB_VERSION:-latest}
+  #   env_file: datahub-mae-consumer/env/docker.env
+  #   hostname: datahub-mae-consumer
+  #   container_name: datahub-mae-consumer
+  #   ports:
+  #       - "9091:9091"
+  #   depends_on:
+  #     - kafka-setup
+  #     - elasticsearch-setup
+  #     - neo4j
 
-  datahub-mce-consumer:
-    build:
-      context: ../
-      dockerfile: docker/datahub-mce-consumer/Dockerfile
-    image: linkedin/datahub-mce-consumer:${DATAHUB_VERSION:-latest}
-    env_file: datahub-mce-consumer/env/docker.env
-    hostname: datahub-mce-consumer
-    container_name: datahub-mce-consumer
-    ports:
-      - "9090:9090"
-    depends_on:
-      - kafka-setup
-      - datahub-gms
+  # datahub-mce-consumer:
+  #   build:
+  #     context: ../
+  #     dockerfile: docker/datahub-mce-consumer/Dockerfile
+  #   image: linkedin/datahub-mce-consumer:${DATAHUB_VERSION:-latest}
+  #   env_file: datahub-mce-consumer/env/docker.env
+  #   hostname: datahub-mce-consumer
+  #   container_name: datahub-mce-consumer
+  #   ports:
+  #     - "9090:9090"
+  #   depends_on:
+  #     - kafka-setup
+  #     - datahub-gms
 
 networks:
   default:

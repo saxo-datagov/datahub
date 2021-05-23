@@ -33,9 +33,6 @@ export const BrowseResultsPage = () => {
             input: {
                 type: entityType,
                 path,
-                start: (page - 1) * BrowseCfg.RESULTS_PER_PAGE,
-                count: BrowseCfg.RESULTS_PER_PAGE,
-                filters: null,
             },
         },
     });
