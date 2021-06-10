@@ -113,6 +113,8 @@ project.ext.externalDependency = [
     'testContainers': 'org.testcontainers:testcontainers:1.15.1',
     'testContainersJunit': 'org.testcontainers:junit-jupiter:1.15.1',
     'testContainersElasticsearch': 'org.testcontainers:elasticsearch:1.15.3',
+    'logstash': 'net.logstash.logback:logstash-logback-encoder:6.0',
+    'testng': 'org.testng:testng:6.9.9',
     'zookeeper': 'org.apache.zookeeper:zookeeper:3.4.14'
 ]
 

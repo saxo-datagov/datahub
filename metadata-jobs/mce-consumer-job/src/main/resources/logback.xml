@@ -7,6 +7,10 @@
         </encoder>
     </appender>
 
+	<appender name="json_console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/mce-consumer-job.log</file>
         <append>true</append>
@@ -24,7 +28,7 @@
     </appender>
 
     <root level="info">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="json_console"/>
         <appender-ref ref="FILE"/>
     </root>
 </configuration>
