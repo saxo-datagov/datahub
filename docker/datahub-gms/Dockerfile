@@ -1,23 +1,30 @@
 # Defining environment
 ARG APP_ENV=prod
 
-FROM openjdk:8-jre-alpine as base
-ENV DOCKERIZE_VERSION v0.6.1
-RUN apk --no-cache add curl tar \
-    && curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.4.20.v20190813/jetty-runner-9.4.20.v20190813.jar --output jetty-runner.jar \
-    && curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-jmx/9.4.20.v20190813/jetty-jmx-9.4.20.v20190813.jar --output jetty-jmx.jar \
-    && curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util/9.4.20.v20190813/jetty-util-9.4.20.v20190813.jar --output jetty-util.jar \
-    && curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar -C /usr/local/bin -xzv
+FROM artifacts.sys.dom/docker/openjdk:8-jre-alpine as base
 
-FROM openjdk:8 as prod-build
-COPY . /datahub-src
-RUN cd /datahub-src && ./gradlew :gms:war:build
+FROM artifacts.sys.dom/docker/gradle:5.6.4-jdk8 as prod-build
+ENV DOCKERIZE_VERSION v0.6.1
+
+COPY --chown=gradle:gradle . /datahub-src
+
+RUN curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz  --proxy http://dk.proxy.mid.dom:80 | tar -C /usr/local/bin -xzv
+
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /datahub-src/SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
+
+RUN cd /datahub-src && gradle :gms:war:build
 RUN cp /datahub-src/gms/war/build/libs/war.war /war.war
 
 FROM base as prod-install
+COPY --from=prod-build /usr/local/bin /usr/local/bin
 COPY --from=prod-build /war.war /datahub/datahub-gms/bin/war.war
+COPY --from=prod-build /datahub-src/jetty-runner.jar /jetty-runner.jar
 COPY --from=prod-build /datahub-src/docker/datahub-gms/start.sh /datahub/datahub-gms/scripts/start.sh
-RUN chmod +x /datahub/datahub-gms/scripts/start.sh
+COPY --from=prod-build /datahub-src/SaxoBankInternalIssuingCA11.cer /SaxoBankInternalIssuingCA11.cer
+
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
 
 FROM base as dev-install
 # Dummy stage for development. Assumes code is built on your machine and mounted to this image.
@@ -33,6 +40,8 @@ ENV JAVA_OPTS=""
 
 EXPOSE 8080
 
-HEALTHCHECK --start-period=2m --retries=4 CMD curl --fail http://localhost:8080/health || exit 1
-
-CMD /datahub/datahub-gms/scripts/start.sh
+CMD ["sh", "-c", \
+    "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))); \
+     export SPRING_KAFKA_PROPERTIES_SSL_TRUSTSTORE_LOCATION=$JAVA_HOME/lib/security/cacerts; \
+     export SPRING_KAFKA_PROPERTIES_SSL_TRUSTSTORE_PASSWORD=changeit; \
+     /datahub/datahub-gms/scripts/start.sh"]

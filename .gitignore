@@ -39,3 +39,4 @@ MANIFEST
 **/.DS_Store
 
 .vscode
+.talismanrc

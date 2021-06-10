@@ -1,47 +1,47 @@
 # Defining environment
 ARG APP_ENV=prod
+ARG version
+
+FROM artifacts.sys.dom/docker/gradle:5.6.4-jdk8 as builder
 
 FROM openjdk:8-jre-alpine as base
 RUN addgroup -S datahub && adduser -S datahub -G datahub
 RUN apk --no-cache add curl
 
-FROM openjdk:8 as prod-build
-ARG ENABLE_EMBER="false"
-RUN apt-get update && apt-get install -y wget \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt-get -y install ./google-chrome-stable_current_amd64.deb
+COPY --from=artifacts.sys.dom/docker-local/teams/datagov/chrome-stable:latest ./google-chrome-stable_current_amd64.deb google-chrome-stable_current_amd64.deb
+RUN apt-get -y update && apt-get -y install ./google-chrome-stable_current_amd64.deb
+
 ENV CI=true
-COPY . datahub-src
-RUN cd datahub-src && ./gradlew :datahub-frontend:dist -PenableEmber=${ENABLE_EMBER} \
+
+COPY --chown=gradle:gradle . /datahub-src
+
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /datahub-src/SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
+
+RUN apt-get install -y npm \
+    && npm install -g n && n 12.8.0 \
+    && npm install -g yarn@1.13.0
+
+RUN yarn config set strict-ssl false \
+    && yarn config set registry https://artifacts.cf.saxo/artifactory/api/npm/npm/
+
+RUN cd /datahub-src && gradle :datahub-frontend:dist -PenableEmber=${ENABLE_EMBER} \
     && cp datahub-frontend/build/distributions/datahub-frontend.zip ../datahub-frontend.zip \
     && cd .. && rm -rf datahub-src && unzip datahub-frontend.zip
 
-FROM base as prod-install
-COPY --from=prod-build /datahub-frontend /datahub-frontend/
-RUN chown -R datahub:datahub /datahub-frontend && chmod 755 /datahub-frontend
+FROM artifacts.sys.dom/docker/linkedin/datahub-frontend:$version
 
-FROM base as dev-install
-# Dummy stage for development. Assumes code is built on your machine and mounted to this image.
-# See this excellent thread https://github.com/docker/cli/issues/1134
-VOLUME [ "/datahub-frontend" ]
-
-FROM ${APP_ENV}-install as final
-USER datahub
-
-ARG SERVER_PORT=9002
-ENV SERVER_PORT=$SERVER_PORT
-RUN echo $SERVER_PORT
-EXPOSE $SERVER_PORT
+COPY --from=builder /datahub-frontend /datahub-frontend/
 
 HEALTHCHECK --start-period=2m --retries=4 CMD curl --fail http://localhost:$SERVER_PORT/admin || exit 1
 
 ENV JAVA_OPTS=" \
    -Xms512m \
    -Xmx1024m \
-   -Dhttp.port=$SERVER_PORT \
+   -Dhttp.port=9002 \
    -Dconfig.file=datahub-frontend/conf/application.conf \
    -Djava.security.auth.login.config=datahub-frontend/conf/jaas.conf \
    -Dlogback.configurationFile=datahub-frontend/conf/logback.xml \
    -Dlogback.debug=true \
-   -Dpidfile.path=/dev/null"
+   -Dplay.server.pidfile.path=/dev/null"
 CMD ["datahub-frontend/bin/playBinary"]
