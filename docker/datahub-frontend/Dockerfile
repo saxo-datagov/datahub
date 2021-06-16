@@ -2,8 +2,7 @@
 ARG APP_ENV=prod
 ARG version
 
-FROM artifacts.sys.dom/docker/gradle:5.6.4-jdk8 as builder
-
+FROM artifacts.cf.saxo/docker/base/saxo-gradle:5.4.1-node12.8.0-ubuntu-ci-1.0.6 as builder
 FROM openjdk:8-jre-alpine as base
 RUN addgroup -S datahub && adduser -S datahub -G datahub
 RUN apk --no-cache add curl
@@ -15,12 +14,7 @@ ENV CI=true
 
 COPY --chown=gradle:gradle . /datahub-src
 
-RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
-    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file /datahub-src/SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
-
-RUN apt-get install -y npm \
-    && npm install -g n && n 12.8.0 \
-    && npm install -g yarn@1.13.0
+RUN npm install -g yarn@1.13.0
 
 RUN yarn config set strict-ssl false \
     && yarn config set registry https://artifacts.cf.saxo/artifactory/api/npm/npm/
