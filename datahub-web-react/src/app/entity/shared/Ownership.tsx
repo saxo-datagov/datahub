@@ -1,6 +1,7 @@
 import { AutoComplete, Button, Form, Select, Space, Table, Tag, Typography } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+
 import {
     CorpUser,
     EntityType,
@@ -41,6 +42,7 @@ export const Ownership: React.FC<Props> = ({ owners, lastModifiedAt, updateOwner
     const [stagedOwners, setStagedOwners] = useState(owners);
     const [ownerQuery, setOwnerQuery] = useState('');
     const [getOwnerAutoCompleteResults, { data: searchOwnerSuggestionsData }] = useGetAutoCompleteResultsLazyQuery();
+    const themeConfig = useTheme();
 
     useEffect(() => {
         setStagedOwners(owners);
@@ -288,26 +290,28 @@ export const Ownership: React.FC<Props> = ({ owners, lastModifiedAt, updateOwner
             key: 'action',
             render: (_: string, record: any) => {
                 return (
-                    <Space direction="horizontal">
-                        {isEditing(record) ? (
-                            <>
-                                <Button type="link" onClick={() => onSave(record)}>
-                                    Save
+                    !themeConfig.config.disableOwnerUpdate && (
+                        <Space direction="horizontal">
+                            {isEditing(record) ? (
+                                <>
+                                    <Button type="link" onClick={() => onSave(record)}>
+                                        Save
+                                    </Button>
+                                    <Button type="link" style={{ color: 'grey' }} onClick={onCancel}>
+                                        Cancel
+                                    </Button>
+                                </>
+                            ) : (
+                                <Button
+                                    type="link"
+                                    style={{ color: 'red' }}
+                                    onClick={() => onDelete(record.urn, record.role)}
+                                >
+                                    Remove
                                 </Button>
-                                <Button type="link" style={{ color: 'grey' }} onClick={onCancel}>
-                                    Cancel
-                                </Button>
-                            </>
-                        ) : (
-                            <Button
-                                type="link"
-                                style={{ color: 'red' }}
-                                onClick={() => onDelete(record.urn, record.role)}
-                            >
-                                Remove
-                            </Button>
-                        )}
-                    </Space>
+                            )}
+                        </Space>
+                    )
                 );
             },
         },
@@ -326,7 +330,7 @@ export const Ownership: React.FC<Props> = ({ owners, lastModifiedAt, updateOwner
                 <Form form={form} component={false}>
                     <Table pagination={false} columns={ownerTableColumns} dataSource={ownerTableData} rowKey="urn" />
                 </Form>
-                {editingIndex < 0 && (
+                {editingIndex < 0 && !themeConfig.config.disableOwnerUpdate && (
                     <Button type="link" onClick={onAdd}>
                         <b> + </b> Add an owner
                     </Button>

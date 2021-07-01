@@ -20,7 +20,12 @@ export default function AvatarsGroup({ owners, entityRegistry, maxCount = 6, siz
                 <div data-testid={`avatar-tag-${owner.owner.urn}`} key={`${owner.owner.urn}-${key}`}>
                     {owner.owner.__typename === 'CorpUser' ? (
                         <CustomAvatar
-                            name={owner.owner.info?.fullName || owner.owner.info?.firstName || owner.owner.info?.email}
+                            name={
+                                owner.owner.info?.fullName ||
+                                owner.owner.info?.firstName ||
+                                owner.owner.info?.email ||
+                                owner.owner.username
+                            }
                             url={`/${entityRegistry.getPathName(owner.owner.type)}/${owner.owner.urn}`}
                             photoUrl={owner.owner?.editableInfo?.pictureLink || undefined}
                         />

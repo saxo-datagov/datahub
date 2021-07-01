@@ -68,7 +68,7 @@ export const BrowseResults = ({
     return (
         <div>
             <Content style={{ padding: '25px 100px' }}>
-                <h1 className="ant-typography">{title}</h1>
+                <h3 className="ant-typography">{title}</h3>
                 <Row gutter={[4, 8]}>
                     {groups.map((group) => (
                         <Col span={24} key={`${group.name}_key`}>

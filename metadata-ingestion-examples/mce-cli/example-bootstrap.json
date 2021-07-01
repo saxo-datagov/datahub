@@ -45,11 +45,19 @@
               "com.linkedin.common.Ownership": {
                 "owners": [
                   {
-                    "owner": "urn:li:corpuser:jdoe",
+                    "owner": "urn:li:corpuser:shtr",
                     "type": "DATAOWNER"
                   },
                   {
-                    "owner": "urn:li:corpuser:datahub",
+                    "owner": "urn:li:corpuser:lalr",
+                    "type": "DATAOWNER"
+                  },
+                  {
+                    "owner": "urn:li:corpuser:shep",
+                    "type": "DATAOWNER"
+                  },
+                  {
+                    "owner": "urn:li:corpuser:aaaa",
                     "type": "DATAOWNER"
                   }
                 ],

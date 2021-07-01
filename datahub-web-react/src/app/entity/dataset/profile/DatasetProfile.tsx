@@ -19,6 +19,7 @@ import useIsLineageMode from '../../../lineage/utils/useIsLineageMode';
 import { useEntityRegistry } from '../../../useEntityRegistry';
 import { useGetAuthenticatedUser } from '../../../useGetAuthenticatedUser';
 import analytics, { EventType, EntityActionType } from '../../../analytics';
+import DataQuality from '../../../shared/DataQuality';
 
 export enum TabType {
     Ownership = 'Ownership',
@@ -26,9 +27,17 @@ export enum TabType {
     Lineage = 'Lineage',
     Properties = 'Properties',
     Documents = 'Documents',
+    DataQualityTab = 'Data Quality',
 }
 
-const ENABLED_TAB_TYPES = [TabType.Ownership, TabType.Schema, TabType.Lineage, TabType.Properties, TabType.Documents];
+const ENABLED_TAB_TYPES = [
+    TabType.Ownership,
+    TabType.Schema,
+    TabType.Lineage,
+    TabType.Properties,
+    TabType.Documents,
+    TabType.DataQualityTab,
+];
 const EMPTY_ARR: never[] = [];
 
 /**
@@ -118,6 +127,11 @@ export const DatasetProfile = ({ urn }: { urn: string }): JSX.Element => {
                 name: TabType.Properties,
                 path: TabType.Properties.toLowerCase(),
                 content: <PropertiesView properties={properties || EMPTY_ARR} />,
+            },
+            {
+                name: TabType.DataQualityTab,
+                path: TabType.DataQualityTab.toLowerCase(),
+                content: <DataQuality datasetName={data?.dataset?.name} />,
             },
             {
                 name: TabType.Documents,

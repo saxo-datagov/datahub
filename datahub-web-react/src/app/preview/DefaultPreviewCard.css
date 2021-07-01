@@ -1,0 +1,12 @@
+.ant-list-bordered .ant-list-item{
+        padding-right: 0px;
+        padding-left: 0px;
+}
+    
+.ant-space-item{
+    margin-bottom:0px
+}
+    
+.ant-divider-horizontal{
+    margin: 0px 0px
+}

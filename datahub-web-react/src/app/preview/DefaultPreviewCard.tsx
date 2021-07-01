@@ -6,6 +6,7 @@ import { GlobalTags, Owner, GlossaryTerms } from '../../types.generated';
 import { useEntityRegistry } from '../useEntityRegistry';
 import AvatarsGroup from '../shared/avatar/AvatarsGroup';
 import TagTermGroup from '../shared/tags/TagTermGroup';
+import './DefaultPreviewCard.css';
 
 interface Props {
     name: string;
@@ -25,13 +26,14 @@ interface Props {
 
 const DescriptionParagraph = styled(Typography.Paragraph)`
     &&& {
-        margin-bottom: 0px;
+        margin: 0px;
         padding-left: 8px;
+        font-size: 12px;
     }
 `;
 
 const PreviewImage = styled(Image)`
-    max-height: 48px;
+    max-height: 18px;
     width: auto;
     object-fit: contain;
 `;
@@ -40,7 +42,7 @@ const styles = {
     row: { width: '100%', marginBottom: '0px' },
     leftColumn: { maxWidth: '75%' },
     rightColumn: { maxWidth: '25%' },
-    name: { fontSize: '18px' },
+    name: { fontSize: '16px' },
     typeName: { color: '#585858' },
     platformName: { color: '#585858' },
     ownedBy: { color: '#585858' },
@@ -65,12 +67,12 @@ export default function DefaultPreviewCard({
 
     return (
         <Row style={styles.row} justify="space-between" data-testid={dataTestID}>
-            <Space direction="vertical" align="start" size={28} style={styles.leftColumn}>
+            <Space direction="vertical" align="start" style={styles.leftColumn}>
                 <Link to={url}>
                     <Space direction="horizontal" size={20} align="center">
                         {logoUrl ? <PreviewImage src={logoUrl} preview /> : logoComponent || ''}
 
-                        <Space direction="vertical" size={8}>
+                        <Space direction="vertical">
                             <Typography.Text strong style={styles.name}>
                                 {name}
                             </Typography.Text>
@@ -93,13 +95,15 @@ export default function DefaultPreviewCard({
                     {snippet}
                 </div>
             </Space>
-            <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
-                <Space direction="vertical" size={12}>
-                    <Typography.Text strong>{owners && owners.length > 0 ? 'Owned By' : ''}</Typography.Text>
-                    <AvatarsGroup owners={owners} entityRegistry={entityRegistry} maxCount={4} />
+            {owners && owners.length > 0 && (
+                <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
+                    <Space direction="vertical" size={12}>
+                        <Typography.Text strong>{owners && owners.length > 0 ? 'Owned By' : ''}</Typography.Text>
+                        <AvatarsGroup owners={owners} entityRegistry={entityRegistry} maxCount={4} />
+                    </Space>
+                    <TagTermGroup glossaryTerms={glossaryTerms} editableTags={tags} maxShow={3} />
                 </Space>
-                <TagTermGroup glossaryTerms={glossaryTerms} editableTags={tags} maxShow={3} />
-            </Space>
+            )}
         </Row>
     );
 }

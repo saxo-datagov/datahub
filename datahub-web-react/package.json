@@ -119,7 +119,7 @@
         "eslint-plugin-react": "^7.23.2",
         "prettier": "^2.3.0"
     },
-    "proxy": "http://localhost:9002",
+    "proxy": "https://test-frontend.datagovernance.one.eu41t.inf.iitech.dk/",
     "resolutions": {
         "@ant-design/colors": "5.0.0"
     }
