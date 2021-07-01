@@ -5,6 +5,11 @@ FROM artifacts.cf.saxo/docker/base/saxo-gradle:5.4.1-node12.8.0-ubuntu-ci-1.0.6 
 FROM artifacts.sys.dom/docker/gradle:5.6.4-jdk8 as prod-build
 ENV DOCKERIZE_VERSION v0.6.1
 
+RUN curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.4.20.v20190813/jetty-runner-9.4.20.v20190813.jar --output jetty-runner.jar \
+    && curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-jmx/9.4.20.v20190813/jetty-jmx-9.4.20.v20190813.jar --output jetty-jmx.jar \
+    && curl https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util/9.4.20.v20190813/jetty-util-9.4.20.v20190813.jar --output jetty-util.jar \
+    && curl -L https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar -C /usr/local/bin -xzv
+
 COPY --chown=gradle:gradle . /datahub-src
 RUN cp -r /datahub-src/dockerize /usr/local/bin
 

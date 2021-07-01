@@ -20,11 +20,7 @@ fi
 dockerize \
   -wait tcp://$EBEAN_DATASOURCE_HOST \
   -wait tcp://$(echo $KAFKA_BOOTSTRAP_SERVER | sed 's/,/ -wait tcp:\/\//g') \
-  -wait $ELASTICSEARCH_PROTOCOL://$ELASTICSEARCH_HOST_URL:$ELASTICSEARCH_PORT \
+  -wait http://$ELASTICSEARCH_HOST:$ELASTICSEARCH_PORT \
   -wait $NEO4J_HOST \
   -timeout 240s \
-  java $JAVA_OPTS $JMX_OPTS \
-  -jar /jetty-runner.jar \
-  --jar jetty-util.jar \
-  --jar jetty-jmx.jar \
-  /datahub/datahub-gms/bin/war.war
+  java -jar /jetty-runner.jar /datahub/datahub-gms/bin/war.war

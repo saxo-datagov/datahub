@@ -2,10 +2,7 @@
 ARG APP_ENV=prod
 ARG version
 
-FROM artifacts.cf.saxo/docker/base/saxo-gradle:5.4.1-node12.8.0-ubuntu-ci-1.0.6 as builder
-FROM openjdk:8-jre-alpine as base
-RUN addgroup -S datahub && adduser -S datahub -G datahub
-RUN apk --no-cache add curl
+FROM artifacts.cf.saxo/docker/base/saxo-gradle:5.6.4-node14.16.1-ubuntu-ci-1.0.6 as builder
 
 COPY --from=artifacts.sys.dom/docker-local/teams/datagov/chrome-stable:latest ./google-chrome-stable_current_amd64.deb google-chrome-stable_current_amd64.deb
 RUN apt-get -y update && apt-get -y install ./google-chrome-stable_current_amd64.deb
@@ -23,11 +20,9 @@ RUN cd /datahub-src && gradle :datahub-frontend:dist -PenableEmber=${ENABLE_EMBE
     && cp datahub-frontend/build/distributions/datahub-frontend.zip ../datahub-frontend.zip \
     && cd .. && rm -rf datahub-src && unzip datahub-frontend.zip
 
-FROM artifacts.sys.dom/docker/linkedin/datahub-frontend:$version
+FROM artifacts.sys.dom/docker/linkedin/datahub-frontend-react:$version
 
 COPY --from=builder /datahub-frontend /datahub-frontend/
-
-HEALTHCHECK --start-period=2m --retries=4 CMD curl --fail http://localhost:$SERVER_PORT/admin || exit 1
 
 ENV JAVA_OPTS=" \
    -Xms512m \
