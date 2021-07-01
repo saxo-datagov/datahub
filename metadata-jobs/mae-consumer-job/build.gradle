@@ -38,6 +38,8 @@ dependencies {
     compile externalDependency.springKafka
     compile externalDependency.springActuator
 
+    compile externalDependency.micrometerPrometheusRegistry
+
     compileOnly externalDependency.lombok
 
     annotationProcessor externalDependency.lombok

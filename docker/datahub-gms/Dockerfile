@@ -38,6 +38,8 @@ FROM base as dev-install
 
 FROM ${APP_ENV}-install as final
 
+RUN apk add --no-cache curl
+
 RUN addgroup -S datahub && adduser -S datahub -G datahub
 USER datahub
 
