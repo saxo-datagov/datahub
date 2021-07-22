@@ -108,7 +108,7 @@ function convertEditableSchemaMetadataForUpdate(
 
 export default function SchemaView({ urn, schema, editableSchemaMetadata, updateEditableSchema }: Props) {
     const [tagHoveredIndex, setTagHoveredIndex] = useState<string | undefined>(undefined);
-    const [descHoveredIndex, setDescHoveredIndex] = useState<string | undefined>(undefined);
+    const [descHoveredIndex] = useState<string | undefined>(undefined);
     const [showRaw, setShowRaw] = useState(false);
     const [rows, setRows] = useState<Array<ExtendedSchemaFields>>([]);
 
@@ -234,14 +234,6 @@ export default function SchemaView({ urn, schema, editableSchemaMetadata, update
         key: 'description',
         render: descriptionRender,
         width: 700,
-        onCell: (record: SchemaField, rowIndex: number | undefined) => ({
-            onMouseEnter: () => {
-                setDescHoveredIndex(`${record.fieldPath}-${rowIndex}`);
-            },
-            onMouseLeave: () => {
-                setDescHoveredIndex(undefined);
-            },
-        }),
     };
 
     const tagAndTermColumn = {
