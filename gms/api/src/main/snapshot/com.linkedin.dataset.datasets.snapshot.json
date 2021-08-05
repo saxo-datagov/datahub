@@ -337,7 +337,12 @@
           }
         }
       },
-      "doc" : "Urn of the applied glossary term"
+      "doc" : "Urn of the applied glossary term",
+      "Searchable" : {
+        "fieldName" : "glossaryTerms",
+        "fieldType" : "URN_PARTIAL",
+        "hasValuesFieldName" : "hasTerms"
+      }
     } ]
   }, "com.linkedin.common.GlossaryTermUrn", {
     "type" : "record",
@@ -967,7 +972,14 @@
                 "name" : "glossaryTerms",
                 "type" : "com.linkedin.common.GlossaryTerms",
                 "doc" : "Glossary terms associated with the field",
-                "optional" : true
+                "optional" : true,
+                "Searchable" : {
+                  "/terms/*/urn" : {
+                    "boostScore" : 0.5,
+                    "fieldName" : "fieldGlossaryTerms",
+                    "fieldType" : "URN_PARTIAL"
+                  }
+                }
               } ]
             }
           },
