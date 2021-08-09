@@ -64,6 +64,16 @@ export default function DefaultPreviewCard({
     dataTestID,
 }: Props) {
     const entityRegistry = useEntityRegistry();
+    const isOwnerPresent = () => {
+        return owners && owners.length > 0;
+    };
+
+    const isTagTermsPresent = () => {
+        return (
+            (glossaryTerms && glossaryTerms.terms && glossaryTerms.terms.length > 0) ||
+            (tags && tags.tags && tags.tags.length > 0)
+        );
+    };
 
     return (
         <Row style={styles.row} justify="space-between" data-testid={dataTestID}>
@@ -95,13 +105,18 @@ export default function DefaultPreviewCard({
                     {snippet}
                 </div>
             </Space>
-            {owners && owners.length > 0 && (
+
+            {(isOwnerPresent() || isTagTermsPresent()) && (
                 <Space direction="vertical" align="end" size={36} style={styles.rightColumn}>
-                    <Space direction="vertical" size={12}>
-                        <Typography.Text strong>{owners && owners.length > 0 ? 'Owned By' : ''}</Typography.Text>
-                        <AvatarsGroup owners={owners} entityRegistry={entityRegistry} maxCount={4} />
-                    </Space>
-                    <TagTermGroup glossaryTerms={glossaryTerms} editableTags={tags} maxShow={3} />
+                    {isOwnerPresent() && (
+                        <Space direction="vertical" size={12}>
+                            <Typography.Text strong>{owners && owners.length > 0 ? 'Owned By' : ''}</Typography.Text>
+                            <AvatarsGroup owners={owners} entityRegistry={entityRegistry} maxCount={4} />
+                        </Space>
+                    )}
+                    {isTagTermsPresent() && (
+                        <TagTermGroup glossaryTerms={glossaryTerms} editableTags={tags} maxShow={3} />
+                    )}
                 </Space>
             )}
         </Row>
