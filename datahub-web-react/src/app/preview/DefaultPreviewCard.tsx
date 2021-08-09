@@ -39,7 +39,7 @@ const PreviewImage = styled(Image)`
 `;
 
 const styles = {
-    row: { width: '100%', marginBottom: '0px' },
+    row: { width: '100%', marginBottom: '20px' },
     leftColumn: { maxWidth: '75%' },
     rightColumn: { maxWidth: '25%' },
     name: { fontSize: '16px' },

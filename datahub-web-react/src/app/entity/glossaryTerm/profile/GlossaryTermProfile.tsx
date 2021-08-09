@@ -9,16 +9,20 @@ import useUserParams from '../../../shared/entitySearch/routingUtils/useUserPara
 import { Message } from '../../../shared/Message';
 import { useEntityRegistry } from '../../../useEntityRegistry';
 import { Properties as PropertiesView } from '../../shared/Properties';
+import GlossayRelatedTerms from './GlossaryRelatedTerms';
 import GlossaryTermHeader from './GlossaryTermHeader';
+import SchemaView from './SchemaView';
 
 const messageStyle = { marginTop: '10%' };
 
 export enum TabType {
     RelatedEntity = 'Related Entities',
+    RelatedGlossaryTerms = 'Related Terms',
+    Schema = 'Schema',
     Properties = 'Properties',
 }
 
-const ENABLED_TAB_TYPES = [TabType.Properties, TabType.RelatedEntity];
+const ENABLED_TAB_TYPES = [TabType.Properties, TabType.RelatedEntity, TabType.RelatedGlossaryTerms, TabType.Schema];
 
 export default function GlossaryTermProfile() {
     const { urn } = useUserParams();
@@ -77,12 +81,22 @@ export default function GlossaryTermProfile() {
         return filteredSearchResult;
     }, [termSearchResult, fieldTermSearchResult]);
 
-    const getTabs = ({ glossaryTermInfo }: GlossaryTerm) => {
+    const getTabs = ({ glossaryTermInfo, glossaryRelatedTerms }: GlossaryTerm) => {
         return [
             {
                 name: TabType.RelatedEntity,
                 path: TabType.RelatedEntity.toLocaleLowerCase(),
                 content: <RelatedEntityResults searchResult={entitySearchForDetails} />,
+            },
+            {
+                name: TabType.RelatedGlossaryTerms,
+                path: TabType.RelatedGlossaryTerms.toLocaleLowerCase(),
+                content: <GlossayRelatedTerms glossaryRelatedTerms={glossaryRelatedTerms || {}} />,
+            },
+            {
+                name: TabType.Schema,
+                path: TabType.Schema.toLocaleLowerCase(),
+                content: <SchemaView rawSchema={glossaryTermInfo.rawSchema || ''} />,
             },
             {
                 name: TabType.Properties,

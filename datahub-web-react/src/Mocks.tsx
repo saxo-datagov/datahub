@@ -11,6 +11,7 @@ import {
 import { GetUserDocument } from './graphql/user.generated';
 import { Dataset, DataFlow, DataJob, GlossaryTerm, EntityType, PlatformType } from './types.generated';
 import { GetTagDocument } from './graphql/tag.generated';
+import { GetGlossaryTermDocument, GetGlossaryTermQuery } from './graphql/glossaryTerm.generated';
 
 const user1 = {
     username: 'sdas',
@@ -483,6 +484,86 @@ const glossaryTerm1 = {
         sourceRef: 'sourceRef',
         sourceURI: 'sourceURI',
     },
+} as GlossaryTerm;
+
+const glossaryTerm2 = {
+    urn: 'urn:li:glossaryTerm:example.glossaryterm1',
+    type: 'GLOSSARY_TERM',
+    name: 'glossaryterm1',
+    hierarchicalName: 'example.glossaryterm1',
+    ownership: null,
+    glossaryTermInfo: {
+        definition: 'is A relation glossary term 1',
+        termSource: 'INTERNAL',
+        sourceRef: 'TERM_SOURCE_SAXO',
+        sourceUrl: '',
+        rawSchema: 'sample proto schema',
+        customProperties: [
+            {
+                key: 'keyProperty',
+                value: 'valueProperty',
+                __typename: 'StringMapEntry',
+            },
+        ],
+        __typename: 'GlossaryTermInfo',
+    },
+    glossaryRelatedTerms: {
+        isRelatedTerms: null,
+        hasRelatedTerms: [
+            {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm3',
+                name: 'glossaryterm3',
+                __typename: 'GlossaryTerm',
+            },
+            {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm4',
+                name: 'glossaryterm4',
+                __typename: 'GlossaryTerm',
+            },
+        ],
+        __typename: 'GlossaryRelatedTerms',
+    },
+    __typename: 'GlossaryTerm',
+} as GlossaryTerm;
+
+const glossaryTerm3 = {
+    urn: 'urn:li:glossaryTerm:example.glossaryterm2',
+    type: 'GLOSSARY_TERM',
+    name: 'glossaryterm2',
+    hierarchicalName: 'example.glossaryterm2',
+    ownership: null,
+    glossaryTermInfo: {
+        definition: 'has A relation glossary term 2',
+        termSource: 'INTERNAL',
+        sourceRef: 'TERM_SOURCE_SAXO',
+        sourceUrl: '',
+        rawSchema: 'sample proto schema',
+        customProperties: [
+            {
+                key: 'keyProperty',
+                value: 'valueProperty',
+                __typename: 'StringMapEntry',
+            },
+        ],
+        __typename: 'GlossaryTermInfo',
+    },
+    glossaryRelatedTerms: {
+        isRelatedTerms: null,
+        hasRelatedTerms: [
+            {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm3',
+                name: 'glossaryterm3',
+                __typename: 'GlossaryTerm',
+            },
+            {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm4',
+                name: 'glossaryterm4',
+                __typename: 'GlossaryTerm',
+            },
+        ],
+        __typename: 'GlossaryRelatedTerms',
+    },
+    __typename: 'GlossaryTerm',
 } as GlossaryTerm;
 
 const sampleTag = {
@@ -1129,6 +1210,32 @@ export const mocks = [
                     ],
                 },
             } as GetSearchResultsQuery,
+        },
+    },
+    {
+        request: {
+            query: GetGlossaryTermDocument,
+            variables: {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm1',
+            },
+        },
+        result: {
+            data: {
+                glossaryTerm: { ...glossaryTerm2 },
+            } as GetGlossaryTermQuery,
+        },
+    },
+    {
+        request: {
+            query: GetGlossaryTermDocument,
+            variables: {
+                urn: 'urn:li:glossaryTerm:example.glossaryterm2',
+            },
+        },
+        result: {
+            data: {
+                glossaryTerm: { ...glossaryTerm3 },
+            },
         },
     },
     {
