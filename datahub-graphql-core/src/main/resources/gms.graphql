@@ -708,6 +708,10 @@ type DataFlowDataJobsRelationships {
     entities: [EntityRelationship]
 }
 
+type GlossaryTermRelationships {
+    entities: [EntityRelationship]
+}
+
 type UpstreamLineage {
     """
     List of upstream datasets

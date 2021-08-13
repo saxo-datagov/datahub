@@ -5,6 +5,7 @@ import com.linkedin.datahub.graphql.generated.Chart;
 import com.linkedin.datahub.graphql.generated.ChartInfo;
 import com.linkedin.datahub.graphql.generated.DashboardInfo;
 import com.linkedin.datahub.graphql.generated.DataJob;
+import com.linkedin.datahub.graphql.generated.GlossaryTerm;
 import com.linkedin.datahub.graphql.generated.DataJobInputOutput;
 import com.linkedin.datahub.graphql.generated.Dataset;
 import com.linkedin.datahub.graphql.generated.Entity;
@@ -42,6 +43,7 @@ import com.linkedin.datahub.graphql.resolvers.search.SearchResolver;
 import com.linkedin.datahub.graphql.resolvers.type.EntityInterfaceTypeResolver;
 import com.linkedin.datahub.graphql.resolvers.type.PlatformSchemaUnionTypeResolver;
 import com.linkedin.datahub.graphql.types.lineage.DownstreamLineageType;
+import com.linkedin.datahub.graphql.types.lineage.GlossaryTermsRelationshipsType;
 import com.linkedin.datahub.graphql.types.lineage.UpstreamLineageType;
 import com.linkedin.datahub.graphql.types.tag.TagType;
 import com.linkedin.datahub.graphql.types.mlmodel.MLModelType;
@@ -96,6 +98,9 @@ public class GmsGraphQLEngine {
     public static final DataFlowDataJobsRelationshipsType DATAFLOW_DATAJOBS_TYPE = new DataFlowDataJobsRelationshipsType(
             GmsClientFactory.getRelationshipsClient()
     );
+    public static final GlossaryTermsRelationshipsType GLOSSARY_TERM_ISA_TYPE = new GlossaryTermsRelationshipsType(
+            GmsClientFactory.getRelationshipsClient()
+    );
     public static final GlossaryTermType GLOSSARY_TERM_TYPE = new GlossaryTermType(GmsClientFactory.getEntitiesClient());
 
     /**
@@ -121,7 +126,8 @@ public class GmsGraphQLEngine {
     public static final List<LoadableType<?>> RELATIONSHIP_TYPES = ImmutableList.of(
             DOWNSTREAM_LINEAGE_TYPE,
             UPSTREAM_LINEAGE_TYPE,
-            DATAFLOW_DATAJOBS_TYPE
+            DATAFLOW_DATAJOBS_TYPE,
+            GLOSSARY_TERM_ISA_TYPE
     );
 
     /**
@@ -190,6 +196,7 @@ public class GmsGraphQLEngine {
         configureTypeExtensions(builder);
         configureTagAssociationResolver(builder);
         configureDataJobResolvers(builder);
+        configureGlossaryRelationshipResolvers(builder);
     }
 
     public static GraphQLEngine.Builder builder() {
@@ -516,6 +523,18 @@ public class GmsGraphQLEngine {
                                 .collect(Collectors.toList())))
                 )
             );
+    }
+
+    private static void configureGlossaryRelationshipResolvers(final RuntimeWiring.Builder builder){
+        builder.type("GlossaryTerm", typeWiring -> typeWiring
+                .dataFetcher("isRelatedTerm", new AuthenticatedResolver<>(
+                        new LoadableTypeResolver<>(
+                                GLOSSARY_TERM_ISA_TYPE,
+                                (env) -> ((GlossaryTerm) env.getSource()).getGlossaryRelatedTerms().getIsRelatedTerms().stream()
+                                        .map(GlossaryTerm::getUrn)
+                                        .collect(Collectors.toList())))
+                )
+        );
     }
 
 
