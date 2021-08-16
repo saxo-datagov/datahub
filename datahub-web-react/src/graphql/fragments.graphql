@@ -219,6 +219,13 @@ fragment nonRecursiveDataJobFields on DataJob {
     }
 }
 
+fragment glossaryTermFields on GlossaryTerm {
+    urn
+    type
+    name
+    hierarchicalName
+}
+
 fragment dataJobFields on DataJob {
     urn
     type

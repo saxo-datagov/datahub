@@ -34,6 +34,8 @@ public class UpstreamLineageType implements LoadableType<UpstreamEntityRelations
                 try {
                     com.linkedin.common.EntityRelationships relationships =
                             _lineageClient.getLineage(urn, _direction);
+                    System.out.println("upstream lineage is " + relationships.toString());
+
                     return UpstreamEntityRelationshipsMapper.map(relationships);
                 } catch (RemoteInvocationException | URISyntaxException e) {
                     throw new RuntimeException(String.format("Failed to batch load DownstreamLineage for entity %s", urn), e);

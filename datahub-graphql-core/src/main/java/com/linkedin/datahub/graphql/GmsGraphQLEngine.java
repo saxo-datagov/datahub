@@ -99,7 +99,8 @@ public class GmsGraphQLEngine {
             GmsClientFactory.getRelationshipsClient()
     );
     public static final GlossaryTermsRelationshipsType GLOSSARY_TERM_ISA_TYPE = new GlossaryTermsRelationshipsType(
-            GmsClientFactory.getRelationshipsClient()
+            GmsClientFactory.getRelationshipsClient(),
+            "IsA"
     );
     public static final GlossaryTermType GLOSSARY_TERM_TYPE = new GlossaryTermType(GmsClientFactory.getEntitiesClient());
 
@@ -527,12 +528,10 @@ public class GmsGraphQLEngine {
 
     private static void configureGlossaryRelationshipResolvers(final RuntimeWiring.Builder builder){
         builder.type("GlossaryTerm", typeWiring -> typeWiring
-                .dataFetcher("isRelatedTerm", new AuthenticatedResolver<>(
+                .dataFetcher("isRelatedTerms", new AuthenticatedResolver<>(
                         new LoadableTypeResolver<>(
                                 GLOSSARY_TERM_ISA_TYPE,
-                                (env) -> ((GlossaryTerm) env.getSource()).getGlossaryRelatedTerms().getIsRelatedTerms().stream()
-                                        .map(GlossaryTerm::getUrn)
-                                        .collect(Collectors.toList())))
+                                (env) -> ((Entity) env.getSource()).getUrn()))
                 )
         );
     }
