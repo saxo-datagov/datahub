@@ -43,7 +43,8 @@ import com.linkedin.datahub.graphql.resolvers.search.SearchResolver;
 import com.linkedin.datahub.graphql.resolvers.type.EntityInterfaceTypeResolver;
 import com.linkedin.datahub.graphql.resolvers.type.PlatformSchemaUnionTypeResolver;
 import com.linkedin.datahub.graphql.types.lineage.DownstreamLineageType;
-import com.linkedin.datahub.graphql.types.lineage.GlossaryTermsRelationshipsType;
+import com.linkedin.datahub.graphql.types.lineage.GlossaryTermsIsARelationshipsType;
+import com.linkedin.datahub.graphql.types.lineage.GlossaryTermsHasARelationshipsType;
 import com.linkedin.datahub.graphql.types.lineage.UpstreamLineageType;
 import com.linkedin.datahub.graphql.types.tag.TagType;
 import com.linkedin.datahub.graphql.types.mlmodel.MLModelType;
@@ -98,9 +99,11 @@ public class GmsGraphQLEngine {
     public static final DataFlowDataJobsRelationshipsType DATAFLOW_DATAJOBS_TYPE = new DataFlowDataJobsRelationshipsType(
             GmsClientFactory.getRelationshipsClient()
     );
-    public static final GlossaryTermsRelationshipsType GLOSSARY_TERM_ISA_TYPE = new GlossaryTermsRelationshipsType(
-            GmsClientFactory.getRelationshipsClient(),
-            "IsA"
+    public static final GlossaryTermsIsARelationshipsType GLOSSARY_TERM_ISA_TYPE = new GlossaryTermsIsARelationshipsType(
+            GmsClientFactory.getRelationshipsClient()
+    );
+    public static final GlossaryTermsHasARelationshipsType GLOSSARY_TERM_HASA_TYPE = new GlossaryTermsHasARelationshipsType(
+            GmsClientFactory.getRelationshipsClient()
     );
     public static final GlossaryTermType GLOSSARY_TERM_TYPE = new GlossaryTermType(GmsClientFactory.getEntitiesClient());
 
@@ -128,7 +131,8 @@ public class GmsGraphQLEngine {
             DOWNSTREAM_LINEAGE_TYPE,
             UPSTREAM_LINEAGE_TYPE,
             DATAFLOW_DATAJOBS_TYPE,
-            GLOSSARY_TERM_ISA_TYPE
+            GLOSSARY_TERM_ISA_TYPE,
+            GLOSSARY_TERM_HASA_TYPE
     );
 
     /**
