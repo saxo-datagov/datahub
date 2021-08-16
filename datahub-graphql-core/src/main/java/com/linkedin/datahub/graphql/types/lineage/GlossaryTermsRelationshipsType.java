@@ -11,13 +11,16 @@ import com.linkedin.datahub.graphql.types.LoadableType;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.linkedin.r2.RemoteInvocationException;
 
 public class GlossaryTermsRelationshipsType implements LoadableType<GlossaryTermRelationships> {
     private final Relationships _relationshipsClient;
-    private final RelationshipDirection _direction =  RelationshipDirection.INCOMING;
+    private final RelationshipDirection _direction =  RelationshipDirection.OUTGOING;
+    private final String _relationshipType;
 
-    public GlossaryTermsRelationshipsType(final Relationships relationshipsClient) {
+    public GlossaryTermsRelationshipsType(final Relationships relationshipsClient, final String relationshipType) {
         _relationshipsClient = relationshipsClient;
+        _relationshipType = relationshipType;
     }
 
     @Override
@@ -32,7 +35,8 @@ public class GlossaryTermsRelationshipsType implements LoadableType<GlossaryTerm
             return keys.stream().map(urn -> {
                 try {
                     com.linkedin.common.EntityRelationships relationships =
-                            _relationshipsClient.getRelationships(urn, _direction, "IsA");
+                            _relationshipsClient.getRelationships(urn, _direction, _relationshipType);
+                    System.out.println("relationships is " + relationships.toString());
                     return GlossaryTermRelationshipMapper.map(relationships);
                 } catch (RemoteInvocationException | URISyntaxException e) {
                     throw new RuntimeException(String.format("Failed to batch load DataJobs for DataFlow %s", urn), e);

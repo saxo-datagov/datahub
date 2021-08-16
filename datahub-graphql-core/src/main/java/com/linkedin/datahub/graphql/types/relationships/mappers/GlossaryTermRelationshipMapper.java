@@ -19,9 +19,11 @@ public class GlossaryTermRelationshipMapper implements
     @Override
     public GlossaryTermRelationships apply(com.linkedin.common.EntityRelationships input) {
         final GlossaryTermRelationships result = new GlossaryTermRelationships();
+        System.out.println(input.toString());
         result.setEntities(input.getEntities().stream().map(
                 EntityRelationshipMapper::map
         ).collect(Collectors.toList()));
+        System.out.println("inside apply" + result.toString());
         return result;
     }
 }
