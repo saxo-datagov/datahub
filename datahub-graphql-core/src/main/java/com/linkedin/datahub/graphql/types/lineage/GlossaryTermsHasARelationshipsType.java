@@ -1,8 +1,8 @@
 package com.linkedin.datahub.graphql.types.lineage;
 import com.linkedin.datahub.graphql.QueryContext;
 import com.linkedin.datahub.graphql.generated.DataFlowDataJobsRelationships;
-import com.linkedin.datahub.graphql.generated.GlossaryTermRelationships;
-import com.linkedin.datahub.graphql.types.relationships.mappers.GlossaryTermRelationshipMapper;
+import com.linkedin.datahub.graphql.generated.GlossaryTermHasARelationships;
+import com.linkedin.datahub.graphql.types.relationships.mappers.GlossaryTermHasARelationshipMapper;
 import com.linkedin.lineage.client.Relationships;
 import com.linkedin.metadata.query.RelationshipDirection;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.linkedin.r2.RemoteInvocationException;
 
-public class GlossaryTermsHasARelationshipsType implements LoadableType<GlossaryTermRelationships> {
+public class GlossaryTermsHasARelationshipsType implements LoadableType<GlossaryTermHasARelationships> {
     private final Relationships _relationshipsClient;
     private final RelationshipDirection _direction =  RelationshipDirection.OUTGOING;
 
@@ -22,12 +22,12 @@ public class GlossaryTermsHasARelationshipsType implements LoadableType<Glossary
     }
 
     @Override
-    public Class<GlossaryTermRelationships> objectClass() {
-        return GlossaryTermRelationships.class;
+    public Class<GlossaryTermHasARelationships> objectClass() {
+        return GlossaryTermHasARelationships.class;
     }
 
     @Override
-    public List<GlossaryTermRelationships> batchLoad(final List<String> keys, final QueryContext context) {
+    public List<GlossaryTermHasARelationships> batchLoad(final List<String> keys, final QueryContext context) {
 
         try {
             return keys.stream().map(urn -> {
@@ -35,7 +35,7 @@ public class GlossaryTermsHasARelationshipsType implements LoadableType<Glossary
                     com.linkedin.common.EntityRelationships relationships =
                             _relationshipsClient.getRelationships(urn, _direction, "HasA");
                     System.out.println("relationships is " + relationships.toString());
-                    return GlossaryTermRelationshipMapper.map(relationships);
+                    return GlossaryTermHasARelationshipMapper.map(relationships);
                 } catch (RemoteInvocationException | URISyntaxException e) {
                     throw new RuntimeException(String.format("Failed to batch load DataJobs for DataFlow %s", urn), e);
                 }

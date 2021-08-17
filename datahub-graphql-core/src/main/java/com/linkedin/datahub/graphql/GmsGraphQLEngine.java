@@ -536,6 +536,10 @@ public class GmsGraphQLEngine {
                         new LoadableTypeResolver<>(
                                 GLOSSARY_TERM_ISA_TYPE,
                                 (env) -> ((Entity) env.getSource()).getUrn()))
+                ).dataFetcher("hasRelatedTerms", new AuthenticatedResolver<>(
+                        new LoadableTypeResolver<>(
+                                GLOSSARY_TERM_HASA_TYPE,
+                                (env) -> ((Entity) env.getSource()).getUrn()))
                 )
         );
     }

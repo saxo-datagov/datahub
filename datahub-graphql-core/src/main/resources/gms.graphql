@@ -330,19 +330,14 @@ type GlossaryTerm implements EntityWithRelationships & Entity {
     glossaryTermInfo: GlossaryTermInfo!
 
     """
-    Internal relationship of glossary terms
-    """
-    glossaryRelatedTerms: GlossaryRelatedTerms
-
-    """
     Is related terms
     """
-    isRelatedTerms: GlossaryTermRelationships
+    isRelatedTerms: GlossaryTermIsARelationships
 
     """
     Has related terms
     """
-    hasRelatedTerms: GlossaryTermRelationships
+    hasRelatedTerms: GlossaryTermHasARelationships
 
     """
     Entities upstream of the given entity
@@ -387,17 +382,6 @@ type GlossaryTermInfo {
     rawSchema: String
 }
 
-type GlossaryRelatedTerms {
-    """
-    Glossary terms having isA relationship
-    """
-    isRelatedTerms: [GlossaryTerm]
-
-    """
-    Glossary terms having hasA relationship
-    """
-    hasRelatedTerms: [GlossaryTerm]
-}
 
 type DataPlatform implements Entity {
     """
@@ -728,9 +712,14 @@ type DataFlowDataJobsRelationships {
     entities: [EntityRelationship]
 }
 
-type GlossaryTermRelationships {
+type GlossaryTermIsARelationships {
     entities: [EntityRelationship]
 }
+
+type GlossaryTermHasARelationships {
+    entities: [EntityRelationship]
+}
+ 
 
 type UpstreamLineage {
     """

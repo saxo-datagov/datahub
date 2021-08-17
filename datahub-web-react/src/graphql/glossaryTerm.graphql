@@ -40,15 +40,5 @@ query getGlossaryTerm($urn: String!) {
                 value
             }
         }
-        glossaryRelatedTerms {
-            isRelatedTerms {
-                urn
-                name
-            }
-            hasRelatedTerms {
-                urn
-                name
-            }
-        }
     }
 }
