@@ -4,6 +4,28 @@ query getGlossaryTerm($urn: String!) {
         type
         name
         hierarchicalName
+        isRelatedTerms {
+            entities {
+                entity {
+                    urn
+                    type    
+                }
+            }
+        }
+        hasRelatedTerms {
+            entities {
+                entity {
+                    urn
+                    type    
+                }
+            }
+        }
+        downstreamLineage {
+            ...downstreamRelationshipFields
+        }
+        upstreamLineage {
+            ...upstreamRelationshipFields
+        }
         ownership {
             ...ownershipFields
         }
@@ -16,16 +38,6 @@ query getGlossaryTerm($urn: String!) {
             customProperties {
                 key
                 value
-            }
-        }
-        glossaryRelatedTerms {
-            isRelatedTerms {
-                urn
-                name
-            }
-            hasRelatedTerms {
-                urn
-                name
             }
         }
     }
