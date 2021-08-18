@@ -2689,5 +2689,73 @@
       }
     },
     "proposedDelta": null
+  },
+  {
+    "auditHeader": null,
+    "proposedSnapshot": {
+      "com.linkedin.pegasus2avro.metadata.snapshot.GlossaryTermSnapshot": {
+        "urn": "urn:li:glossaryTerm:schema.SampleKafkaSchema_v1",
+        "aspects": [{
+          "com.linkedin.pegasus2avro.glossary.GlossaryTermInfo": {
+            "definition": "Sample Kafka dataset",
+            "termSource": "EXTERNAL",
+            "parentNode": null,
+            "sourceRef": {
+              "string": "FIBO"
+            },
+            "sourceUrl": {
+              "string": "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"
+            },
+            "customProperties": {
+              "FQDN": "topic.proto.schema.v1.SampleKafkaSchema"
+            },
+            "rawSchema": {
+              "string": "syntax = \"proto3\";\n\npackage topic.proto.schema.v1;\n\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field16.proto\";\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field23.proto\";\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field24.proto\";\n\noption csharp_namespace = \"com.linkedin.dataset.v1.Protobuf\";\n\n\/\/ Sample Kafka dataset\nmessage SampleKafkaSchema {\n  option (iit.datahub.common.options.v1.term_source) = FIBO;\n  option (iit.datahub.common.options.v1.term_source_ref) = \"https:\/\/spec.edmcouncil.org\/fibo\/ontology\/FND\/Accounting\/CurrencyAmount\/Currency\";\n\n  option (iit.datahub.common.options.csharp_asstruct) = true;\n\n  \/\/ field 1 description\n  bool field1 = 1;\n\n  \/\/ field 2 description\n  int32 field2 = 2;\n\n  \/\/ field 3 description\n  int64 field3 = 3;\n\n  \/\/ field 4 description\n  uint32 field4 = 4;\n\n  \/\/ field 5 description\n  uint64 field5 = 5;\n\n  \/\/ field 6 description\n  sint32 field6 = 6;\n\n  \/\/ field 7 description\n  sint64 field7 = 7;\n\n  \/\/ field 8 description\n  fixed32 field8 = 8;\n\n  \/\/ field 9 description\n  fixed64 field9 = 9;\n\n  \/\/ field 10 description\n  sfixed32 field10 = 10;\n\n  \/\/ field 11 description\n  sfixed64 field11 = 11;\n\n  \/\/ field 12 description\n  float field12 = 12;\n\n  \/\/ field 13 description\n  double field13 = 13;\n\n  \/\/ field 14 description\n  bytes field14 = 14;\n\n  \/\/ field 15 description\n  string field15 = 15;\n\n\n  topic.proto.schema.subdomain.v1.Field16Schema field16 = 16;\n\n  \/\/ field 17 description\n  repeated string field17 = 17;\n\n  \/\/ field 18 description\n  repeated string field18 = 18;\n\n  \/\/ field 19 description\n  Corpus field19 = 19;\n\n  \/\/ field 20 description\n  map<string, Corpus> field20 = 20;\n\n  \/\/ field 21 description\n  oneof field21 {\n    string name = 21;\n    SubMessage sub_message = 22;\n  }\n\n  \/\/ field 23 description\n  topic.proto.schema.subdomain.v1.Field23Schema field23 = 23;\n\n  \/\/ field 24 description\n  string field24 = 2 [(iit.datahub.common.options.v1.field_term_link) = \"topic.proto.schema.subdomain.v1.Field24Schema\"];\n\n  \/\/ date description\n  Date date = 25;\n\n\/\/ Date\nmessage Date {\n  \/\/ day\n  int32 day = 1;\n\n  \/\/ month\n  int32 month = 2;\n\n  \/\/ year\n  int32 year = 3;\n  }\n}"
+            }
+          }
+        }, {
+          "com.linkedin.pegasus2avro.glossary.GlossaryRelatedTerms": {
+            "isRelatedTerms": null,
+            "hasRelatedTerms": {
+              "array": ["urn:li:glossaryTerm:schema.Field16Schema_v1", "urn:li:glossaryTerm:schema.Corpus_v1", "urn:li:glossaryTerm:schema.Field23Schema_v1", "urn:li:glossaryTerm:schema.Field24Schema_v1", "urn:li:glossaryTerm:schema.Date_v1"]
+            }
+          }
+        }]
+      }
+    },
+    "proposedDelta": null
+  },
+  {
+    "auditHeader": null,
+    "proposedSnapshot": {
+      "com.linkedin.pegasus2avro.metadata.snapshot.GlossaryTermSnapshot": {
+        "urn": "urn:li:glossaryTerm:schema.Field16Schema_v1",
+        "aspects": [{
+          "com.linkedin.pegasus2avro.glossary.GlossaryTermInfo": {
+            "definition": "Sample Field 16 Schema",
+            "termSource": "EXTERNAL",
+            "parentNode": null,
+            "sourceRef": {
+              "string": "FIBO"
+            },
+            "sourceUrl": {
+              "string": "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"
+            },
+            "customProperties": {
+              "FQDN": "topic.proto.schema.v1.SampleKafkaSchema"
+            },
+            "rawSchema": {
+              "string": "syntax = \"proto3\";\n\npackage topic.proto.schema.v1;\n\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field16.proto\";\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field23.proto\";\nimport \"topic\/proto\/schema\/subdomain\/v1\/Field24.proto\";\n\noption csharp_namespace = \"com.linkedin.dataset.v1.Protobuf\";\n\n\/\/ Sample Kafka dataset\nmessage SampleKafkaSchema {\n  option (iit.datahub.common.options.v1.term_source) = FIBO;\n  option (iit.datahub.common.options.v1.term_source_ref) = \"https:\/\/spec.edmcouncil.org\/fibo\/ontology\/FND\/Accounting\/CurrencyAmount\/Currency\";\n\n  option (iit.datahub.common.options.csharp_asstruct) = true;\n\n  \/\/ field 1 description\n  bool field1 = 1;\n\n  \/\/ field 2 description\n  int32 field2 = 2;\n\n  \/\/ field 3 description\n  int64 field3 = 3;\n\n  \/\/ field 4 description\n  uint32 field4 = 4;\n\n  \/\/ field 5 description\n  uint64 field5 = 5;\n\n  \/\/ field 6 description\n  sint32 field6 = 6;\n\n  \/\/ field 7 description\n  sint64 field7 = 7;\n\n  \/\/ field 8 description\n  fixed32 field8 = 8;\n\n  \/\/ field 9 description\n  fixed64 field9 = 9;\n\n  \/\/ field 10 description\n  sfixed32 field10 = 10;\n\n  \/\/ field 11 description\n  sfixed64 field11 = 11;\n\n  \/\/ field 12 description\n  float field12 = 12;\n\n  \/\/ field 13 description\n  double field13 = 13;\n\n  \/\/ field 14 description\n  bytes field14 = 14;\n\n  \/\/ field 15 description\n  string field15 = 15;\n\n\n  topic.proto.schema.subdomain.v1.Field16Schema field16 = 16;\n\n  \/\/ field 17 description\n  repeated string field17 = 17;\n\n  \/\/ field 18 description\n  repeated string field18 = 18;\n\n  \/\/ field 19 description\n  Corpus field19 = 19;\n\n  \/\/ field 20 description\n  map<string, Corpus> field20 = 20;\n\n  \/\/ field 21 description\n  oneof field21 {\n    string name = 21;\n    SubMessage sub_message = 22;\n  }\n\n  \/\/ field 23 description\n  topic.proto.schema.subdomain.v1.Field23Schema field23 = 23;\n\n  \/\/ field 24 description\n  string field24 = 2 [(iit.datahub.common.options.v1.field_term_link) = \"topic.proto.schema.subdomain.v1.Field24Schema\"];\n\n  \/\/ date description\n  Date date = 25;\n\n\/\/ Date\nmessage Date {\n  \/\/ day\n  int32 day = 1;\n\n  \/\/ month\n  int32 month = 2;\n\n  \/\/ year\n  int32 year = 3;\n  }\n}"
+            }
+          }
+        }, {
+          "com.linkedin.pegasus2avro.glossary.GlossaryRelatedTerms": {
+            "isRelatedTerms": null,
+            "hasRelatedTerms": null
+          }
+        }]
+      }
+    },
+    "proposedDelta": null
   }
 ]
