@@ -52,9 +52,9 @@ export class DashboardEntity implements Entity<Dashboard> {
         );
     };
 
-    isSearchEnabled = () => true;
+    isSearchEnabled = () => false;
 
-    isBrowseEnabled = () => true;
+    isBrowseEnabled = () => false;
 
     isLineageEnabled = () => true;
 

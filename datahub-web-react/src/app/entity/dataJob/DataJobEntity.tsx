@@ -43,7 +43,7 @@ export class DataJobEntity implements Entity<DataJob> {
         );
     };
 
-    isSearchEnabled = () => true;
+    isSearchEnabled = () => false;
 
     isBrowseEnabled = () => false;
 

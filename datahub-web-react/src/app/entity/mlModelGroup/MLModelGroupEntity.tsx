@@ -32,9 +32,9 @@ export class MLModelGroupEntity implements Entity<MlModelGroup> {
         );
     };
 
-    isSearchEnabled = () => true;
+    isSearchEnabled = () => false;
 
-    isBrowseEnabled = () => true;
+    isBrowseEnabled = () => false;
 
     isLineageEnabled = () => true;
 
