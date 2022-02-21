@@ -1,5 +1,6 @@
 package com.linkedin.gms.factory.kafka;
 
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import com.linkedin.gms.factory.kafka.schemaregistry.AwsGlueSchemaRegistryFactory;
 import com.linkedin.gms.factory.kafka.schemaregistry.KafkaSchemaRegistryFactory;
 import com.linkedin.gms.factory.kafka.schemaregistry.SchemaRegistryConfig;
@@ -66,7 +67,8 @@ public class KafkaEventProducerFactory {
 
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, schemaRegistryConfig.getSerializer().getName());
     props.putAll(schemaRegistryConfig.getProperties());
-
+    props.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
+    props.put(AbstractKafkaSchemaSerDeConfig.USE_LATEST_VERSION, true);
     return new KafkaProducer<>(props);
   }
 }

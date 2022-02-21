@@ -9,11 +9,11 @@ node {
   if (project.hasProperty('useSystemNode') && project.getProperty('useSystemNode').toBoolean()) {
     download = false
   } else {
-    download = true
+    download = false
   }
 
   // Version of node to use.
-  version = '16.8.0'
+  version = '14.15.3'
 
   // Version of Yarn to use.
   yarnVersion = '1.22.0'

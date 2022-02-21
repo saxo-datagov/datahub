@@ -9,7 +9,9 @@
             <level>INFO</level>
         </filter>
     </appender>
-
+    <appender name="json_console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/gms.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -56,7 +58,7 @@
     </logger>
 
     <logger name="org.apache.kafka.clients" level="INFO">
-        <appender-ref ref="STDOUT" />
+       <appender-ref ref="json_console" />
     </logger>
 
     <logger name="org.reflections.Reflections" level="ERROR">
@@ -69,7 +71,7 @@
 
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+       <appender-ref ref="json_console" />
         <appender-ref ref="FILE"/>
     </root>
 </configuration>

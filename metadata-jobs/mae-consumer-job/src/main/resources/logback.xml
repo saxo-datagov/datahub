@@ -6,6 +6,9 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="json_console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/mae-consumer-job.log</file>
@@ -24,7 +27,7 @@
     </appender>
 
     <root level="info">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="json_console"/>
         <appender-ref ref="FILE"/>
     </root>
 </configuration>

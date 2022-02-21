@@ -13,13 +13,15 @@ dependencies {
 
   runtime externalDependency.h2
   runtime externalDependency.logbackClassic
+  runtime externalDependency.logstash
   runtime externalDependency.mariadbConnector
   runtime externalDependency.mysqlConnector
   runtime externalDependency.postgresql
   runtime externalDependency.springWebMVC
 
   runtime spec.product.pegasus.restliDocgen
-  runtime spec.product.pegasus.restliSpringBridge
+  runtime spec.product.pegasus.restliSpringBridge  
+  implementation 'com.saxobank.datagov.tools:oauth-utils:1.0.3'
 
   implementation externalDependency.awsMskIamAuth
 }

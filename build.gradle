@@ -136,6 +136,8 @@ project.ext.externalDependency = [
     'testContainersElasticsearch': 'org.testcontainers:elasticsearch:1.15.3',
     'typesafeConfig':'com.typesafe:config:1.4.1',
     'wiremock':'com.github.tomakehurst:wiremock:2.10.0',
+    'logstash': 'net.logstash.logback:logstash-logback-encoder:6.0',
+    'testng': 'org.testng:testng:6.9.9',
     'zookeeper': 'org.apache.zookeeper:zookeeper:3.4.14'
 ]
 

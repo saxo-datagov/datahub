@@ -1488,7 +1488,7 @@ export const mocks = [
                     type: 'DATASET',
                     query: 'test',
                     start: 0,
-                    count: 10,
+                    count: 5,
                     filters: [],
                 },
             },
@@ -1554,7 +1554,7 @@ export const mocks = [
                     type: 'DATASET',
                     query: 'test',
                     start: 0,
-                    count: 10,
+                    count: 5,
                     filters: [
                         {
                             field: 'platform',
@@ -1699,7 +1699,7 @@ export const mocks = [
                     type: 'DATASET',
                     query: 'test',
                     start: 0,
-                    count: 10,
+                    count: 5,
                     filters: [
                         {
                             field: 'platform',
@@ -1765,7 +1765,7 @@ export const mocks = [
                     type: 'USER',
                     query: 'Test',
                     start: 0,
-                    count: 10,
+                    count: 5,
                 },
             },
         },
@@ -1986,7 +1986,7 @@ export const mocks = [
                     type: 'DATA_FLOW',
                     query: 'Sample',
                     start: 0,
-                    count: 10,
+                    count: 5,
                     filters: [],
                 },
             },
@@ -2129,7 +2129,7 @@ export const mocks = [
                     type: 'DATA_JOB',
                     query: 'Sample',
                     start: 0,
-                    count: 10,
+                    count: 5,
                     filters: [],
                 },
             },
