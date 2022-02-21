@@ -16,6 +16,7 @@ import com.linkedin.metadata.models.EntitySpec;
 import com.linkedin.metadata.models.registry.EntityRegistry;
 import com.linkedin.metadata.utils.EntityKeyUtils;
 import java.net.URISyntaxException;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -63,7 +64,8 @@ public class BrowsePathUtils {
       case "glossaryTerm":
         // TODO: Is this the best way to represent glossary term key?
         GlossaryTermKey glossaryTermKey = (GlossaryTermKey) EntityKeyUtils.convertUrnToEntityKey(urn, getKeySchema(urn.getEntityType(), entityRegistry));
-        return "/" + glossaryTermKey.getName().replace('.', '/').toLowerCase();
+        String[] nodes = glossaryTermKey.getName().split(Pattern.quote("."), 2);
+        return "/" + String.join("/", nodes).toLowerCase();
       default:
         return "";
     }

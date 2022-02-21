@@ -19,7 +19,7 @@ public class GlossaryTermUtils {
 
     public static String getGlossaryTermName(String hierarchicalName) {
         if (hierarchicalName.contains(".")) {
-            String[] nodes = hierarchicalName.split(Pattern.quote("."));
+            String[] nodes = hierarchicalName.split(Pattern.quote("."), 2);
             return nodes[nodes.length - 1];
         }
         return hierarchicalName;
