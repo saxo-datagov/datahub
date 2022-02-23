@@ -1122,6 +1122,36 @@ enum FabricType {
     Designates corporation fabrics
     """
     CORP
+
+    """
+    Designates development fabrics
+    """
+    AZDEV
+
+    """
+    Designates development fabrics
+    """
+    DKDEV
+
+    """
+    Designates development fabrics
+    """
+    AZTEST
+
+    """
+    Designates development fabrics
+    """
+    DKTEST
+
+    """
+    Designates development fabrics
+    """
+    AZPROD
+
+    """
+    Designates development fabrics
+    """
+    DKPROD
 }
 
 """

@@ -736,10 +736,16 @@
     "name" : "FabricType",
     "namespace" : "com.linkedin.common",
     "doc" : "Fabric group type",
-    "symbols" : [ "DEV", "TEST", "QA", "UAT", "EI", "STG", "NON_PROD", "PROD", "CORP" ],
+    "symbols" : [ "DEV", "TEST", "QA", "UAT", "EI", "STG", "NON_PROD", "PROD", "CORP", "AZDEV", "DKDEV", "AZTEST", "DKTEST", "AZPROD", "DKPROD" ],
     "symbolDocs" : {
+      "AZDEV" : "Designates AZDEV fabrics",
+      "AZPROD" : "Designates AZPROD fabrics",
+      "AZTEST" : "Designates AZTEST fabrics",
       "CORP" : "Designates corporation fabrics",
       "DEV" : "Designates development fabrics",
+      "DKDEV" : "Designates DKDEV fabrics",
+      "DKPROD" : "Designates DKPROD fabrics",
+      "DKTEST" : "Designates DKTEST fabrics",
       "EI" : "Designates early-integration fabrics",
       "NON_PROD" : "Designates non-production fabrics",
       "PROD" : "Designates production fabrics",
@@ -1521,6 +1527,7 @@
     "name" : "GlossaryTermInfo",
     "namespace" : "com.linkedin.glossary",
     "doc" : "Properties associated with a GlossaryTerm",
+    "include" : [ "com.linkedin.common.CustomProperties" ],
     "fields" : [ {
       "name" : "definition",
       "type" : "string",
@@ -1551,14 +1558,6 @@
       "type" : "com.linkedin.common.Url",
       "doc" : "The abstracted URL such as https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/CashInstrument.",
       "optional" : true
-    }, {
-      "name" : "customProperties",
-      "type" : {
-        "type" : "map",
-        "values" : "string"
-      },
-      "doc" : "A key-value map to capture any other non-standardized properties for the glossary term",
-      "default" : { }
     }, {
       "name" : "rawSchema",
       "type" : "string",

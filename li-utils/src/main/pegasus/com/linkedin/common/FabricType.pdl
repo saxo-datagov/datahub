@@ -49,4 +49,34 @@ enum FabricType {
    * Designates corporation fabrics
    */
   CORP
+
+  /**
+   * Designates AZDEV fabrics
+   */
+  AZDEV
+
+  /**
+   * Designates DKDEV fabrics
+   */
+  DKDEV
+
+  /**
+   * Designates AZTEST fabrics
+   */
+  AZTEST
+
+  /**
+   * Designates DKTEST fabrics
+   */
+  DKTEST
+
+  /**
+   * Designates AZPROD fabrics
+   */
+  AZPROD
+
+  /**
+   * Designates DKPROD fabrics
+   */
+  DKPROD
 }
