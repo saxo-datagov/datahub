@@ -66,7 +66,7 @@ public class ListPoliciesResolver implements DataFetcher<CompletableFuture<ListP
         }
       });
     }
-    throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+    throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
   }
 
   private List<Policy> mapEntities(final Collection<Entity> entities) {

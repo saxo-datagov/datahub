@@ -191,7 +191,7 @@ public class DashboardType implements SearchableEntityType<Dashboard>, Browsable
 
             return load(urn, context).getData();
         }
-        throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+        throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
     }
 
     private boolean isAuthorized(@Nonnull String urn, @Nonnull DashboardUpdateInput update, @Nonnull QueryContext context) {

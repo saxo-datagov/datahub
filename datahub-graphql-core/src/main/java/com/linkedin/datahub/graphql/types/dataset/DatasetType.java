@@ -191,7 +191,7 @@ public class DatasetType implements SearchableEntityType<Dataset>, BrowsableEnti
 
             return load(urn, context).getData();
         }
-        throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+        throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
     }
 
     private boolean isAuthorized(@Nonnull String urn, @Nonnull DatasetUpdateInput update, @Nonnull QueryContext context) {

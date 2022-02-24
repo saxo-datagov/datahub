@@ -204,7 +204,7 @@ public class ChartType implements SearchableEntityType<Chart>, BrowsableEntityTy
 
             return load(urn, context).getData();
         }
-        throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+        throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
     }
 
     private boolean isAuthorized(@Nonnull String urn, @Nonnull ChartUpdateInput update, @Nonnull QueryContext context) {

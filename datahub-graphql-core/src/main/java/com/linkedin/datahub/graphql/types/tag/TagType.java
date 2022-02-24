@@ -137,7 +137,7 @@ public class TagType implements com.linkedin.datahub.graphql.types.SearchableEnt
 
             return load(urn, context).getData();
         }
-        throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+        throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
     }
 
     private TagUrn getTagUrn(final String urnStr) {

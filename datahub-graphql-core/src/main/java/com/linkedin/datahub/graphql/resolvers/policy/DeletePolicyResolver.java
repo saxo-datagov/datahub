@@ -39,6 +39,6 @@ public class DeletePolicyResolver implements DataFetcher<CompletableFuture<Strin
         }
       });
     }
-    throw new AuthorizationException("Unauthorized to perform this action. Please contact your DataHub administrator.");
+    throw new AuthorizationException("Unauthorized to perform this action. Please contact your Data workbench support.");
   }
 }
