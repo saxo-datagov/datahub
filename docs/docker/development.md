@@ -33,7 +33,7 @@ JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspe
 ```yml
 # Change the definition in docker/docker-compose.dev.yml to this
   datahub-gms:
-    image: linkedin/datahub-gms:debug
+    image: artifacts.cf.saxo/docker/linkedin/datahub-gms:debug
     build:
       context: datahub-gms/debug
       dockerfile: Dockerfile
