@@ -34,7 +34,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -59,7 +60,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -84,7 +86,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -109,7 +112,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -134,7 +138,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -159,7 +164,8 @@
         "allUsers":false,
         "allGroups":false,
         "users":[
-          "urn:li:corpuser:datahub"
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:RANM"
         ]
       },
       "privileges":[
@@ -181,17 +187,19 @@
     "info": {
       "actors":{
         "resourceOwners":false,
-        "allUsers":true,
-        "allGroups":false
+        "allUsers":false,
+        "allGroups":false,
+        "users":[
+          "urn:li:corpuser:HESE",
+          "urn:li:corpuser:GRAM",
+          "urn:li:corpuser:RANM"
+        ]
       },
       "privileges":[
-        "VIEW_ANALYTICS",
-        "MANAGE_POLICIES",
-        "MANAGE_USERS_AND_GROUPS",
-        "GENERATE_PERSONAL_ACCESS_TOKENS"
+        "MANAGE_POLICIES"
       ],
-      "displayName":"All Users - All Platform Privileges",
-      "description":"Grants full platform privileges to ALL users of DataHub. Change this policy to alter that behavior.",
+      "displayName":"DWB Admin Users - Default Policy Privileges",
+      "description":"Grants full ability to manage policies to dataworkbench administrators",
       "state":"ACTIVE",
       "type":"PLATFORM",
       "editable":true
@@ -202,24 +210,17 @@
     "info": {
       "actors":{
         "resourceOwners":false,
-        "allUsers":false,
-        "allGroups":false,
-        "users":[
-          "urn:li:corpuser:datahub"
-        ]
+        "allUsers":true,
+        "allGroups":false
       },
       "privileges":[
-        "EDIT_ENTITY"
+        "VIEW_ANALYTICS"
       ],
-      "displayName":"Root User - Edit All Containers",
-      "resources":{
-        "type":"container",
-        "allResources":true
-      },
-      "description":"Grants full edit privileges for Containers to root 'datahub' root user.",
+      "displayName":"DWB All Users -  Default Analytics Privileges",
+      "description":"Grants full ability to view analytics to all dataworkbench users",
       "state":"ACTIVE",
-      "type":"METADATA",
-      "editable":false
+      "type":"PLATFORM",
+      "editable":true
     }
   }
 ]
