@@ -42,9 +42,7 @@ export default function GlossarySidebarAboutSection() {
                             {source}
                         </a>
                     ) : (
-                        {
-                            source,
-                        }
+                        <p>{source}</p>
                     )}
                 </DescriptionTypography>
             )}
