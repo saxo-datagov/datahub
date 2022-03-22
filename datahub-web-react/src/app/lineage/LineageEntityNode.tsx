@@ -10,6 +10,7 @@ import { ANTD_GRAY } from '../entity/shared/constants';
 import { capitalizeFirstLetter } from '../shared/textUtil';
 import { nodeHeightFromTitleLength } from './utils/nodeHeightFromTitleLength';
 import { LineageExplorerContext } from './utils/LineageExplorerContext';
+import { getOriginName } from '../entity/shared/getOriginName';
 
 const CLICK_DELAY_THRESHOLD = 1000;
 const DRAG_DISTANCE_THRESHOLD = 20;
@@ -262,6 +263,13 @@ export default function LineageEntityNode({
                         </tspan>
                         <tspan dx=".25em" dy="-2px">
                             {capitalizeFirstLetter(node.data.subtype || node.data.type)}
+                        </tspan>
+                        <tspan dx=".25em" dy="2px" fill="#dadada" fontSize={12} fontWeight="normal">
+                            {' '}
+                            |{' '}
+                        </tspan>
+                        <tspan dx=".25em" dy="-2px">
+                            {truncate(getOriginName(node?.data?.urn?.split(':')[6]?.split(',')[2]), 16)}
                         </tspan>
                     </UnselectableText>
                     {expandTitles ? (

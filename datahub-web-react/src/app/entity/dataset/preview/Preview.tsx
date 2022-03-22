@@ -58,6 +58,7 @@ export const Preview = ({
             platform={capitalPlatformName}
             qualifier={origin}
             tags={globalTags || undefined}
+            origin={origin}
             owners={owners}
             domain={domain}
             container={container || undefined}

@@ -7,6 +7,7 @@ import {
     GlobalTags,
     Owner,
     GlossaryTerms,
+    FabricType,
     SearchInsight,
     Container,
     Entity,
@@ -20,6 +21,8 @@ import { ANTD_GRAY } from '../entity/shared/constants';
 import NoMarkdownViewer from '../entity/shared/components/styled/StripMarkdownText';
 import { getNumberWithOrdinal } from '../entity/shared/utils';
 import { useEntityData } from '../entity/shared/EntityContext';
+import { getOriginName } from '../entity/shared/getOriginName';
+import { getPhysicalEnv } from '../entity/shared/getPhysicalEnv';
 
 const PreviewContainer = styled.div`
     display: flex;
@@ -140,6 +143,7 @@ interface Props {
     qualifier?: string | null;
     tags?: GlobalTags;
     owners?: Array<Owner> | null;
+    origin?: FabricType;
     snippet?: React.ReactNode;
     insights?: Array<SearchInsight> | null;
     glossaryTerms?: GlossaryTerms;
@@ -162,6 +166,7 @@ export default function DefaultPreviewCard({
     description,
     type,
     typeIcon,
+    origin,
     platform,
     // TODO(Gabe): support qualifier in the new preview card
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -206,6 +211,10 @@ export default function DefaultPreviewCard({
                             {(logoUrl || logoComponent || platform) && <PlatformDivider />}
                             {typeIcon && <TypeIcon>{typeIcon}</TypeIcon>}
                             <PlatformText>{type}</PlatformText>
+                            <PlatformDivider />
+                            <PlatformText>{getPhysicalEnv(origin)}</PlatformText>
+                            <PlatformDivider />
+                            <PlatformText>{getOriginName(origin)}</PlatformText>
                             {container && (
                                 <Link to={entityRegistry.getEntityUrl(EntityType.Container, container?.urn)}>
                                     <PlatformDivider />

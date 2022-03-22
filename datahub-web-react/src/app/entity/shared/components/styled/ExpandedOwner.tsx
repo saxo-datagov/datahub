@@ -35,11 +35,11 @@ export const ExpandedOwner = ({ entityUrn, owner, refetch }: Props) => {
     }
     if (owner.owner.__typename === 'CorpUser') {
         name =
-        owner.owner.info?.displayName ||
-        owner.owner.info?.fullName ||
-        owner.owner.info?.email ||
-        owner.owner.username ||
-        '';
+            owner.owner.info?.displayName ||
+            owner.owner.info?.fullName ||
+            owner.owner.info?.email ||
+            owner.owner.username ||
+            '';
     }
 
     const pictureLink = undefined;

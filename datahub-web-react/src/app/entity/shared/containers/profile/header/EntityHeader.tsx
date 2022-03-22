@@ -10,6 +10,8 @@ import { IconStyleType } from '../../../../Entity';
 import { ANTD_GRAY } from '../../../constants';
 import { useEntityData } from '../../../EntityContext';
 import { useEntityPath } from '../utils';
+import { getOriginName } from '../../../getOriginName';
+import { getPhysicalEnv } from '../../../getPhysicalEnv';
 import analytics, { EventType, EntityActionType } from '../../../../../analytics';
 
 const LogoContainer = styled.span`
@@ -106,6 +108,7 @@ export const EntityHeader = () => {
     const entityPath = useEntityPath(entityType, urn);
     const externalUrl = entityData?.externalUrl || undefined;
     const hasExternalUrl = !!externalUrl;
+    const origin = (entityData as any)?.origin;
 
     const sendAnalytics = () => {
         analytics.event({
@@ -135,6 +138,10 @@ export const EntityHeader = () => {
                     {(platformLogoUrl || platformName) && <PlatformDivider />}
                     {typeIcon && <TypeIcon>{typeIcon}</TypeIcon>}
                     <PlatformText>{entityData?.entityTypeOverride || entityTypeCased}</PlatformText>
+                    <PlatformDivider />
+                    <PlatformText>{getPhysicalEnv(origin)}</PlatformText>
+                    <PlatformDivider />
+                    <PlatformText>{getOriginName(origin)}</PlatformText>
                     {container && (
                         <Link to={entityRegistry.getEntityUrl(EntityType.Container, container?.urn)}>
                             <PlatformDivider />

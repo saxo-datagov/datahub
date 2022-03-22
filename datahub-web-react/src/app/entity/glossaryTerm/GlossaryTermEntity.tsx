@@ -20,6 +20,8 @@ import { PropertiesTab } from '../shared/tabs/Properties/PropertiesTab';
 export class GlossaryTermEntity implements Entity<GlossaryTerm> {
     type: EntityType = EntityType.GlossaryTerm;
 
+    entityType = EntityType.GlossaryTerm;
+
     icon = (fontSize: number, styleType: IconStyleType) => {
         if (styleType === IconStyleType.TAB_VIEW) {
             return <BookOutlined style={{ fontSize }} />;
@@ -59,11 +61,7 @@ export class GlossaryTermEntity implements Entity<GlossaryTerm> {
                 urn={urn}
                 entityType={EntityType.GlossaryTerm}
                 useEntityQuery={useGetGlossaryTermQuery as any}
-                tabs={[
-                    {
-                        name: 'Related Entities',
-                        component: GlossaryRelatedEntity,
-                    },
+                tabs={[                   
                     {
                         name: 'Schema',
                         component: SchemaTab,
@@ -76,6 +74,10 @@ export class GlossaryTermEntity implements Entity<GlossaryTerm> {
                             enabled: (_, glossaryTerm: GetGlossaryTermQuery) =>
                                 glossaryTerm?.glossaryTerm?.schemaMetadata !== null,
                         },
+                    },
+                    {
+                        name: 'Related Entities',
+                        component: GlossaryRelatedEntity,
                     },
                     {
                         name: 'Related Terms',
