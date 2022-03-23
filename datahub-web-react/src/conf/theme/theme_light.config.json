@@ -24,7 +24,7 @@
         "logoUrl": "/assets/logo.png"
     },
     "content": {
-        "title": "DataHub",
+        "title": "Data Workbench",
         "homepage": {
             "homepageMessage": "Find data you can count on"
         },
@@ -34,26 +34,33 @@
         "menu": {
             "items": [
                 {
-                    "label": "Project",
-                    "path": "https://datahubproject.io",
+                    "label": "User Guide",
+                    "path": "https://saxobank.sharepoint.com/:p:/r/sites/DataGovernanceCommittee/DataWorkbench/_layouts/15/Doc.aspx?sourcedoc=%7BAA07AACC-A3F4-4D17-8955-19CACD823902%7D&file=Data%20Workbench%20User%20Guide.pptx&action=edit&mobileredirect=true",
                     "shouldOpenInNewTab": true
                 },
                 {
-                    "label": "Docs",
-                    "path": "https://datahubproject.io/docs",
+                    "label": "Git Repo",
+                    "path": "https://dev.azure.com/saxobank/DataGovernance/_git/datagov-wiki?path=%2F&version=GBmaster&_a=contents",
                     "shouldOpenInNewTab": true
                 },
                 {
-                    "label": "Releases",
-                    "path": "https://datahubproject.io/docs/releases/",
-                    "shouldOpenInNewTab": true
+                    "label": "Help",
+                    "path": "/help",
+                    "shouldOpenInNewTab": false,
+                    "isRoute": true
                 },
                 {
-                    "label": "GitHub",
-                    "path": "https://github.com/linkedin/datahub",
+                    "label": "Support Channel",
+                    "path": " https://teams.microsoft.com/l/channel/19%3a8c161777606947b7a94d40f8b1a8dd93%40thread.tacv2/%25F0%259F%2599%258B%2520EP%2520-%2520data%2520workbench%2520support?groupId=1b4c0b38-e7e9-4b18-aa98-e9d722e03456&tenantId=48794f31-2f6d-4909-8b2f-53b64c7f3199",
                     "shouldOpenInNewTab": true
                 }
             ]
         }
+    },
+    "config": {
+        "disableOwnerUpdate" : true
     }
 }
+
+    
+

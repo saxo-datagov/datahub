@@ -25,6 +25,7 @@ import { SidebarViewDefinitionSection } from '../shared/containers/profile/sideb
 import { SidebarRecommendationsSection } from '../shared/containers/profile/sidebar/Recommendations/SidebarRecommendationsSection';
 import { getDataForEntityType } from '../shared/containers/profile/utils';
 import { SidebarDomainSection } from '../shared/containers/profile/sidebar/Domain/SidebarDomainSection';
+import DataQuality from '../../shared/DataQuality';
 
 const SUBTYPES = {
     VIEW: 'view',
@@ -114,6 +115,10 @@ export class DatasetEntity implements Entity<Dataset> {
                             (dataset?.dataset?.incoming?.count || 0) > 0 ||
                             (dataset?.dataset?.outgoing?.count || 0) > 0,
                     },
+                },
+                {
+                    name: 'Data Quality',
+                    component: DataQuality,
                 },
                 {
                     name: 'Queries',

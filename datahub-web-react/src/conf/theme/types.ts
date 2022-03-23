@@ -36,7 +36,11 @@ export type Theme = {
                 label: string;
                 path: string;
                 shouldOpenInNewTab: boolean;
+                isRoute?: boolean;
             }[];
         };
+    };
+    config: {
+        disableOwnerUpdate: boolean;
     };
 };

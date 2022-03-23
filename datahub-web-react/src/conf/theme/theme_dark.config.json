@@ -21,7 +21,7 @@
         "logoUrl": "/assets/logo.png"
     },
     "content": {
-        "title": "DataHub",
+        "title": "Data Workbench",
         "homepage": {
             "homepageMessage": "Find data you can count(*) on"
         },
@@ -31,21 +31,25 @@
         "menu": {
             "items": [
                 {
-                    "label": "DataHub Project",
-                    "path": "https://datahubproject.io",
+                    "label": "User Guide",
+                    "path": "https://saxobank.sharepoint.com/:p:/r/sites/DataWorkbench/Data%20Workbench%20Public/Data%20Workbench%20User%20Guide%20React.pptx?d=w2bf6620d2e2748e6bf2cee17649053f7&csf=1&web=1&e=r8jMya",
                     "shouldOpenInNewTab": true
                 },
                 {
-                    "label": "DataHub Docs",
-                    "path": "https://datahubproject.io/docs",
+                    "label": "Git Repo",
+                    "path": "https://dev.azure.com/saxobank/DataGovernance/_git/datagov-wiki?path=%2F&version=GBmaster&_a=contents",
                     "shouldOpenInNewTab": true
                 },
                 {
-                    "label": "DataHub GitHub",
-                    "path": "https://github.com/linkedin/datahub",
-                    "shouldOpenInNewTab": true
+                    "label": "Help",
+                    "path": "/help",
+                    "shouldOpenInNewTab": false,
+                    "isRoute": true
                 }
             ]
         }
+    },
+    "config": {
+        "disableOwnerUpdate" : true
     }
 }

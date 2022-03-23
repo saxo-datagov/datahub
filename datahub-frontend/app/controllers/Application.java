@@ -172,6 +172,16 @@ public class Application extends Controller {
 
     // Insert properties for user profile operations
     config.set("userEntityProps", userEntityProps());
+    config.put("dqBaseUrl", _config.getString("links.dqBaseUrl"));
+    config.put("dqDashboardId", _config.getString("links.dqDashboardId"));
+    config.put("dqDashboardTitle", _config.getString("links.dqDashboardTitle"));
+    config.put("dqDevBaseUrl", _config.getString("links.dqDevBaseUrl"));
+    config.put("dqDevDashboardId", _config.getString("links.dqDevDashboardId"));
+    config.put("dqDevDashboardTitle", _config.getString("links.dqDevDashboardTitle"));
+    config.put("dqBaseUrl", _config.getString("links.dqBaseUrl"));
+    config.put("dqDashboardId", _config.getString("links.dqDashboardId"));
+    config.put("dqDashboardTitle", _config.getString("links.dqDashboardTitle"));
+    config.put("environment", _config.getString("links.environment"));
 
     final ObjectNode response = Json.newObject();
     response.put("status", "ok");

@@ -76,22 +76,26 @@ export default function UserHeader({ profileSrc, name, title, skills, teams, ema
                 </HeaderContainer>
                 <div>
                     <Traits>
-                        <Skills>
-                            <Typography.Title level={5}>Ask me about</Typography.Title>
-                            <Space>
-                                {skills?.map((skill) => (
-                                    <Badge style={{ backgroundColor: '#108ee9' }} count={skill} key={skill} />
-                                ))}
-                            </Space>
-                        </Skills>
-                        <div>
-                            <Typography.Title level={5}>Teams</Typography.Title>
-                            <Space>
-                                {teams?.map((team) => (
-                                    <Badge style={{ backgroundColor: '#87d068' }} count={team} key={team} />
-                                ))}
-                            </Space>
-                        </div>
+                    {skills && skills.length > 0 && (
+                            <Skills>
+                                <Typography.Title level={5}>Ask me about</Typography.Title>
+                                <Space>
+                                    {skills?.map((skill) => (
+                                        <Badge style={{ backgroundColor: '#108ee9' }} count={skill} key={skill} />
+                                    ))}
+                                </Space>
+                            </Skills>
+                        )}
+                        {teams && teams.length > 0 && (
+                            <div>
+                                <Typography.Title level={5}>Teams</Typography.Title>
+                                <Space>
+                                    {teams?.map((team) => (
+                                        <Badge style={{ backgroundColor: '#87d068' }} count={team} key={team} />
+                                    ))}
+                                </Space>
+                            </div>
+                        )}
                     </Traits>
                 </div>
             </div>
