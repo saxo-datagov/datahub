@@ -8,6 +8,9 @@ COPY --from=artifacts.sys.dom/docker-local/teams/datagov/chrome-stable:latest ./
 RUN apt-get -y update && apt-get -y install ./google-chrome-stable_current_amd64.deb
 
 ENV CI=true
+ENV HTTPS_PROXY=http://dk.proxy.mid.dom:80
+ENV HTTP_PROXY=http://dk.proxy.mid.dom:80
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 COPY --chown=gradle:gradle . /datahub-src
 
