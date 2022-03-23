@@ -55,9 +55,7 @@ type Props = {
     entityRegistry: EntityRegistry;
 };
 
-const defaultProps = {
-    authenticatedUserPictureLink: undefined,
-};
+const defaultProps = {};
 
 /**
  * A header containing a Logo, Search Bar view, & an account management dropdown.

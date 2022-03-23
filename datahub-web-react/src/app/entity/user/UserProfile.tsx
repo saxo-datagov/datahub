@@ -82,7 +82,7 @@ export default function UserProfile() {
         return (
             <UserHeader
                 profileSrc={null}
-                name={info?.displayName || username}
+                name={null}
                 title={info?.title}
                 email={info?.email || `${username}@saxobank.com`}
                 skills={editableInfo?.skills}

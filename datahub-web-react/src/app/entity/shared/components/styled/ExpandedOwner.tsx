@@ -34,7 +34,12 @@ export const ExpandedOwner = ({ entityUrn, owner, refetch }: Props) => {
         name = entityRegistry.getDisplayName(EntityType.CorpGroup, owner.owner);
     }
     if (owner.owner.__typename === 'CorpUser') {
-        name = entityRegistry.getDisplayName(EntityType.CorpUser, owner.owner);
+        name =
+        owner.owner.info?.displayName ||
+        owner.owner.info?.fullName ||
+        owner.owner.info?.email ||
+        owner.owner.username ||
+        '';
     }
 
     const pictureLink = undefined;

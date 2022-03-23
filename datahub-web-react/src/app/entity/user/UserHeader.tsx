@@ -6,7 +6,7 @@ import CustomAvatar from '../../shared/avatar/CustomAvatar';
 
 type Props = {
     profileSrc?: string | null;
-    name: string;
+    name: string | null;
     title?: string | null;
     skills?: string[] | null;
     teams?: string[] | null;
