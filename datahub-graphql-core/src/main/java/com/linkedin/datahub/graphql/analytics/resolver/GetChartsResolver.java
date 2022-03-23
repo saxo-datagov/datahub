@@ -47,7 +47,7 @@ public final class GetChartsResolver implements DataFetcher<List<AnalyticsChartG
     final DateTime aWeekAgo = now.minusWeeks(1);
     final DateTime startDate = now.minusWeeks(4);
     final DateRange lastWeekDateRange =
-        new DateRange(String.valueOf(aWeekAgo.getMillis()), String.valueOf(now.getMillis()));
+        new DateRange(String.valueOf(startDate.getMillis()), String.valueOf(now.getMillis()));
 
     final DateTime twoMonthsAgo = now.minusMonths(2);
     final DateRange twoMonthsDateRange =
@@ -70,7 +70,7 @@ public final class GetChartsResolver implements DataFetcher<List<AnalyticsChartG
         .build());
 
     // Chart 2:  Time Series Chart
-    String searchesTitle = "Searches Last Week";
+    String searchesTitle = "Searches Last Month";
     DateInterval dailyInterval = DateInterval.DAY;
     String searchEventType = "SearchEvent";
 

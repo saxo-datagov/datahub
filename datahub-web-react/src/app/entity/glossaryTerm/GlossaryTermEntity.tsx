@@ -61,7 +61,7 @@ export class GlossaryTermEntity implements Entity<GlossaryTerm> {
                 urn={urn}
                 entityType={EntityType.GlossaryTerm}
                 useEntityQuery={useGetGlossaryTermQuery as any}
-                tabs={[                   
+                tabs={[
                     {
                         name: 'Schema',
                         component: SchemaTab,
