@@ -36,28 +36,13 @@ if [[ $GRAPH_SERVICE_IMPL != elasticsearch ]] && [[ $SKIP_NEO4J_CHECK != true ]]
   WAIT_FOR_NEO4J=" -wait $NEO4J_HOST "
 fi
 
-OTEL_AGENT=""
-if [[ $ENABLE_OTEL == true ]]; then
-  OTEL_AGENT="-javaagent:opentelemetry-javaagent-all.jar "
-fi
-
-PROMETHEUS_AGENT=""
-if [[ $ENABLE_PROMETHEUS == true ]]; then
-  PROMETHEUS_AGENT="-javaagent:jmx_prometheus_javaagent.jar=4318:/datahub/datahub-gms/scripts/prometheus-config.yaml "
-fi
-
 COMMON="
     $WAIT_FOR_EBEAN \
     $WAIT_FOR_KAFKA \
     $WAIT_FOR_NEO4J \
-    -timeout 240s \
-    java $JAVA_OPTS $JMX_OPTS \
-    $OTEL_AGENT \
-    $PROMETHEUS_AGENT \
-    -jar /jetty-runner.jar \
-    --jar jetty-util.jar \
-    --jar jetty-jmx.jar \
-    /datahub/datahub-gms/bin/war.war"
+    -timeout 240s java -jar /jetty-runner.jar /datahub/datahub-gms/bin/war.war"    
+          
+    
 
 if [[ $SKIP_ELASTICSEARCH_CHECK != true ]]; then
   dockerize \
