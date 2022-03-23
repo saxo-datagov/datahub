@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Input, AutoComplete } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Input, AutoComplete, Tooltip } from 'antd';
+import { SearchOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 import { AutoCompleteResultForEntity, EntityType } from '../../types.generated';
@@ -9,6 +9,7 @@ import EntityRegistry from '../entity/EntityRegistry';
 import { SEARCH_FOR_ENTITY_PREFIX } from './utils/constants';
 import filterSearchQuery from './utils/filterSearchQuery';
 import { ANTD_GRAY } from '../entity/shared/constants';
+import { AdvancedSearch } from '../shared/AdvancedSearch';
 
 const SuggestionContainer = styled.div`
     display: 'flex',
@@ -146,6 +147,11 @@ export const SearchBar = ({
                     onChange={(e) => setSearchQuery(e.target.value)}
                     data-testid="search-input"
                     prefix={<SearchOutlined onClick={() => onSearch(filterSearchQuery(searchQuery || ''))} />}
+                    suffix={
+                        <Tooltip placement="right" title={AdvancedSearch}>
+                            <InfoCircleOutlined />
+                        </Tooltip>
+                    }
                 />
             </StyledAutoComplete>
         </AutoCompleteContainer>
