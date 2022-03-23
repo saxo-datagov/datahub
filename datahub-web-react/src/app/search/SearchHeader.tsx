@@ -52,7 +52,6 @@ type Props = {
     onSearch: (query: string, type?: EntityType) => void;
     onQueryChange: (query: string) => void;
     authenticatedUserUrn: string;
-    authenticatedUserPictureLink?: string | null;
     entityRegistry: EntityRegistry;
 };
 
@@ -70,7 +69,6 @@ export const SearchHeader = ({
     onSearch,
     onQueryChange,
     authenticatedUserUrn,
-    authenticatedUserPictureLink,
     entityRegistry,
 }: Props) => {
     const themeConfig = useTheme();
@@ -96,7 +94,8 @@ export const SearchHeader = ({
                     urn={authenticatedUserUrn}
                     pictureLink={undefined}
                     name={authenticatedUserUrn.split(':')[3]}
-                />  </NavGroup>
+                />{' '}
+            </NavGroup>
         </Header>
     );
 };

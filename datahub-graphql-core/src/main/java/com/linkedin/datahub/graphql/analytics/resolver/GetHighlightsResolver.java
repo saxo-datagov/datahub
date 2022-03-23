@@ -91,7 +91,7 @@ public final class GetHighlightsResolver implements DataFetcher<List<Highlight>>
             getNumEntitiesFiltered(index, ImmutableMap.of("hasDomain", ImmutableList.of("true")));
 
     String bodyText = "";
-     if(shouldShowOwnerStats){
+     if (shouldShowOwnerStats) {
     if (numEntities > 0) {
       double percentWithOwners = 100.0 * numEntitiesWithOwners / numEntities;
       double percentWithTags = 100.0 * numEntitiesWithTags / numEntities;

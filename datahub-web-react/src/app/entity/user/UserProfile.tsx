@@ -9,7 +9,6 @@ import RelatedEntityResults from '../../shared/entitySearch/RelatedEntityResults
 import { LegacyEntityProfile } from '../../shared/LegacyEntityProfile';
 import { CorpUser, EntityType, SearchResult, EntityRelationshipsResult } from '../../../types.generated';
 import UserGroups from './UserGroups';
-import { useEntityRegistry } from '../../useEntityRegistry';
 import { decodeUrn } from '../shared/utils';
 
 const messageStyle = { marginTop: '10%' };
@@ -29,7 +28,6 @@ export default function UserProfile() {
     const { urn: encodedUrn } = useUserParams();
     const urn = decodeUrn(encodedUrn);
     const { loading, error, data } = useGetUserQuery({ variables: { urn, groupsCount: GROUP_PAGE_SIZE } });
-    const entityRegistry = useEntityRegistry();
     const username = data?.corpUser?.username;
 
     const ownershipResult = useGetAllEntitySearchResults({
@@ -81,16 +79,15 @@ export default function UserProfile() {
 
     const getHeader = (user: CorpUser) => {
         const { editableInfo, info } = user;
-        const displayName = entityRegistry.getDisplayName(EntityType.CorpUser, user);
         return (
             <UserHeader
-            profileSrc={null}
-            name={info?.displayName || username}
-            title={info?.title}
-            email={info?.email || `${username}@saxobank.com`}
-            skills={editableInfo?.skills}
-            teams={editableInfo?.teams}
-        />
+                profileSrc={null}
+                name={info?.displayName || username}
+                title={info?.title}
+                email={info?.email || `${username}@saxobank.com`}
+                skills={editableInfo?.skills}
+                teams={editableInfo?.teams}
+            />
         );
     };
 

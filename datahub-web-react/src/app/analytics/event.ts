@@ -17,7 +17,7 @@ export enum EventType {
     EntityActionEvent,
     RecommendationImpressionEvent,
     RecommendationClickEvent,
-    GlossaryTermViewEvent
+    GlossaryTermViewEvent,
 }
 
 /**

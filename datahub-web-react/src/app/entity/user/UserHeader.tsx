@@ -76,7 +76,7 @@ export default function UserHeader({ profileSrc, name, title, skills, teams, ema
                 </HeaderContainer>
                 <div>
                     <Traits>
-                    {skills && skills.length > 0 && (
+                        {skills && skills.length > 0 && (
                             <Skills>
                                 <Typography.Title level={5}>Ask me about</Typography.Title>
                                 <Space>
