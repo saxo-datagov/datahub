@@ -1,55 +1,51 @@
 # Defining environment
 ARG APP_ENV=prod
+ARG version
 
-FROM alpine:3.14 AS base
+FROM artifacts.cf.saxo/docker/base/saxo-gradle:5.6.4-node14.16.1-ubuntu-ci-1.0.6 as builder
 
-RUN addgroup -S datahub && adduser -S datahub -G datahub
+COPY --from=artifacts.sys.dom/docker-local/teams/datagov/chrome-stable:latest ./google-chrome-stable_current_amd64.deb google-chrome-stable_current_amd64.deb
+RUN apt-get -y update && apt-get -y install ./google-chrome-stable_current_amd64.deb
 
-# Upgrade Alpine and base packages
-RUN apk --no-cache --update-cache --available upgrade \
-    && apk --no-cache add curl openjdk8-jre
-
-FROM --platform=$BUILDPLATFORM node:16.13.0-alpine3.14 AS prod-build
-
-# Upgrade Alpine and base packages
-RUN apk --no-cache --update-cache --available upgrade \
-    && apk --no-cache add perl openjdk8
-
-ARG ENABLE_EMBER="false"
-ARG USE_SYSTEM_NODE="true"
 ENV CI=true
-ENV GRADLE_OPTS="-Xms256m -Xmx512m"
-COPY . datahub-src
-RUN cd datahub-src && ./gradlew :datahub-frontend:dist -PenableEmber=${ENABLE_EMBER} -PuseSystemNode=${USE_SYSTEM_NODE} -x test -x yarnTest -x yarnLint \
+
+COPY --chown=gradle:gradle . /datahub-src
+
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+
+RUN npm install -g yarn@1.13.0
+
+RUN yarn config set strict-ssl false \
+    && yarn config set registry https://artifacts.cf.saxo/artifactory/api/npm/npm/
+
+RUN cd /datahub-src && gradle :datahub-frontend:dist -PenableEmber=${ENABLE_EMBER} -x test -x yarnTest -x yarnLint \
     && cp datahub-frontend/build/distributions/datahub-frontend.zip ../datahub-frontend.zip \
-    && cd .. && rm -rf datahub-src && unzip datahub-frontend.zip
+    && cd .. && unzip datahub-frontend.zip
 
-FROM base as prod-install
-COPY --from=prod-build /datahub-frontend /datahub-frontend/
-RUN chown -R datahub:datahub /datahub-frontend && chmod 755 /datahub-frontend
+FROM artifacts.sys.dom/docker/linkedin/datahub-frontend-react:$version
 
-FROM base as dev-install
-# Dummy stage for development. Assumes code is built on your machine and mounted to this image.
-# See this excellent thread https://github.com/docker/cli/issues/1134
-VOLUME [ "/datahub-frontend" ]
+USER root
 
-FROM ${APP_ENV}-install as final
-USER datahub
+COPY --from=builder /datahub-src/SaxoBankInternalIssuingCA11.cer /
+COPY --from=builder /datahub-src/TST-SaxoBankInternalRootCA1.cer /
 
-ARG SERVER_PORT=9002
-ENV SERVER_PORT=$SERVER_PORT
-RUN echo $SERVER_PORT
-EXPOSE $SERVER_PORT
 
-HEALTHCHECK --start-period=2m --retries=4 CMD curl --fail http://localhost:$SERVER_PORT/admin || exit 1
+RUN JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) \
+    && keytool -noprompt -import -alias SaxoBankInternalIssuingCA11 -file SaxoBankInternalIssuingCA11.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit \
+    && keytool -noprompt -import -alias TST-SaxoBankInternalRootCA1.cer -file TST-SaxoBankInternalRootCA1.cer -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+COPY --from=builder /datahub-frontend /datahub-frontend/
 
 ENV JAVA_OPTS=" \
    -Xms512m \
    -Xmx1024m \
-   -Dhttp.port=$SERVER_PORT \
+   -Dhttp.port=9002 \
    -Dconfig.file=datahub-frontend/conf/application.conf \
    -Djava.security.auth.login.config=datahub-frontend/conf/jaas.conf \
    -Dlogback.configurationFile=datahub-frontend/conf/logback.xml \
-   -Dlogback.debug=false \
-   -Dpidfile.path=/dev/null"
-CMD ["datahub-frontend/bin/playBinary"]
+   -Dlogback.debug=true \
+   -Dplay.server.pidfile.path=/dev/null"
+
+CMD ["sh", "-c", \
+    "export KAFKA_PROPERTIES_SSL_TRUSTSTORE_LOCATION=/usr/lib/jvm/java-1.8-openjdk/jre/lib/security/cacerts; \
+     export KAFKA_PROPERTIES_SSL_TRUSTSTORE_PASSWORD=changeit; \
+     datahub-frontend/bin/playBinary"]
