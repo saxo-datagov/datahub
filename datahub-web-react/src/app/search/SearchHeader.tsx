@@ -92,8 +92,11 @@ export const SearchHeader = ({
             </LogoSearchContainer>
             <NavGroup>
                 <AdminHeaderLinks />
-                <ManageAccount urn={authenticatedUserUrn} pictureLink={authenticatedUserPictureLink || ''} />
-            </NavGroup>
+                <ManageAccount
+                    urn={authenticatedUserUrn}
+                    pictureLink={undefined}
+                    name={authenticatedUserUrn.split(':')[3]}
+                />  </NavGroup>
         </Header>
     );
 };

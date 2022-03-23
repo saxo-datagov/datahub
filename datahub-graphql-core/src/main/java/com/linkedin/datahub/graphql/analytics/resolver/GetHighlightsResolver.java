@@ -34,51 +34,52 @@ public final class GetHighlightsResolver implements DataFetcher<List<Highlight>>
    * TODO: Config Driven Charts Instead of Hardcoded.
    */
   private List<Highlight> getHighlights() {
-    final List<Highlight> highlights = new ArrayList<>();
+      final List<Highlight> highlights = new ArrayList<>();
 
-    DateTime endDate = DateTime.now();
-    DateTime startDate = endDate.minusWeeks(1);
-    DateTime lastWeekStartDate = startDate.minusWeeks(1);
-    DateRange dateRange = new DateRange(String.valueOf(startDate.getMillis()), String.valueOf(endDate.getMillis()));
-    DateRange dateRangeLastWeek =
-        new DateRange(String.valueOf(lastWeekStartDate.getMillis()), String.valueOf(startDate.getMillis()));
+      DateTime endDate = DateTime.now();
+      DateTime startDate = endDate.minusWeeks(1);
+      DateTime lastWeekStartDate = startDate.minusWeeks(1);
+      DateRange dateRange = new DateRange(String.valueOf(startDate.getMillis()), String.valueOf(endDate.getMillis()));
+      DateRange dateRangeLastWeek =
+              new DateRange(String.valueOf(lastWeekStartDate.getMillis()), String.valueOf(startDate.getMillis()));
 
-    // Highlight 1: The Highlights!
-    String title = "Weekly Active Users";
-    String eventType = "SearchEvent";
+      // Highlight 1: The Highlights!
+      String title = "Weekly Active Users";
+      String eventType = "SearchEvent";
 
-    int weeklyActiveUsers =
-        _analyticsService.getHighlights(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRange),
-            ImmutableMap.of(), ImmutableMap.of(), Optional.of("browserId"));
+      int weeklyActiveUsers =
+              _analyticsService.getHighlights(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRange),
+                      ImmutableMap.of(), ImmutableMap.of(), Optional.of("actorUrn.keyword"));
 
-    int weeklyActiveUsersLastWeek =
-        _analyticsService.getHighlights(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRangeLastWeek),
-            ImmutableMap.of(), ImmutableMap.of(), Optional.of("browserId"));
+      int weeklyActiveUsersLastWeek =
+              _analyticsService.getHighlights(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRangeLastWeek),
+                      ImmutableMap.of(), ImmutableMap.of(), Optional.of("actorUrn.keyword"));
 
-    String bodyText = "";
-    if (weeklyActiveUsersLastWeek > 0) {
-      Double percentChange =
-          (Double.valueOf(weeklyActiveUsers) - Double.valueOf(weeklyActiveUsersLastWeek)) / Double.valueOf(
-              weeklyActiveUsersLastWeek) * 100;
+      String bodyText = "";
+      if (weeklyActiveUsersLastWeek > 0) {
+          Double percentChange =
+                  (Double.valueOf(weeklyActiveUsers) - Double.valueOf(weeklyActiveUsersLastWeek)) / Double.valueOf(
+                          weeklyActiveUsersLastWeek) * 100;
 
-      String directionChange = percentChange > 0 ? "increase" : "decrease";
+          String directionChange = percentChange > 0 ? "increase" : "decrease";
 
-      bodyText = Double.isInfinite(percentChange) ? ""
-          : String.format("%.2f%% %s from last week", percentChange, directionChange);
-    }
+          bodyText = Double.isInfinite(percentChange) ? ""
+                  : String.format("%.2f%% %s from last week", percentChange, directionChange);
+      }
 
-    highlights.add(Highlight.builder().setTitle(title).setValue(weeklyActiveUsers).setBody(bodyText).build());
+      highlights.add(Highlight.builder().setTitle(title).setValue(weeklyActiveUsers).setBody(bodyText).build());
 
-    // Entity metdata statistics
-    highlights.add(getEntityMetadataStats("Datasets", AnalyticsService.DATASET_INDEX));
-    highlights.add(getEntityMetadataStats("Dashboards", AnalyticsService.DASHBOARD_INDEX));
-    highlights.add(getEntityMetadataStats("Charts", AnalyticsService.CHART_INDEX));
-    highlights.add(getEntityMetadataStats("Pipelines", AnalyticsService.DATA_FLOW_INDEX));
-    highlights.add(getEntityMetadataStats("Tasks", AnalyticsService.DATA_JOB_INDEX));
-    return highlights;
+      // Entity metdata statistics
+      highlights.add(getEntityMetadataStats("Datasets", AnalyticsService.DATASET_INDEX, true));
+      // highlights.add(getEntityMetadataStats("Dashboards", AnalyticsService.DASHBOARD_INDEX));
+      // highlights.add(getEntityMetadataStats("Charts", AnalyticsService.CHART_INDEX));
+      // highlights.add(getEntityMetadataStats("Pipelines", AnalyticsService.DATA_FLOW_INDEX));
+      // highlights.add(getEntityMetadataStats("Tasks", AnalyticsService.DATA_JOB_INDEX));
+      highlights.add(getEntityMetadataStats("Glossary Terms", AnalyticsService.GLOSSARY_TERM_INDEX, false));
+      return highlights;
   }
 
-  private Highlight getEntityMetadataStats(String title, String index) {
+ private Highlight getEntityMetadataStats(String title, String index, Boolean shouldShowOwnerStats) {
     int numEntities = getNumEntitiesFiltered(index, ImmutableMap.of());
     int numEntitiesWithOwners =
             getNumEntitiesFiltered(index, ImmutableMap.of("hasOwners", ImmutableList.of("true")));
@@ -90,6 +91,7 @@ public final class GetHighlightsResolver implements DataFetcher<List<Highlight>>
             getNumEntitiesFiltered(index, ImmutableMap.of("hasDomain", ImmutableList.of("true")));
 
     String bodyText = "";
+     if(shouldShowOwnerStats){
     if (numEntities > 0) {
       double percentWithOwners = 100.0 * numEntitiesWithOwners / numEntities;
       double percentWithTags = 100.0 * numEntitiesWithTags / numEntities;
@@ -99,6 +101,7 @@ public final class GetHighlightsResolver implements DataFetcher<List<Highlight>>
               "%.2f%% have owners, %.2f%% have tags, %.2f%% have description, %.2f%% have domain assigned!",
               percentWithOwners, percentWithTags, percentWithDescription, percentWithDomains);
     }
+     }
     return Highlight.builder().setTitle(title).setValue(numEntities).setBody(bodyText).build();
   }
 

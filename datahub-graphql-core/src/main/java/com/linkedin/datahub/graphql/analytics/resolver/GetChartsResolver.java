@@ -47,15 +47,18 @@ public final class GetChartsResolver implements DataFetcher<List<AnalyticsChartG
     final List<AnalyticsChart> charts = new ArrayList<>();
     final DateTime now = DateTime.now();
     final DateTime aWeekAgo = now.minusWeeks(1);
+    final DateTime startDate = now.minusWeeks(4);
     final DateRange lastWeekDateRange =
         new DateRange(String.valueOf(aWeekAgo.getMillis()), String.valueOf(now.getMillis()));
 
     final DateTime twoMonthsAgo = now.minusMonths(2);
     final DateRange twoMonthsDateRange =
         new DateRange(String.valueOf(twoMonthsAgo.getMillis()), String.valueOf(now.getMillis()));
+    final DateRange dateRange =
+            new DateRange(String.valueOf(startDate.getMillis()), String.valueOf(now.getMillis()));
 
     // Chart 1:  Time Series Chart
-    String wauTitle = "Weekly Active Users";
+    String wauTitle = "Monthly Active Users";
     DateInterval weeklyInterval = DateInterval.WEEK;
 
     final List<NamedLine> wauTimeseries =
@@ -92,21 +95,21 @@ public final class GetChartsResolver implements DataFetcher<List<AnalyticsChartG
             "query.keyword", ImmutableMap.of("type", ImmutableList.of(searchEventType)), Optional.empty(), 10);
     charts.add(TableChart.builder().setTitle(topSearchTitle).setColumns(columns).setRows(topSearchQueries).build());
 
-    // Chart 4: Bar Graph Chart
-    final String sectionViewsTitle = "Section Views across Entity Types";
-    final List<NamedBar> sectionViewsPerEntityType =
-        _analyticsService.getBarChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(lastWeekDateRange),
-            ImmutableList.of("entityType.keyword", "section.keyword"),
-            ImmutableMap.of("type", ImmutableList.of("EntitySectionViewEvent")), Optional.empty());
-    charts.add(BarChart.builder().setTitle(sectionViewsTitle).setBars(sectionViewsPerEntityType).build());
+    // // Chart 4: Bar Graph Chart
+    // final String sectionViewsTitle = "Section Views across Entity Types";
+    // final List<NamedBar> sectionViewsPerEntityType =
+    //     _analyticsService.getBarChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(lastWeekDateRange),
+    //         ImmutableList.of("entityType.keyword", "section.keyword"),
+    //         ImmutableMap.of("type", ImmutableList.of("EntitySectionViewEvent")), Optional.empty());
+    // charts.add(BarChart.builder().setTitle(sectionViewsTitle).setBars(sectionViewsPerEntityType).build());
 
-    // Chart 5: Bar Graph Chart
-    final String actionsByTypeTitle = "Actions by Entity Type";
-    final List<NamedBar> eventsByEventType =
-        _analyticsService.getBarChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(lastWeekDateRange),
-            ImmutableList.of("entityType.keyword", "actionType.keyword"),
-            ImmutableMap.of("type", ImmutableList.of("EntityActionEvent")), Optional.empty());
-    charts.add(BarChart.builder().setTitle(actionsByTypeTitle).setBars(eventsByEventType).build());
+    // // Chart 5: Bar Graph Chart
+    // final String actionsByTypeTitle = "Actions by Entity Type";
+    // final List<NamedBar> eventsByEventType =
+    //     _analyticsService.getBarChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(lastWeekDateRange),
+    //         ImmutableList.of("entityType.keyword", "actionType.keyword"),
+    //         ImmutableMap.of("type", ImmutableList.of("EntityActionEvent")), Optional.empty());
+    // charts.add(BarChart.builder().setTitle(actionsByTypeTitle).setBars(eventsByEventType).build());
 
     // Chart 6: Table Chart
     final String topViewedTitle = "Top Viewed Dataset";
@@ -117,6 +120,23 @@ public final class GetChartsResolver implements DataFetcher<List<AnalyticsChartG
             "dataset_name.keyword", ImmutableMap.of("type", ImmutableList.of("EntityViewEvent")), Optional.empty(), 10);
     charts.add(TableChart.builder().setTitle(topViewedTitle).setColumns(columns5).setRows(topViewedDatasets).build());
     
+    // Chart 7: BG Chart
+    final String title6 = "Top Viewed Glossary Terms";
+    final List<String> column6 = ImmutableList.of("Glossary Terms", "#Views");
+
+    final List<Row> topViewedTerms =
+        _analyticsService.getTopNTableChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRange),
+            "glossary_term_name.keyword", ImmutableMap.of("type", ImmutableList.of("GlossaryTermViewEvent")), Optional.empty(), 10);
+    charts.add(TableChart.builder().setTitle(title6).setColumns(column6).setRows(topViewedTerms).build());
+    
+    final String title7 = "Monthly Top Users";
+    final List<String> column7 = ImmutableList.of("Users", "#Navigations");
+
+    final List<Row> topUsers =
+        _analyticsService.getTopNTableChart(AnalyticsService.DATAHUB_USAGE_EVENT_INDEX, Optional.of(dateRange),
+            "corp_user_name.keyword", ImmutableMap.of("type", ImmutableList.of("PageViewEvent")), Optional.empty(), 100);
+    charts.add(TableChart.builder().setTitle(title7).setColumns(column7).setRows(topUsers).build());
+
     return charts;
   }
 }

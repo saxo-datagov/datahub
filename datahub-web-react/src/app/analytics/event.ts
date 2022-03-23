@@ -17,6 +17,7 @@ export enum EventType {
     EntityActionEvent,
     RecommendationImpressionEvent,
     RecommendationClickEvent,
+    GlossaryTermViewEvent
 }
 
 /**
@@ -117,6 +118,13 @@ export interface EntitySectionViewEvent extends BaseEvent {
     section: string;
 }
 
+export interface GlossaryTermViewEvent extends BaseEvent {
+    type: EventType.GlossaryTermViewEvent;
+    entityType: EntityType;
+    entityUrn: string;
+    glossary_term_name: string;
+}
+
 /**
  * Logged when a user takes some action on an entity
  */
@@ -174,4 +182,5 @@ export type Event =
     | EntitySectionViewEvent
     | EntityActionEvent
     | RecommendationImpressionEvent
-    | RecommendationClickEvent;
+    | RecommendationClickEvent
+    | GlossaryTermViewEvent;

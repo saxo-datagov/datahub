@@ -5,31 +5,33 @@ import lombok.Getter;
 
 @Getter
 public enum DataHubUsageEventType {
-  PAGE_VIEW_EVENT("PageViewEvent"),
-  LOG_IN_EVENT("LogInEvent"),
-  LOG_OUT_EVENT("LogOutEvent"),
-  SEARCH_EVENT("SearchEvent"),
-  SEARCH_RESULTS_VIEW_EVENT("SearchResultsViewEvent"),
-  SEARCH_RESULT_CLICK_EVENT("SearchResultClickEvent"),
-  BROWSE_RESULT_CLICK_EVENT("BrowseResultClickEvent"),
-  ENTITY_VIEW_EVENT("EntityViewEvent"),
-  ENTITY_SECTION_VIEW_EVENT("EntitySectionViewEvent"),
-  ENTITY_ACTION_EVENT("EntityActionEvent"),
-  RECOMMENDATION_IMPRESSION_EVENT("RecommendationImpressionEvent"),
-  RECOMMENDATION_CLICK_EVENT("RecommendationClickEvent");
+    PAGE_VIEW_EVENT("PageViewEvent"),
+    LOG_IN_EVENT("LogInEvent"),
+    LOG_OUT_EVENT("LogOutEvent"),
+    SEARCH_EVENT("SearchEvent"),
+    SEARCH_RESULTS_VIEW_EVENT("SearchResultsViewEvent"),
+    SEARCH_RESULT_CLICK_EVENT("SearchResultClickEvent"),
+    BROWSE_RESULT_CLICK_EVENT("BrowseResultClickEvent"),
+    ENTITY_VIEW_EVENT("EntityViewEvent"),
+    ENTITY_SECTION_VIEW_EVENT("EntitySectionViewEvent"),
+    ENTITY_ACTION_EVENT("EntityActionEvent"),
+    RECOMMENDATION_IMPRESSION_EVENT("RecommendationImpressionEvent"),
+    RECOMMENDATION_CLICK_EVENT("RecommendationClickEvent"),
+    GLOSSARY_TERM_VIEW_EVENT("GlossaryTermViewEvent");
 
-  private final String type;
 
-  DataHubUsageEventType(String type) {
-    this.type = type;
-  }
+    private final String type;
 
-  public static DataHubUsageEventType getType(String name) {
-    for (DataHubUsageEventType eventType : DataHubUsageEventType.values()) {
-      if (eventType.type.equalsIgnoreCase(name)) {
-        return eventType;
-      }
+    DataHubUsageEventType(String type) {
+        this.type = type;
     }
-    return null;
-  }
+
+    public static DataHubUsageEventType getType(String name) {
+        for (DataHubUsageEventType eventType : DataHubUsageEventType.values()) {
+            if (eventType.type.equalsIgnoreCase(name)) {
+                return eventType;
+            }
+        }
+        return null;
+    }
 }

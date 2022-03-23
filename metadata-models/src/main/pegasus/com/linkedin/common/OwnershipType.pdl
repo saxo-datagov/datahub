@@ -34,4 +34,20 @@ enum OwnershipType {
    * A person or a group that has direct business interest
    */
   STAKEHOLDER
+
+  /**
+   * A person or a group that has direct domain interest
+   */
+  DATADOMAINARCHITECT
+
+  /**
+   * A person or a group that has direct technical interest
+   */
+  DATADOMAINOPSLEAD
+
+  /**
+   *  A person or a group that has direct business interest
+   */
+  DATADOMAINOWNER
+
 }

@@ -109,7 +109,7 @@ export function generateSampleChartGroup(title: string, charts: number): Analyti
 export const sampleHighlights = [
     {
         value: 42,
-        title: 'Weekly Active Users',
+        title: 'Monthly Active Users',
         body: '22% increase vs last week',
     },
 ];

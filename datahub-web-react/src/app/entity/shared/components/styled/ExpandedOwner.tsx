@@ -37,8 +37,7 @@ export const ExpandedOwner = ({ entityUrn, owner, refetch }: Props) => {
         name = entityRegistry.getDisplayName(EntityType.CorpUser, owner.owner);
     }
 
-    const pictureLink = (owner.owner.__typename === 'CorpUser' && owner.owner.editableInfo?.pictureLink) || undefined;
-
+    const pictureLink = undefined;
     const onDelete = async () => {
         try {
             await removeOwnerMutation({

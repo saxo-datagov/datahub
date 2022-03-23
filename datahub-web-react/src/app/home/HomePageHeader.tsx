@@ -212,7 +212,7 @@ export const HomePageHeader = () => {
                     <AdminHeaderLinks />
                     <ManageAccount
                         urn={user?.urn || ''}
-                        pictureLink={user?.editableInfo?.pictureLink || ''}
+                        pictureLink={undefined}
                         name={user?.info?.firstName || user?.username || undefined}
                     />
                 </NavGroup>

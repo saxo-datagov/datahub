@@ -787,9 +787,12 @@
         "type" : "enum",
         "name" : "OwnershipType",
         "doc" : "Owner category or owner role",
-        "symbols" : [ "DEVELOPER", "DATAOWNER", "DELEGATE", "PRODUCER", "CONSUMER", "STAKEHOLDER" ],
+        "symbols" : [ "DEVELOPER", "DATAOWNER", "DELEGATE", "PRODUCER", "CONSUMER", "STAKEHOLDER", "DATADOMAINARCHITECT", "DATADOMAINOPSLEAD", "DATADOMAINOWNER" ],
         "symbolDocs" : {
           "CONSUMER" : "A person, group, or service that consumes the data",
+          "DATADOMAINARCHITECT" : "A person or a group that has direct domain interest",
+          "DATADOMAINOPSLEAD" : "A person or a group that has direct technical interest",
+          "DATADOMAINOWNER" : " A person or a group that has direct business interest",
           "DATAOWNER" : "A person or group that is owning the data",
           "DELEGATE" : "A person or a group that overseas the operation, e.g. a DBA or SRE.",
           "DEVELOPER" : "A person or group that is in charge of developing the code",

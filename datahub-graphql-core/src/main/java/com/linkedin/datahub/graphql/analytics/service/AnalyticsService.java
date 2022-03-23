@@ -56,6 +56,7 @@ public class AnalyticsService {
   public static final String DATA_FLOW_INDEX = "dataflowindex_v2";
   public static final String DATA_JOB_INDEX = "datajobindex_v2";
   public static final String DATASET_INDEX = "datasetindex_v2";
+  public static final String GLOSSARY_TERM_INDEX = "glossarytermindex_v2";
 
   public AnalyticsService(final RestHighLevelClient elasticClient, final Optional<String> indexPrefix) {
     _elasticClient = elasticClient;

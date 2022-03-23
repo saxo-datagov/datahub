@@ -84,13 +84,13 @@ export default function UserProfile() {
         const displayName = entityRegistry.getDisplayName(EntityType.CorpUser, user);
         return (
             <UserHeader
-                profileSrc={editableInfo?.pictureLink}
-                name={displayName}
-                title={info?.title}
-                email={info?.email}
-                skills={editableInfo?.skills}
-                teams={editableInfo?.teams}
-            />
+            profileSrc={null}
+            name={info?.displayName || username}
+            title={info?.title}
+            email={info?.email || `${username}@saxobank.com`}
+            skills={editableInfo?.skills}
+            teams={editableInfo?.teams}
+        />
         );
     };
 
