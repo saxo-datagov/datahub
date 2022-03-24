@@ -13,6 +13,8 @@
         "@apollo/client": "^3.3.19",
         "@craco/craco": "^6.1.1",
         "@cypress/webpack-preprocessor": "5.8.0",
+        "@types/react-csv": "^1.1.2",
+        "react-csv": "^2.0.3",
         "@data-ui/xy-chart": "^0.0.84",
         "@miragejs/graphql": "^0.1.11",
         "@monaco-editor/react": "^4.3.1",

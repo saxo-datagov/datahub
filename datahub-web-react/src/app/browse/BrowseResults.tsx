@@ -6,6 +6,8 @@ import { BrowseResultGroup, EntityType, Entity } from '../../types.generated';
 import BrowseResultCard from './BrowseResultCard';
 import { useEntityRegistry } from '../useEntityRegistry';
 import analytics, { EventType } from '../analytics';
+import Feature from '../shared/ExportToExcel/Feature';
+import ExportToExcel from '../shared/ExportToExcel/ExportToExcel';
 
 const EntityList = styled(List)`
     && {
@@ -69,6 +71,15 @@ export const BrowseResults = ({
         <div>
             <Content style={{ padding: '25px 100px' }}>
                 <h1 className="ant-typography">{title}</h1>
+                {rootPath?.toLowerCase()?.includes('dataset/') && rootPath?.split('/')?.length > 4 && (
+                    <ExportToExcel
+                        totalResults={totalResults}
+                        page="browse"
+                        rootPath={rootPath}
+                        type={type}
+                        feature={Feature.Dataset}
+                    />
+                )}
                 <Row gutter={[4, 8]}>
                     {groups.map((group) => (
                         <Col span={24} key={`${group.name}_key`}>
