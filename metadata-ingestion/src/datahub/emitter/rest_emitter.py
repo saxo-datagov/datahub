@@ -143,11 +143,11 @@ class DatahubRestEmitter:
                 ):
                     message = "You seem to have connected to the frontend instead of the GMS endpoint. The rest emitter should connect to DataHub GMS (usually <datahub-gms-host>:8080) or Frontend GMS API (usually <frontend>:9002/api/gms)"
                 else:
-                    message = "You have either connected to a pre-v0.8.0 DataHub GMS instance, or to a different server altogether! Please check your configuration and make sure you are talking to the DataHub GMS endpoint."
+                    message = "You have either connected to a pre-v0.8.0 DataHub GMS instance, or to a different server altogether! Please check your configuration and make sure you are talking to the DataHub haha endpoint."
                 raise ConfigurationError(message)
         else:
             auth_message = "Maybe you need to set up authentication? "
-            message = f"Unable to connect to {self._gms_server}/config with status_code: {response.status_code}. {auth_message if response.status_code == 401 else ''}Please check your configuration and make sure you are talking to the DataHub GMS (usually <datahub-gms-host>:8080) or Frontend GMS API (usually <frontend>:9002/api/gms)."
+            message = f"Unable to connect to {self._gms_server}/config with status_code: {response.status_code}. {auth_message if response.status_code == 401 else ''}Please check your configuration and make sure you are talking to the DataHub local (usually <datahub-gms-host>:8080) or Frontend GMS API (usually <frontend>:9002/api/gms)."
             raise ConfigurationError(message)
 
     def emit(

@@ -7,12 +7,14 @@ import pydantic
 
 # This import verifies that the dependencies are available.
 import snowflake.sqlalchemy  # noqa: F401
+import snowflake.connector
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from snowflake.connector.network import (
     DEFAULT_AUTHENTICATOR,
     EXTERNAL_BROWSER_AUTHENTICATOR,
     KEY_PAIR_AUTHENTICATOR,
+    OAUTH_AUTHENTICATOR
 )
 from snowflake.sqlalchemy import custom_types, snowdialect
 from sqlalchemy import create_engine, inspect
@@ -61,6 +63,15 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
     scheme = "snowflake"
 
     username: Optional[str] = None
+    oauth_client_id: Optional[str]
+    use_certificate: Optional[bool] = False
+    oauth_tenant_id: Optional[str]
+    oauth_login_server: Optional[str]
+    oauth_login_endpoint: Optional[str]
+    oauth_scope: Optional[str]
+    base64_encoded_public_key: Optional[str]
+    base64_encoded_private_key: Optional[str]
+    client_secret: Optional[str]
     password: Optional[pydantic.SecretStr] = pydantic.Field(default=None, exclude=True)
     private_key_path: Optional[str]
     private_key_password: Optional[pydantic.SecretStr] = pydantic.Field(
@@ -71,8 +82,8 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
     warehouse: Optional[str]
     role: Optional[str]
     include_table_lineage: Optional[bool] = True
-
     connect_args: Optional[dict]
+
 
     @pydantic.validator("authentication_type", always=True)
     def authenticator_type_is_valid(cls, v, values, **kwargs):
@@ -80,6 +91,7 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
             "DEFAULT_AUTHENTICATOR": DEFAULT_AUTHENTICATOR,
             "EXTERNAL_BROWSER_AUTHENTICATOR": EXTERNAL_BROWSER_AUTHENTICATOR,
             "KEY_PAIR_AUTHENTICATOR": KEY_PAIR_AUTHENTICATOR,
+            "OAUTH_AUTHENTICATOR": OAUTH_AUTHENTICATOR
         }
         if v not in valid_auth_types.keys():
             raise ValueError(
@@ -99,11 +111,55 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
                         f"'private_key_password' was none "
                         f"but should be set when using {v} authentication"
                     )
+            elif v == "OAUTH_AUTHENTICATOR":
+                logger.info(values)
+                if values.get("oauth_client_id") is None:
+                    raise ValueError(
+                        f"'oauth_client_id' is none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("oauth_tenant_id") is None:
+                    raise ValueError(
+                        f"'oauth_tenant_id' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("oauth_login_server") is None:
+                    raise ValueError(
+                        f"'oauth_login_server' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("oauth_login_endpoint") is None:
+                    raise ValueError(
+                        f"'oauth_login_endpoint' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("oauth_scope") is None:
+                    raise ValueError(
+                        f"'oauth_scope' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("use_certificate") == True:
+                    if(values.get("base64_encoded_private_key")) is None:
+                        raise ValueError(
+                            f"'base64_encoded_private_key' was none "
+                            f"but should be set when using {v} authentication"
+                        )
+                    if(values.get("base64_encoded_public_key")) is None:
+                        raise ValueError(
+                            f"'base64_encoded_public_key' was none"
+                            f"but should be set when using {v} authentication"
+                        )
+                else:
+                    if(values.get("client_secret")) is None:
+                        raise ValueError(
+                            f"'client_secret' was none "
+                            f"but should be set when using {v} authentication"
+                        )
             logger.info(f"using authenticator type '{v}'")
         return valid_auth_types.get(v)
 
     def get_sql_alchemy_url(self, database=None):
-        return make_sqlalchemy_uri(
+        a = make_sqlalchemy_uri(
             self.scheme,
             self.username,
             self.password.get_secret_value() if self.password else None,
@@ -121,6 +177,35 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
                 if value
             },
         )
+        logger.info("url is " + a)
+        return a
+
+    # def get_oauth_access_token(self):
+    #     token = None
+    #     oauthGenerator = OauthTokenGenerator(
+    #         self.oauth_client_id,
+    #     )
+    #     if self.use_certificate is True:
+    #         token = oauthGenerator.get_token_with_certificate(
+    #             self.base64_encoded_private_key,
+    #             self.base64_encoded_public_key,
+    #             self.oauth_scope
+    #         )
+    #     else:
+    #         token = oauthGenerator.get_token_with_secret(
+    #             self.client_secret,
+    #             scope.oauth_scope
+    #         )
+    #     return token
+
+    def get_sql_alchemy_creator(self):
+        if self.authentication_type != OAUTH_AUTHENTICATOR:
+            return None
+        else:
+            token = self.get_oauth_access_token()
+            return None
+            
+            
 
     def get_sql_alchemy_connect_args(self) -> dict:
         if self.authentication_type != KEY_PAIR_AUTHENTICATOR:
@@ -182,13 +267,24 @@ class SnowflakeSource(SQLAlchemySource):
         config = SnowflakeConfig.parse_obj(config_dict)
         return cls(config, ctx)
 
+    def get_connection(self):
+        return snowflake.connector.connect(
+            user="46703820-64b8-46d6-ad1b-47ab7072b34f",     #object id of the server principal
+            account="saxo_playground.west-europe.azure",           #Snowflake account
+            authenticator="oauth",                          
+            token="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImpTMVhvMU9XRGpfNTJ2YndHTmd2UU8yVnpNYyIsImtpZCI6ImpTMVhvMU9XRGpfNTJ2YndHTmd2UU8yVnpNYyJ9.eyJhdWQiOiJodHRwczovL3NheG9iYW5rLm9ubWljcm9zb2Z0LmNvbS9mNGIzNTNkNS1lZjhkLTQ2NjktOTY2ZC0wNzQyZTBiNzE4ODUiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC80ODc5NGYzMS0yZjZkLTQ5MDktOGIyZi01M2I2NGM3ZjMxOTkvIiwiaWF0IjoxNjQ5NjYxNjQyLCJuYmYiOjE2NDk2NjE2NDIsImV4cCI6MTY0OTY2NTU0MiwiYWlvIjoiRTJaZ1lOQk40SlZmbGU5MlRzbDFiOG04cGM5akFBPT0iLCJhcHBpZCI6Ijg4MmU5ODMxLTYxMjAtNDMzNi1hNDJlLTdlYTUxY2IyYjk1NCIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzQ4Nzk0ZjMxLTJmNmQtNDkwOS04YjJmLTUzYjY0YzdmMzE5OS8iLCJvaWQiOiI0NjcwMzgyMC02NGI4LTQ2ZDYtYWQxYi00N2FiNzA3MmIzNGYiLCJyaCI6IjAuQVlFQU1VOTVTRzB2Q1VtTEwxTzJUSDh4bWRWVHNfU043MmxHbG0wSFF1QzNHSVdCQUFBLiIsInJvbGVzIjpbInNlc3Npb246cm9sZTpTVkNfREVWX0RBVEFXT1JLQkVOQ0giXSwic3ViIjoiNDY3MDM4MjAtNjRiOC00NmQ2LWFkMWItNDdhYjcwNzJiMzRmIiwidGlkIjoiNDg3OTRmMzEtMmY2ZC00OTA5LThiMmYtNTNiNjRjN2YzMTk5IiwidXRpIjoiSy1nY21ocXFGVW0ydlAzQmpJYWNBUSIsInZlciI6IjEuMCJ9.I9sIZGw1HWbmLkMnQJSSmFf1TtBguJSc3grhDGdgcYVptrYJTS759Da828ZkU9NpJV4-V4yafMjYHDjsySW34Vpv1vNDhYi8UoItwSFcZyoAafYTT0DfP1SpRxSmnUZVFyl_iIc6xy7qLhaC_2GKNB-O6ZERqjRSFLUZ5x8TA3AT95VPCCezGvn8QXQ4AlzlJ5ay3MPnYHZCSbmJ-u6DsHyM8nc-LuT3Egdi-8WGqnmtwQh8ZZVx6dWnhM_0Zj06AwMQFKHs_TA-7F0SzvLZXhSxjemUVPrXCUUBw6eUXf_qbEQt6RotSAiAK9Fdr7SJ_-R8HZwukqQvHewxfibbmg",                              #Access Token generated from above step
+            warehouse="DWH_SNOWFALL_DEV_XSMALL",                      
+            database="LALR_DATAWORKBENCH",
+            schema="PUBLIC"
+        )    
+
     def get_inspectors(self) -> Iterable[Inspector]:
         url = self.config.get_sql_alchemy_url(database=None)
         logger.debug(f"sql_alchemy_url={url}")
 
         db_listing_engine = create_engine(
             url,
-            connect_args=self.config.get_sql_alchemy_connect_args(),
+            creator=self.get_connection,
             **self.config.options,
         )
 
@@ -200,7 +296,7 @@ class SnowflakeSource(SQLAlchemySource):
                 self.current_database = db
                 engine = create_engine(
                     self.config.get_sql_alchemy_url(database=db),
-                    connect_args=self.config.get_sql_alchemy_connect_args(),
+                    creator=self.get_connection,
                     **self.config.options,
                 )
 
