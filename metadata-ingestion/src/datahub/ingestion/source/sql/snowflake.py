@@ -269,7 +269,6 @@ class SnowflakeSource(SQLAlchemySource):
 
     def get_inspectors(self) -> Iterable[Inspector]:
         logger.debug(f"sql_alchemy_url={url}")
-
         db_listing_engine = self.get_create_engine()
         
         for db_row in db_listing_engine.execute(text("SHOW DATABASES")):
