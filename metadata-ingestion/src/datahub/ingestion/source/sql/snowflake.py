@@ -4,15 +4,16 @@ from collections import defaultdict
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import pydantic
-
 # This import verifies that the dependencies are available.
 import snowflake.sqlalchemy  # noqa: F401
+import snowflake.connector
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from snowflake.connector.network import (
     DEFAULT_AUTHENTICATOR,
     EXTERNAL_BROWSER_AUTHENTICATOR,
     KEY_PAIR_AUTHENTICATOR,
+    OAUTH_AUTHENTICATOR
 )
 from snowflake.sqlalchemy import custom_types, snowdialect
 from sqlalchemy import create_engine, inspect
@@ -25,6 +26,7 @@ from datahub.configuration.time_window_config import BaseTimeWindowConfig
 from datahub.emitter.mcp import MetadataChangeProposalWrapper
 from datahub.ingestion.api.workunit import MetadataWorkUnit
 from datahub.ingestion.source.aws.s3_util import make_s3_urn
+from datahub.ingestion.source.sql.oauth_generator import OauthTokenGenerator
 from datahub.ingestion.source.sql.sql_common import (
     RecordTypeClass,
     SQLAlchemyConfig,
@@ -61,6 +63,13 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
     scheme = "snowflake"
 
     username: Optional[str] = None
+    use_certificate: Optional[bool] = False
+    oauth_client_id: Optional[str]
+    oauth_scope: Optional[str]
+    oauth_client_secret: Optional[str]
+    oauth_authority_url: Optional[str]
+    base64_encoded_oauth_public_key: Optional[str]
+    base64_encoded_oauth_private_key: Optional[str]
     password: Optional[pydantic.SecretStr] = pydantic.Field(default=None, exclude=True)
     private_key_path: Optional[str]
     private_key_password: Optional[pydantic.SecretStr] = pydantic.Field(
@@ -80,6 +89,7 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
             "DEFAULT_AUTHENTICATOR": DEFAULT_AUTHENTICATOR,
             "EXTERNAL_BROWSER_AUTHENTICATOR": EXTERNAL_BROWSER_AUTHENTICATOR,
             "KEY_PAIR_AUTHENTICATOR": KEY_PAIR_AUTHENTICATOR,
+            "OAUTH_AUTHENTICATOR": OAUTH_AUTHENTICATOR
         }
         if v not in valid_auth_types.keys():
             raise ValueError(
@@ -99,6 +109,40 @@ class BaseSnowflakeConfig(BaseTimeWindowConfig):
                         f"'private_key_password' was none "
                         f"but should be set when using {v} authentication"
                     )
+            elif v == "OAUTH_AUTHENTICATOR":
+                logger.info(values)
+                if values.get("oauth_client_id") is None:
+                    raise ValueError(
+                        f"'oauth_client_id' is none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("oauth_scope") is None:
+                    raise ValueError(
+                        f"'oauth_scope' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get(oauth_authority_url) is None:
+                    raise ValueError(
+                        f"'oauth_authority_url' was none "
+                        f"but should be set when using {v} authentication"
+                    )
+                if values.get("use_certificate") == True:
+                    if(values.get("base64_encoded_oauth_private_key")) is None:
+                        raise ValueError(
+                            f"'base64_encoded_oauth_private_key' was none "
+                            f"but should be set when using {v} authentication"
+                        )
+                    if(values.get("base64_encoded_oauth_public_key")) is None:
+                        raise ValueError(
+                            f"'base64_encoded_oauth_public_key' was none"
+                            f"but should be set when using {v} authentication"
+                        )
+                else:
+                    if(values.get("oauth_client_secret")) is None:
+                        raise ValueError(
+                            f"'oauth_client_secret' was none "
+                            f"but should be set when using {v} authentication"
+                        )
             logger.info(f"using authenticator type '{v}'")
         return valid_auth_types.get(v)
 
@@ -182,27 +226,59 @@ class SnowflakeSource(SQLAlchemySource):
         config = SnowflakeConfig.parse_obj(config_dict)
         return cls(config, ctx)
 
+    def get_oauth_connection(self):
+        generator = OauthTokenGenerator(
+            self.oauth_client_id,
+            self.oauth_authority_url
+        )
+        if(self.use_certificate is True):
+            response = generator.get_token_with_certificate(
+                private_key_content=self.base64_encoded_oauth_private_key,
+                public_key_content=self.base64_encoded_oauth_public_key,
+                scope=self.oauth_scope
+            )
+        else:
+            response = generator.get_token_with_secret(
+                secret=self.oauth_client_secret,
+                scope=self.oauth_scope
+            )
+        token = response["access_token"]
+
+        return snowflake.connector.connect(
+            user=self.username,
+            account=self.host_port,
+            authenticator="oauth",                          
+            token=token,
+            warehouse=self.warehouse                    
+        )    
+    
+    def get_create_engine():
+        engine = None
+        if self.authentication_type != OAUTH_AUTHENTICATOR:
+            engine = create_engine(
+                self.config.get_sql_alchemy_url(),
+                connect_args=self.config.get_sql_alchemy_connect_args(),
+                **self.config.options,
+            )
+        else:
+            engine = create_engine(
+                self.config.get_sql_alchemy_url(),
+                creator=self.get_oauth_connection
+            )
+        return engine
+
     def get_inspectors(self) -> Iterable[Inspector]:
-        url = self.config.get_sql_alchemy_url(database=None)
         logger.debug(f"sql_alchemy_url={url}")
 
-        db_listing_engine = create_engine(
-            url,
-            connect_args=self.config.get_sql_alchemy_connect_args(),
-            **self.config.options,
-        )
-
+        db_listing_engine = self.get_create_engine()
+        
         for db_row in db_listing_engine.execute(text("SHOW DATABASES")):
             db = db_row.name
             if self.config.database_pattern.allowed(db):
                 # We create a separate engine for each database in order to ensure that
                 # they are isolated from each other.
                 self.current_database = db
-                engine = create_engine(
-                    self.config.get_sql_alchemy_url(database=db),
-                    connect_args=self.config.get_sql_alchemy_connect_args(),
-                    **self.config.options,
-                )
+                engine = self.get_create_engine()
 
                 with engine.connect() as conn:
                     inspector = inspect(conn)
@@ -217,7 +293,7 @@ class SnowflakeSource(SQLAlchemySource):
     def _populate_external_lineage(self) -> None:
         url = self.config.get_sql_alchemy_url()
         logger.debug(f"sql_alchemy_url={url}")
-        engine = create_engine(url, **self.config.options)
+        engine = self.get_create_engine()
         query: str = """
 WITH external_table_lineage_history AS (
     SELECT
@@ -258,11 +334,7 @@ QUALIFY ROW_NUMBER() OVER (PARTITION BY downstream_table_name ORDER BY query_sta
     def _populate_lineage(self) -> None:
         url = self.config.get_sql_alchemy_url()
         logger.debug(f"sql_alchemy_url={url}")
-        engine = create_engine(
-            url,
-            connect_args=self.config.get_sql_alchemy_connect_args(),
-            **self.config.options,
-        )
+        engine = self.get_create_engine()
         query: str = """
 WITH table_lineage_history AS (
     SELECT
