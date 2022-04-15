@@ -4,7 +4,7 @@
 - [Workflows](#workflows)
 
 ## Introduction
-This project repository hosts the fork of LinkedIn Datahub(https://github.com/linkedin/datahub) for Saxo's DataWorkbench Implementation.
+This project repository hosts the fork of LinkedIn Datahub(https://github.com/datahub-project/datahub) for Saxo's DataWorkbench Implementation.
 
 ## Branches
 - master: reflection of upstream branch, datahub/master
@@ -13,7 +13,7 @@ This project repository hosts the fork of LinkedIn Datahub(https://github.com/li
 ## Workflows
 - sync-repo 
   ### Parameters:
-  - source_repo: "https://github.com/linkedin/datahub"
+  - source_repo: "https://github.com/datahub-project/datahub"
   - source_branch: "master"
   - destination_branch: "master"
   - github_token: personal access token, stored in repository's secret as PAT
