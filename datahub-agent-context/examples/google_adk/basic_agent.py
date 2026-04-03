@@ -36,7 +36,10 @@ from google.adk.tools.bigquery.config import BigQueryToolConfig, WriteMode
 from google.genai import types
 
 from datahub.sdk.main_client import DataHubClient
-from datahub_agent_context.google_adk_tools import build_google_adk_tools
+from datahub_agent_context.google_adk_tools import (
+    build_google_adk_cloud_tools,
+    build_google_adk_tools,
+)
 
 warnings.filterwarnings("ignore", message=".*GOOGLE_TOOL.*")
 logging.getLogger("google.genai.types").setLevel(logging.ERROR)
@@ -177,6 +180,10 @@ async def main() -> None:
         print(f"{GREEN}BigQuery tools enabled{' (project: ' + compute_project + ')' if compute_project else ''}{RESET}")
     except google.auth.exceptions.DefaultCredentialsError:
         print(f"{DIM}BigQuery tools disabled (no GCP credentials found — run 'gcloud auth application-default login' to enable){RESET}")
+
+    # Add Cloud-only tools (Ask DataHub AI assistant) — requires DataHub Cloud
+    # Remove this line if connecting to an OSS DataHub instance
+    tools += build_google_adk_cloud_tools(client, ask_datahub=True)
 
     # Create agent
     agent = Agent(
