@@ -785,6 +785,7 @@ plugins: Dict[str, Set[str]] = {
     "sac": sac,
     "neo4j": {"pandas<3.0.0", "neo4j<7.0.0"},
     "vertexai": {"google-cloud-aiplatform>=1.80.0,<2.0.0"},
+    "pinecone": {"pinecone-client>=3.0.0,<6.0.0"},
     # Debug/utility plugins
     "debug-recording": {
         # VCR.py for HTTP recording - industry standard
@@ -959,6 +960,7 @@ base_dev_requirements = {
             "cassandra",
             "neo4j",
             "vertexai",
+            "pinecone",
             "mssql-odbc",
             "omni",
         ]
@@ -1124,6 +1126,7 @@ entry_points = {
         "vertexai = datahub.ingestion.source.vertexai.vertexai:VertexAISource",
         "hex = datahub.ingestion.source.hex.hex:HexSource",
         "omni = datahub.ingestion.source.omni.omni:OmniSource",
+        "pinecone = datahub.ingestion.source.pinecone.pinecone_source:PineconeSource",
     ],
     "datahub.ingestion.transformer.plugins": [
         "pattern_cleanup_ownership = datahub.ingestion.transformer.pattern_cleanup_ownership:PatternCleanUpOwnership",
