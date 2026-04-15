@@ -3074,7 +3074,7 @@ public class EntityServiceImpl implements EntityService<ChangeItemImpl> {
                       } else if (deleteItem
                           .getEntitySpec()
                           .hasAspect(Constants.STATUS_ASPECT_NAME)) {
-                        // soft delete by setting status.removed=true (if applicable)
+                        // Soft delete: set removed=true.
                         final Status statusAspect = new Status();
                         statusAspect.setRemoved(true);
 

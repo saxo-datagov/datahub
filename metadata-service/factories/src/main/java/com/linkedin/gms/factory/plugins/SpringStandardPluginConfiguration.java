@@ -11,6 +11,7 @@ import com.linkedin.metadata.aspect.hooks.AspectMigrationMutator;
 import com.linkedin.metadata.aspect.hooks.AspectMigrationMutatorChain;
 import com.linkedin.metadata.aspect.hooks.FieldPathMutator;
 import com.linkedin.metadata.aspect.hooks.IgnoreUnknownMutator;
+import com.linkedin.metadata.aspect.hooks.LifecycleStageTransitionHook;
 import com.linkedin.metadata.aspect.hooks.OwnershipOwnerTypes;
 import com.linkedin.metadata.aspect.plugins.config.AspectPluginConfig;
 import com.linkedin.metadata.aspect.plugins.hooks.MCPObserver;
@@ -21,6 +22,7 @@ import com.linkedin.metadata.aspect.validation.ConditionalWriteValidator;
 import com.linkedin.metadata.aspect.validation.CreateIfNotExistsValidator;
 import com.linkedin.metadata.aspect.validation.ExecutionRequestResultValidator;
 import com.linkedin.metadata.aspect.validation.FieldPathValidator;
+import com.linkedin.metadata.aspect.validation.LifecycleStageValidator;
 import com.linkedin.metadata.aspect.validation.PolicyFieldTypeValidator;
 import com.linkedin.metadata.aspect.validation.PrivilegeConstraintsValidator;
 import com.linkedin.metadata.aspect.validation.SystemPolicyValidator;
@@ -638,6 +640,40 @@ public class SpringStandardPluginConfiguration {
                         AspectPluginConfig.EntityAspectName.builder()
                             .entityName(POLICY_ENTITY_NAME)
                             .aspectName(ALL)
+                            .build()))
+                .build());
+  }
+
+  @Bean
+  public MutationHook lifecycleStageTransitionHook() {
+    return new LifecycleStageTransitionHook()
+        .setConfig(
+            AspectPluginConfig.builder()
+                .className(LifecycleStageTransitionHook.class.getName())
+                .enabled(true)
+                .supportedOperations(List.of(CREATE, CREATE_ENTITY, UPSERT, UPDATE))
+                .supportedEntityAspectNames(
+                    List.of(
+                        AspectPluginConfig.EntityAspectName.builder()
+                            .entityName("*")
+                            .aspectName(STATUS_ASPECT_NAME)
+                            .build()))
+                .build());
+  }
+
+  @Bean
+  public AspectPayloadValidator lifecycleStageValidator() {
+    return new LifecycleStageValidator()
+        .setConfig(
+            AspectPluginConfig.builder()
+                .className(LifecycleStageValidator.class.getName())
+                .enabled(true)
+                .supportedOperations(List.of(CREATE, CREATE_ENTITY, UPSERT, UPDATE))
+                .supportedEntityAspectNames(
+                    List.of(
+                        AspectPluginConfig.EntityAspectName.builder()
+                            .entityName("*")
+                            .aspectName(STATUS_ASPECT_NAME)
                             .build()))
                 .build());
   }
