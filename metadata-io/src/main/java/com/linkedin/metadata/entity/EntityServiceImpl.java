@@ -1678,6 +1678,11 @@ public class EntityServiceImpl implements EntityService<ChangeItemImpl> {
   @Override
   public List<IngestResult> ingestProposal(
       @Nonnull OperationContext opContext, AspectsBatch aspectsBatch, final boolean async) {
+    // Apply MCP observers (pre-transaction metrics collection, external actions).
+    // Only on sync path — async MCPs come back via MCE consumer with async=false.
+    if (!async) {
+      aspectsBatch.applyMCPObservers(aspectsBatch.getItems());
+    }
     Stream<IngestResult> timeseriesIngestResults =
         ingestTimeseriesProposal(opContext, aspectsBatch, async);
     Stream<IngestResult> nonTimeseriesIngestResults =
