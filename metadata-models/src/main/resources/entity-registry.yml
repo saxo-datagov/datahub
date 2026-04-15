@@ -601,6 +601,8 @@ entities:
     keyAspect: incidentKey
     aspects:
       - incidentInfo
+      - incidentExternalLinks
+      - incidentNotes
       - globalTags
   - name: dataHubRole
     category: core
