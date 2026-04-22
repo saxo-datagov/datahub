@@ -708,6 +708,7 @@ joblib==1.5.3
     # via nltk
 joserfc==1.6.4
     # via authlib
+# jpype1 1.7.0: PyPI sdist builds x86_64-only on macOS; use 1.6.x wheels until 1.7.1+.
 jpype1==1.6.0
     # via acryl-datahub
 json5==0.13.0

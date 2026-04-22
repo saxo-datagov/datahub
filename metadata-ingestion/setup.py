@@ -665,7 +665,10 @@ plugins: Dict[str, Set[str]] = {
     "iceberg-catalog": aws_common,
     "json-schema": {"requests<3.0.0"},
     "kafka": kafka_common | kafka_protobuf,
-    "kafka-connect": sql_common | {"requests<3.0.0", "JPype1<2.0.0", "jdk4py>=21.0,<22.0"},
+    "kafka-connect": (
+        sql_common
+        | {"requests<3.0.0", "JPype1>=1.6.0,<1.7.0", "jdk4py>=21.0,<22.0"}
+    ),
     "ldap": {"python-ldap>=2.4,<4.0.0"},
     "looker": looker_common,
     "lookml": looker_common,
