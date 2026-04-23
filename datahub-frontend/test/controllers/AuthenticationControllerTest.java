@@ -15,7 +15,6 @@ import auth.pac4j.DatahubPlayCookieSessionStore;
 import auth.sso.SsoManager;
 import auth.sso.SsoProvider;
 import client.AuthServiceClient;
-import client.NativeUserCredentialVerifyResult;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import java.util.HashMap;
@@ -748,8 +747,7 @@ public class AuthenticationControllerTest {
 
     AuthenticationController testController = new AuthenticationController(config);
     testController.authClient = authClient;
-    when(authClient.verifyNativeUserCredentials(anyString(), anyString()))
-        .thenReturn(new NativeUserCredentialVerifyResult(false, null));
+    when(authClient.verifyNativeUserCredentials(anyString(), anyString())).thenReturn(false);
 
     Http.Request request = mock(Http.Request.class);
     Http.RequestBody body = mock(Http.RequestBody.class);

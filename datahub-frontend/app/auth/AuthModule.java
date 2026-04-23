@@ -3,7 +3,6 @@ package auth;
 import static auth.AuthUtils.*;
 import static utils.ConfigUtil.*;
 
-import auth.metrics.PrometheusScrapeServer;
 import auth.pac4j.DatahubPlayCookieSessionStore;
 import auth.pac4j.Shiro2AesDataEncrypter;
 import auth.sso.SsoManager;
@@ -21,7 +20,6 @@ import com.linkedin.entity.client.SystemEntityClient;
 import com.linkedin.entity.client.SystemRestliEntityClient;
 import com.linkedin.metadata.models.registry.EmptyEntityRegistry;
 import com.linkedin.metadata.restli.DefaultRestliClientFactory;
-import com.linkedin.metadata.restli.RestliClientSslConfig;
 import com.linkedin.metadata.utils.metrics.MetricUtils;
 import com.linkedin.parseq.retry.backoff.ExponentialBackoff;
 import com.linkedin.util.Configuration;
@@ -37,15 +35,13 @@ import io.datahubproject.metadata.context.SearchContext;
 import io.datahubproject.metadata.context.ValidationContext;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Meter;
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import io.micrometer.jmx.JmxConfig;
 import io.micrometer.jmx.JmxMeterRegistry;
-import io.micrometer.prometheusmetrics.PrometheusConfig;
-import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -195,50 +191,20 @@ public class AuthModule extends AbstractModule {
   @Provides
   @Singleton
   protected MetricUtils metricUtils(final AnnotationConfigApplicationContext springContext) {
+    // Create the appropriate MeterRegistry based on configuration
+    MeterRegistry meterRegistry;
+
+    // Check if JMX metrics are enabled
     org.springframework.core.env.Environment env = springContext.getEnvironment();
     Boolean jmxEnabled = env.getProperty("management.metrics.export.jmx.enabled", Boolean.class);
-    Boolean prometheusEnabled =
-        env.getProperty("management.metrics.export.prometheus.enabled", Boolean.class);
-    if (prometheusEnabled == null) {
-      prometheusEnabled = Boolean.TRUE;
-    }
-
-    CompositeMeterRegistry composite = new CompositeMeterRegistry();
-    PrometheusMeterRegistry prometheusRegistry = null;
-
-    if (Boolean.TRUE.equals(prometheusEnabled)) {
-      prometheusRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-      prometheusRegistry
-          .config()
-          .meterFilter(
-              new MeterFilter() {
-                @Override
-                public MeterFilterReply accept(Meter.Id id) {
-                  return id.getTag(MetricUtils.DROPWIZARD_METRIC) == null
-                      ? MeterFilterReply.ACCEPT
-                      : MeterFilterReply.DENY;
-                }
-              });
-      composite.add(prometheusRegistry);
-    }
 
     if (jmxEnabled != null && jmxEnabled) {
+      // Create JMX registry with legacy hierarchical name mapper
       HierarchicalNameMapper legacyMapper = (id, namingConvention) -> id.getName();
-      JmxMeterRegistry jmx = new JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM, legacyMapper);
-      jmx.config()
-          .meterFilter(
-              new MeterFilter() {
-                @Override
-                public MeterFilterReply accept(Meter.Id id) {
-                  return id.getTag(MetricUtils.DROPWIZARD_METRIC) != null
-                      ? MeterFilterReply.ACCEPT
-                      : MeterFilterReply.DENY;
-                }
-              });
-      composite.add(jmx);
-    } else if (Boolean.TRUE.equals(prometheusEnabled)) {
-      SimpleMeterRegistry legacyOnly = new SimpleMeterRegistry();
-      legacyOnly
+      meterRegistry = new JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM, legacyMapper);
+
+      // Apply filter to only include Dropwizard metrics in JMX
+      meterRegistry
           .config()
           .meterFilter(
               new MeterFilter() {
@@ -249,17 +215,15 @@ public class AuthModule extends AbstractModule {
                       : MeterFilterReply.DENY;
                 }
               });
-      composite.add(legacyOnly);
     } else {
-      composite.add(new SimpleMeterRegistry());
+      // Default to simple meter registry if JMX is not enabled
+      meterRegistry = new SimpleMeterRegistry();
     }
 
-    composite.config().commonTags("application", "datahub-frontend");
-    MetricUtils metricUtils = MetricUtils.builder().registry(composite).build();
+    // Create and configure MetricUtils
+    MetricUtils metricUtils = MetricUtils.builder().registry(meterRegistry).build();
 
-    if (prometheusRegistry != null) {
-      PrometheusScrapeServer.startIfConfigured(prometheusRegistry);
-    }
+    meterRegistry.config().commonTags("application", "datahub-frontend");
 
     return metricUtils;
   }
@@ -344,16 +308,13 @@ public class AuthModule extends AbstractModule {
 
     final boolean metadataServiceUseSsl = doesMetadataServiceUseSsl(configs);
 
-    final boolean authVerboseLogging =
-        configs.hasPath("auth.verbose.logging") && configs.getBoolean("auth.verbose.logging");
     return new AuthServiceClient(
         metadataServiceHost,
         metadataServicePort,
         metadataServiceBasePath,
         metadataServiceUseSsl,
         systemAuthentication,
-        httpClient,
-        authVerboseLogging);
+        httpClient);
   }
 
   @Provides
@@ -420,8 +381,6 @@ public class AuthModule extends AbstractModule {
             utils.ConfigUtil.METADATA_SERVICE_SSL_PROTOCOL_CONFIG_PATH,
             ConfigUtil.DEFAULT_METADATA_SERVICE_SSL_PROTOCOL);
 
-    RestliClientSslConfig restliSslConfig = buildRestliSslConfigForMetadataService(configs);
-
     // Use the same logic as GMSConfiguration.getResolvedBasePath()
     String resolvedBasePath =
         com.linkedin.metadata.utils.BasePathUtils.resolveBasePath(
@@ -432,25 +391,7 @@ public class AuthModule extends AbstractModule {
         metadataServicePort,
         resolvedBasePath,
         metadataServiceUseSsl,
-        metadataServiceSslProtocol,
-        null,
-        restliSslConfig);
-  }
-
-  /**
-   * Reads truststore/keystore settings from Play config for the Rest.li metadata client. Package
-   * visibility for unit tests.
-   */
-  static RestliClientSslConfig buildRestliSslConfigForMetadataService(
-      com.typesafe.config.Config configs) {
-    return RestliClientSslConfig.fromNullableStrings(
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_TRUST_STORE_PATH, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_TRUST_STORE_PASSWORD, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_TRUST_STORE_TYPE, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_KEY_STORE_PATH, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_KEY_STORE_PASSWORD, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_KEY_STORE_TYPE, null),
-        utils.ConfigUtil.getString(configs, METADATA_SERVICE_SSL_KEY_PASSWORD, null));
+        metadataServiceSslProtocol);
   }
 
   protected boolean doesMetadataServiceUseSsl(com.typesafe.config.Config configs) {

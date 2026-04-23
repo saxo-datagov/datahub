@@ -39,7 +39,7 @@ public class SerializationUtils {
       }
       return new FoundAction(location);
     } catch (IllegalArgumentException e) {
-      log.warn("Failed to decode redirect URL cookie, using default redirect", e);
+      log.warn("Failed to decode redirect URL cookie, using default redirect: {}", e.getMessage());
       return DEFAULT_REDIRECT;
     }
   }
