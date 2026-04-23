@@ -49,6 +49,8 @@ dependencies {
     play(externalDependency.hibernateValidator) {
       because("CVE-2025-35036 / GHSA-7v6m-28jr-rg84 (Hibernate Validator EL interpolation)")
     }
+    // Ensures play.data.validation.Constraints (e.g. signUp email check) is on the runtime / staged classpath
+    play(externalDependency.playJavaForms)
     implementation(externalDependency.snappy) {
       because("previous versions are vulnerable to CVE-2023-34453 through CVE-2023-34455")
     }
@@ -92,6 +94,7 @@ dependencies {
   implementation externalDependency.playServer
   implementation externalDependency.playAkkaHttpServer
   implementation externalDependency.playFilters
+  implementation externalDependency.playJavaForms
   implementation externalDependency.kafkaClients
   implementation externalDependency.awsMskIamAuth
   implementation externalDependency.azureIdentityExtensions
